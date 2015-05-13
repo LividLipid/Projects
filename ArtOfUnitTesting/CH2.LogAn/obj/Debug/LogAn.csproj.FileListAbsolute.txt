@@ -1,0 +1,7 @@
+C:\Projects\ArtOfUnitTesting\LogAn\bin\Debug\LogAnalyzer.dll
+C:\Projects\ArtOfUnitTesting\LogAn\bin\Debug\LogAnalyzer.pdb
+C:\Projects\ArtOfUnitTesting\LogAn\bin\Debug\nunit.framework.dll
+C:\Projects\ArtOfUnitTesting\LogAn\bin\Debug\nunit.framework.xml
+C:\Projects\ArtOfUnitTesting\LogAn\obj\Debug\LogAn.csprojResolveAssemblyReference.cache
+C:\Projects\ArtOfUnitTesting\LogAn\obj\Debug\LogAnalyzer.dll
+C:\Projects\ArtOfUnitTesting\LogAn\obj\Debug\LogAnalyzer.pdb
