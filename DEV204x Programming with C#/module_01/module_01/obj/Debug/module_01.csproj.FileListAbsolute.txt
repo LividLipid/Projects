@@ -1,0 +1,6 @@
+C:\git repositories\Projects\DEV204x Programming with C#\module_01\module_01\bin\Debug\module_01.exe.config
+C:\git repositories\Projects\DEV204x Programming with C#\module_01\module_01\bin\Debug\module_01.exe
+C:\git repositories\Projects\DEV204x Programming with C#\module_01\module_01\bin\Debug\module_01.pdb
+C:\git repositories\Projects\DEV204x Programming with C#\module_01\module_01\obj\Debug\module_01.csprojResolveAssemblyReference.cache
+C:\git repositories\Projects\DEV204x Programming with C#\module_01\module_01\obj\Debug\module_01.exe
+C:\git repositories\Projects\DEV204x Programming with C#\module_01\module_01\obj\Debug\module_01.pdb
