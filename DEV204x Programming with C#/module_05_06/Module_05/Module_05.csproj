@@ -48,9 +48,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OOP\OOP.csproj">
+    <ProjectReference Include="..\OOP\Module_Classes.csproj">
       <Project>{18602c31-ca1a-47a5-80e9-4f43a3f0d590}</Project>
-      <Name>OOP</Name>
+      <Name>Module_Classes</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
