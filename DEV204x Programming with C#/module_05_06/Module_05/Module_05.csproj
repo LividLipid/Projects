@@ -34,11 +34,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
@@ -48,7 +43,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OOP\Module_Classes.csproj">
+    <ProjectReference Include="..\Module_Classes\Module_Classes.csproj">
       <Project>{18602c31-ca1a-47a5-80e9-4f43a3f0d590}</Project>
       <Name>Module_Classes</Name>
     </ProjectReference>
