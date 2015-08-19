@@ -1,12 +1,14 @@
 ﻿using System;
+using System.IO;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace ConsoleMenu
 {
+    [Serializable]
     public class MenuTree
     {
-        private static string FolderPath = @"C:\Projects\C#_practice\ConsoleMenu\SavedMenus";
-        private string TreeTitle;
-        private string FilePath;
+        public string TreeTitle;
         private TreeNode<IMenuItem> Tree;
 
         public MenuTree() {}
@@ -14,16 +16,30 @@ namespace ConsoleMenu
         public MenuTree(string title, IMenuItem root)
         {
             TreeTitle = title;
-            FilePath = FolderPath + @"\" + TreeTitle;
             Tree = new TreeNode<IMenuItem>(root);
         }
 
-        public void SaveTree()
+        public static string GenerateFilePath(string folderPath, string title)
         {
-            var writer = new System.Xml.Serialization.XmlSerializer(typeof(Menu));
-            var file = System.IO.File.Create(FilePath);
-            writer.Serialize(file, this);
-            file.Close();
+            string filePath = folderPath + @"\" + title;
+            return filePath;
+        }
+
+        public static MenuTree LoadTree(string folderPath, string title)
+        {
+            IFormatter formatter = new BinaryFormatter();
+            Stream stream = new FileStream(GenerateFilePath(folderPath, title), FileMode.Open, FileAccess.Read, FileShare.Read);
+            MenuTree loadedTree = (MenuTree)formatter.Deserialize(stream);
+            stream.Close();
+            return loadedTree;
+        }
+
+        public void SaveTree(string folderPath)
+        {
+            IFormatter formatter = new BinaryFormatter();
+            Stream stream = new FileStream(GenerateFilePath(folderPath, TreeTitle), FileMode.Create, FileAccess.Write, FileShare.None);
+            formatter.Serialize(stream, this);
+            stream.Close();
         }
 
         public void AddMenuItem(IMenuItem item)
@@ -38,7 +54,7 @@ namespace ConsoleMenu
 
         public void PrintEntireTree()
         {
-            Tree.Traverse(Tree, (x) => Console.WriteLine(x.Title));
+            Tree.Traverse(Tree, x => Console.WriteLine(x.Title));
         }
     }
 }

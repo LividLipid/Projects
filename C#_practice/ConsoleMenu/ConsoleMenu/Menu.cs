@@ -4,6 +4,7 @@ using System.IO;
 
 namespace ConsoleMenu
 {
+    [Serializable]
     public class Menu : IMenuItem
     {
         public string Title { get; set; }

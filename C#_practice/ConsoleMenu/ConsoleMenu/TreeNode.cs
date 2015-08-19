@@ -4,6 +4,7 @@ using System.Xml.Serialization;
 
 namespace ConsoleMenu
 {
+    [Serializable]
     class TreeNode<T>
     {
         private T Data;

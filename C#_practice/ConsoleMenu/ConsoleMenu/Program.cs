@@ -11,6 +11,8 @@ namespace ConsoleMenu
     {
         static void Main(string[] args)
         {
+            string folderPath = @"C:\Projects\C#_practice\ConsoleMenu\SavedMenus";
+
             var mainMenu = new Menu("TestRoot");
             var subMenu1 = new Menu("TestSub1");
             var subMenu2 = new Menu("TestSub2");
@@ -18,40 +20,15 @@ namespace ConsoleMenu
             var subMenu4 = new Menu("TestSub4");
             var subMenu5 = new Menu("TestSub5");
 
-            var testTree = new MenuTree("Test Tree", mainMenu);
+            string testTreeTitle = "Test Tree";
+            var testTree = new MenuTree(testTreeTitle, mainMenu);
             testTree.AddMenuItem(subMenu1);
             testTree.AddMenuItem(subMenu2);
 
             testTree.PrintEntireTree();
-
-
-
-            //var mainMenu = new Menu("TestRoot");
-            //var menuTree = new TreeNode<Menu>(mainMenu);
-
-            //var subMenu1 = new Menu("TestSub1");
-            //var subMenu2 = new Menu("TestSub2");
-            //var subMenu3 = new Menu("TestSub3");
-            //var subMenu4 = new Menu("TestSub4");
-            //var subMenu5 = new Menu("TestSub5");
-            //menuTree.AddChild(subMenu1);
-            //menuTree.AddChild(subMenu2);
-
-            ////Console.WriteLine(menuTree.GetChild(1).Data.Title);
-            ////Console.WriteLine(menuTree.GetChild(2).Data.Title);
-
-            ////menuTree.RemoveChild(1);
-            ////Console.WriteLine(menuTree.GetChild(1).Data.Title);
-            ////Console.WriteLine(menuTree.GetChild(2).Data.Title);
-
-            //var currentMenu = menuTree.GetChild(1);
-            //currentMenu.AddChild(subMenu3);
-
-            //menuTree.Traverse(menuTree, (x) => Console.WriteLine(x.Title));
-
-            ////var gotten = menuTree.GetChild(1);
-            ////Console.WriteLine(gotten.data.Title);
-
+            testTree.SaveTree(folderPath);
+            MenuTree loadedTree = MenuTree.LoadTree(folderPath, testTreeTitle);
+            Console.WriteLine(loadedTree.TreeTitle);
 
 
             //var entries = new List<string>() { "Test1", "Test2", "Test3" };

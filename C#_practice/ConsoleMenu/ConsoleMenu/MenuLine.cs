@@ -1,5 +1,8 @@
-﻿namespace ConsoleMenu
+﻿using System;
+
+namespace ConsoleMenu
 {
+    [Serializable]
     public class MenuLine : IMenuItem
     {
         public string Title { get; set; }
