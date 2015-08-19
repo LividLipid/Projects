@@ -51,5 +51,17 @@ namespace ConsoleMenu
         {
             return Data;
         }
+
+        public List<T> GetChildrenData()
+        {
+            var childDataList = new List<T>(ChildrenCount);
+            var i = 0;
+            foreach (var n in children)
+            {
+                childDataList[i] = (T) n.Data;
+                i++;
+            }
+            return childDataList;
+        } 
     }
 }
