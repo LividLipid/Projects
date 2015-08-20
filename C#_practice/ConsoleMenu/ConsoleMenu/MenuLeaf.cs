@@ -9,5 +9,9 @@ namespace ConsoleMenu
         {
 
         }
+        public void Act()
+        {
+
+        }
     }
 }

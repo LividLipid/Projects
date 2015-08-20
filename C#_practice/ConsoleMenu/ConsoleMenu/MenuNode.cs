@@ -14,9 +14,5 @@ namespace ConsoleMenu
             Title = title;
             Parent = parent ?? this;
         }
-        public void Act()
-        {
-
-        }
     }
 }

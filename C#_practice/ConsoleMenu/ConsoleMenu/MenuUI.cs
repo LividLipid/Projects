@@ -1,89 +1,80 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace ConsoleMenu
 {
     public class MenuUI
     {
-        public void ShowMenu(MenuParent menu)
+        private const int FirstEntry = 1;
+        private readonly int ReturnSelection;
+        private const int ReturnChoice = -1;
+        private List<string> MenuText;
+        private readonly List<string> EntriesWithDefaults;
+        private int Selection;
+        private int Choice;
+        private bool ChoiceIsMade;
+ 
+        public MenuUI(MenuParent menu)
         {
-            var firstEntry = 1;
-            var backSelection = menu.MenuItemCount + firstEntry;
-            var quitSelection = backSelection + 1;
-            
+            var entries = menu.GetChildrenTitles();
+            var entriesCount = entries.Count;
 
-            var menuEntries = menu.GetChildrenTitles();
-            menuEntries.Add("Back");
-            menuEntries.Add("Quit");
+            entries.Add("Back");
+            ReturnSelection = entriesCount + 1;
 
-            var selection = firstEntry;
-            bool choiceIsMade = false;
+            EntriesWithDefaults = entries;
+
+            Selection = FirstEntry;
+            Choice = 0;
+            ChoiceIsMade = false;
+
+            BuildMenuText();
+        }
+
+        private void BuildMenuText()
+        {
+            List<string> menuText = new List<string>();
+            for (int i = 0; i < EntriesWithDefaults.Count; i++)
+            {
+                int entryNr = i + FirstEntry;
+                menuText.Add("[" + entryNr + "] " + EntriesWithDefaults[i]);
+            }
+            MenuText = menuText;
+        }
+
+        public int ShowMenu()
+        {
             do
             {
-                Console.Clear();
-                int i = 0;
-                foreach (var entry in menuEntries)
-                {
-                    i++;
-                    var line = "[" + i + "] " + menuEntries[i - firstEntry];
-                    if (i == selection)
-                    {
-                        WriteSelectedLine(line);
-                    }
-                    else
-                    {
-                        WriteNormalLine(line);
-                    }
-                }
+                PrintMenuText();
 
                 ConsoleKeyInfo cki = Console.ReadKey(true);
-                ConsoleKey keyPress = cki.Key;
-                char keyChar = cki.KeyChar;
+                bool keyIsDigit = char.IsDigit(cki.KeyChar);
+                if (keyIsDigit)
+                    ProcessDigitInput(cki.KeyChar);
+                else
+                    ProcessNonDigitInput(cki.Key);
 
-                bool isDigit = char.IsDigit(keyChar);
-                bool isChoiceMade = false;
+                LoopSelection();
+            } while (!ChoiceIsMade);
 
-                int choice;
-                if (isDigit)
+            return Choice;
+        }
+
+        private void PrintMenuText()
+        {
+            Console.Clear();
+            for (int i = 0; i < MenuText.Count; i++)
+            {
+                if (i+FirstEntry == Selection)
                 {
-                    int numValue = (int)char.GetNumericValue(keyChar);
-                    choiceIsMade = (numValue >= firstEntry) && (numValue <= quitSelection);
-                    if (choiceIsMade)
-                    {
-                        choice = numValue;
-                    }
+                    WriteSelectedLine(MenuText[i]);
                 }
                 else
                 {
-                    switch (keyPress)
-                    {
-                        case ConsoleKey.Enter:
-                            choice = selection;
-                            choiceIsMade = true;
-                            break;
-                        case ConsoleKey.Escape:
-                            choice = backSelection;
-                            choiceIsMade = true;
-                            break;
-                        case ConsoleKey.Backspace:
-                            choice = backSelection;
-                            choiceIsMade = true;
-                            break;
-                        case ConsoleKey.UpArrow:
-                            selection--;
-                            break;
-                        case ConsoleKey.DownArrow:
-                            selection++;
-                            break;
-                    }
+                    WriteNormalLine(MenuText[i]);
                 }
-
-                if (selection < firstEntry)
-                    selection = quitSelection;
-                if (selection > quitSelection)
-                    selection = firstEntry;
-            } while (!choiceIsMade);
-
-
+            }
         }
 
         private void WriteNormalLine(string line)
@@ -97,6 +88,49 @@ namespace ConsoleMenu
             Console.ForegroundColor = ConsoleColor.Black;
             Console.WriteLine(line);
             Console.ResetColor();
+        }
+
+        private void ProcessDigitInput(char keyChar)
+        {
+            int numValue = (int)char.GetNumericValue(keyChar);
+            bool isWithinBounds = (numValue >= FirstEntry) && (numValue <= ReturnSelection);
+            if (isWithinBounds)
+            {
+                Choice = numValue;
+            }
+        }
+
+        private void ProcessNonDigitInput(ConsoleKey keyPress)
+        {
+            switch (keyPress)
+            {
+                case ConsoleKey.Enter:
+                    Choice = Selection;
+                    ChoiceIsMade = true;
+                    break;
+                case ConsoleKey.Escape:
+                    Choice = ReturnChoice;
+                    ChoiceIsMade = true;
+                    break;
+                case ConsoleKey.Backspace:
+                    Choice = ReturnChoice;
+                    ChoiceIsMade = true;
+                    break;
+                case ConsoleKey.UpArrow:
+                    Selection--;
+                    break;
+                case ConsoleKey.DownArrow:
+                    Selection++;
+                    break;
+                }
+        }
+
+        private void LoopSelection()
+        {
+            if (Selection < FirstEntry)
+                Selection = ReturnSelection;
+            if (Selection > ReturnSelection)
+                Selection = FirstEntry;
         }
     }
 }
