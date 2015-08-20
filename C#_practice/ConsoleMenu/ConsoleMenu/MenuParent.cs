@@ -10,10 +10,12 @@ namespace ConsoleMenu
     public class MenuParent : MenuNode
     {
         private LinkedList<MenuNode> Children;
+        public bool IsRoot;
 
         public MenuParent(string title, MenuNode parent) : base(title, parent)
         {
             Children = new LinkedList<MenuNode>();
+            IsRoot = Parent == this;
         }
 
         public void AddChild(MenuNode child)
@@ -84,6 +86,33 @@ namespace ConsoleMenu
             stream.Close();
         }
 
+        public override void Act()
+        {
+            ShowMenu();
+        }
 
+        public void ShowMenu()
+        {
+            var menuScreen = new MenuUI(this);
+            int choice = menuScreen.ShowUI();
+
+            if (choice == MenuUI.ReturnCode)
+                ReturnOrQuit();
+            else
+                GoToSubMenu(choice);
+        }
+
+        private void ReturnOrQuit()
+        {
+            if (IsRoot)
+                Environment.Exit(0);
+            else
+                Parent.Act();
+        }
+
+        private void GoToSubMenu(int choice)
+        {
+            GetMenuChild(choice).Act();
+        }
     }
 }

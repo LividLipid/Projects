@@ -14,5 +14,10 @@ namespace ConsoleMenu
             Title = title;
             Parent = parent ?? this;
         }
+
+        public virtual void Act()
+        {
+
+        }
     }
 }

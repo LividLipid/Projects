@@ -9,7 +9,7 @@ namespace ConsoleMenu
         {
 
         }
-        public void Act()
+        public override void Act()
         {
 
         }

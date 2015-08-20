@@ -5,21 +5,22 @@ namespace ConsoleMenu
 {
     public class MenuUI
     {
+        public static int ReturnCode = -1;
         private const int FirstEntry = 1;
         private readonly int ReturnSelection;
-        private const int ReturnChoice = -1;
         private List<string> MenuText;
         private readonly List<string> EntriesWithDefaults;
         private int Selection;
         private int Choice;
         private bool ChoiceIsMade;
+        private string MenuTitle;
  
         public MenuUI(MenuParent menu)
         {
             var entries = menu.GetChildrenTitles();
             var entriesCount = entries.Count;
 
-            entries.Add("Back");
+            entries.Add(menu.IsRoot ? "Quit" : "Return");
             ReturnSelection = entriesCount + 1;
 
             EntriesWithDefaults = entries;
@@ -28,6 +29,7 @@ namespace ConsoleMenu
             Choice = 0;
             ChoiceIsMade = false;
 
+            MenuTitle = menu.Title;
             BuildMenuText();
         }
 
@@ -42,7 +44,7 @@ namespace ConsoleMenu
             MenuText = menuText;
         }
 
-        public int ShowMenu()
+        public int ShowUI()
         {
             do
             {
@@ -58,12 +60,17 @@ namespace ConsoleMenu
                 LoopSelection();
             } while (!ChoiceIsMade);
 
+            if (Choice == ReturnSelection)
+                Choice = ReturnCode;
             return Choice;
         }
 
         private void PrintMenuText()
         {
             Console.Clear();
+            Console.WriteLine(MenuTitle);
+            Console.WriteLine();
+
             for (int i = 0; i < MenuText.Count; i++)
             {
                 if (i+FirstEntry == Selection)
@@ -109,11 +116,11 @@ namespace ConsoleMenu
                     ChoiceIsMade = true;
                     break;
                 case ConsoleKey.Escape:
-                    Choice = ReturnChoice;
+                    Choice = ReturnCode;
                     ChoiceIsMade = true;
                     break;
                 case ConsoleKey.Backspace:
-                    Choice = ReturnChoice;
+                    Choice = ReturnCode;
                     ChoiceIsMade = true;
                     break;
                 case ConsoleKey.UpArrow:
