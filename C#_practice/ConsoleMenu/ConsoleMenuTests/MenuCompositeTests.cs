@@ -71,7 +71,7 @@ namespace ConsoleMenuTests
         {
             _mainMenu.RemoveChild(0);
         }
-
+        
         [Test]
         public void RemoveSubMenu_FromNonEmptyMenu_SubMenuIsGone()
         {
@@ -99,6 +99,20 @@ namespace ConsoleMenuTests
             var subMenuTitles = new List<string> { _subMenu1.Title, _subMenu2Title};
             var readTitles = _mainMenu.GetChildrenTitles();
             Assert.True(subMenuTitles.SequenceEqual(readTitles));
+        }
+
+        [Test]
+        public void ChildHasParent()
+        {
+            _mainMenu.AddChild(_subMenu1);
+            var gottenChild = _mainMenu.GetChild(0);
+            Assert.True(_mainMenu.Equals(gottenChild.Parent));
+        }
+
+        [Test]
+        public void RootIsItsOwnParent()
+        {
+            Assert.True(_mainMenu.Equals(_mainMenu.Parent));
         }
     }
 }

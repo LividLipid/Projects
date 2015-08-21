@@ -10,10 +10,13 @@ namespace ConsoleMenuTDD
 
         public MenuComposite(string title) : base(title)
         {
+            // A new Composite is its own parent until it becomes a child.
+            Parent = this; 
         }
 
         public override void AddChild(MenuComponent child)
         {
+            child.Parent = this;
             _children.Add(child);
             ChildrenCount++;
         }
@@ -25,12 +28,11 @@ namespace ConsoleMenuTDD
 
         public override void RemoveChild(int i)
         {
-            bool IsInRange = (i >= 0) && (i <= _children.Count-1);
-            if (IsInRange)
-            {
-                _children.RemoveAt(i);
-                ChildrenCount--;
-            }
+            var hasNoChildren = ChildrenCount < 1;
+            var isOutOfRange = (i < 0) || (i > ChildrenCount-1);
+            if (isOutOfRange || hasNoChildren) return;
+            _children.RemoveAt(i);
+            ChildrenCount--;
         }
 
         public List<string> GetChildrenTitles()
