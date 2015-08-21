@@ -12,7 +12,7 @@
 
         public override MenuItem GetChild(int i)
         {
-            return this; // A leaf is its own child.
+            return this; // A leaf is treated as its own child.
         }
 
         public override void RemoveChild(int i)
