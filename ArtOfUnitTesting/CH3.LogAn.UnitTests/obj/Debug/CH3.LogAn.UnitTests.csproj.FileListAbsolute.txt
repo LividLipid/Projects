@@ -1,7 +1,6 @@
 C:\Projects\ArtOfUnitTesting\CH3.LogAn.UnitTests\bin\Debug\LogAn.UnitTests.dll
 C:\Projects\ArtOfUnitTesting\CH3.LogAn.UnitTests\bin\Debug\LogAn.UnitTests.pdb
 C:\Projects\ArtOfUnitTesting\CH3.LogAn.UnitTests\bin\Debug\LogAnalyzer.dll
-C:\Projects\ArtOfUnitTesting\CH3.LogAn.UnitTests\bin\Debug\nunit.framework.dll
 C:\Projects\ArtOfUnitTesting\CH3.LogAn.UnitTests\bin\Debug\LogAnalyzer.pdb
 C:\Projects\ArtOfUnitTesting\CH3.LogAn.UnitTests\bin\Debug\nunit.framework.xml
 C:\Projects\ArtOfUnitTesting\CH3.LogAn.UnitTests\obj\Debug\CH3.LogAn.UnitTests.csprojResolveAssemblyReference.cache
