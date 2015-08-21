@@ -3,25 +3,25 @@ using System.Linq;
 
 namespace ConsoleMenuTDD
 {
-    public class MenuComposite : MenuComponent
+    public class Menu : MenuItem
     {
-        private readonly List<MenuComponent> _children = new List<MenuComponent>();
+        private readonly List<MenuItem> _children = new List<MenuItem>();
         public int ChildrenCount = 0;
 
-        public MenuComposite(string title) : base(title)
+        public Menu(string title) : base(title)
         {
-            // A new Composite is its own parent until it becomes a child.
+            // A new menu is its own parent until it becomes a submenu.
             Parent = this; 
         }
 
-        public override void AddChild(MenuComponent child)
+        public override void AddChild(MenuItem child)
         {
             child.Parent = this;
             _children.Add(child);
             ChildrenCount++;
         }
 
-        public override MenuComponent GetChild(int i)
+        public override MenuItem GetChild(int i)
         {
             return _children[i];
         }
@@ -39,6 +39,11 @@ namespace ConsoleMenuTDD
         {
             var titles = _children.Select(child => child.Title).ToList();
             return titles;
+        }
+
+        public override bool IsRoot()
+        {
+            return this.Equals(Parent);
         }
     }
 }
