@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="MenuTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TraversalTestTree.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

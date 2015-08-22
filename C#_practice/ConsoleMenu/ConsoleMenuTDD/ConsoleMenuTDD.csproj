@@ -52,6 +52,7 @@
     <Compile Include="Menu.cs" />
     <Compile Include="Iterator.cs" />
     <Compile Include="MenuItemFactory.cs" />
+    <Compile Include="Sentinel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

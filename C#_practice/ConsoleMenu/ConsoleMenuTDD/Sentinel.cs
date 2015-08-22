@@ -1,22 +1,18 @@
-﻿using System;
-using NUnit.Framework;
-
-namespace ConsoleMenuTDD
+﻿namespace ConsoleMenuTDD
 {
-    public class Leaf : MenuItem
+    public class Sentinel : MenuItem
     {
-        public Leaf(string title) : base(title)
+        public Sentinel(string title) : base(title)
         {
         }
 
         public override void AddChild(MenuItem child)
         {
-            throw new Exception("Cannot assign child to leaf.");
         }
 
         public override MenuItem GetChild(int i)
         {
-            return new Sentinel("Sentinel");
+            return this;
         }
 
         public override void RemoveChild(int i)
@@ -26,6 +22,11 @@ namespace ConsoleMenuTDD
         public override bool IsRoot()
         {
             return false;
+        }
+
+        public override bool IsSentinel()
+        {
+            return true;
         }
     }
 }

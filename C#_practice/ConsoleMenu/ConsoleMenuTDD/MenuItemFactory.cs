@@ -12,6 +12,8 @@ namespace ConsoleMenuTDD
                     return new Menu(title);
                 case "Leaf":
                     return new Leaf(title);
+                case "Sentinel":
+                    return new Sentinel(title);
                 default:
                     throw new ArgumentException("Unknown item type.");
             }

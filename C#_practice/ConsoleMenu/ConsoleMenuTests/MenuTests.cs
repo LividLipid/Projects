@@ -10,6 +10,7 @@ namespace ConsoleMenuTests
     public class MenuTests
     {
         const int FirstLevel = 1;
+        public TraversalTestTree traversalTest;
 
         [SetUp]
         public void Init()
@@ -22,37 +23,45 @@ namespace ConsoleMenuTests
         }
 
 
-        private MenuItem ArrangeItemAtLevel(int level, Type itemType)
+        private MenuItem ArrangeItemAtLevel(int targetLevel, Type itemType)
         {
-            // Level == 1: return main menu.
-            // Level > 1: return submenu item of some type.
+            // Arrange a nested item and return it.
+            // All higher level items are of type Menu.
 
-            if (level >= 1)
-            {
-                var type = typeof(Menu);
-                var title = CreateTestItemTitle(FirstLevel, type);
-                var currentItem = MenuItemFactory.Create(type, title);
-
-                var i = FirstLevel + 1;
-                while (i <= level)
-                {
-                    type = itemType;
-                    title = CreateTestItemTitle(i, type);
-                    var nextItem = MenuItemFactory.Create(type, title);
-                    currentItem.AddChild(nextItem);
-                    currentItem = nextItem;
-                    i++;
-                }
-                return currentItem;
-            }
+            if (targetLevel < FirstLevel)
+                throw new ArgumentException("Level must be" + FirstLevel + " or greater.");
             else
-                throw new ArgumentException("Level must be 1 or greater.");
+                return GenerateArrangedItemAtLevel(targetLevel, itemType);
+        }
+
+        private MenuItem GenerateArrangedItemAtLevel(int targetLevel, Type itemType)
+        {
+            // Most deeply nested item of selected type.
+            var arrangedItem = CreateTestItem(targetLevel, itemType);
+
+            // Go backwards and nest the item within submenus.
+            var currentLevel = targetLevel;
+            var currentItem = arrangedItem;
+            while (currentLevel > FirstLevel)
+            {
+                var higherItem = CreateTestItem(currentLevel, typeof(Menu));
+                higherItem.AddChild(currentItem);
+                currentItem = higherItem;
+                currentLevel--;
+            }
+            return arrangedItem;
         }
 
         private MenuItem ArrangeItemAtLevelAndReturnRoot(int level, Type itemType)
         {
             var item = ArrangeItemAtLevel(level, itemType);
             return item.GetRoot();
+        }
+
+        private MenuItem CreateTestItem(int level, Type type)
+        {
+            var title = CreateTestItemTitle(level, type);
+            return MenuItemFactory.Create(type, title);
         }
 
         private string CreateTestItemTitle(int level, Type type)
@@ -126,7 +135,7 @@ namespace ConsoleMenuTests
         {
             var mainMenu = (Menu)ArrangeItemAtLevel(FirstLevel, typeof(Menu));
             var title1 = "Submenu1";
-            var title2 = "Submenu1";
+            var title2 = "Submenu2";
             mainMenu.AddChild(MenuItemFactory.Create(typeof(Menu), title1));
             mainMenu.AddChild(MenuItemFactory.Create(typeof(Menu), title2));
             var subMenuTitles = new List<string> {title1, title2};
@@ -164,25 +173,63 @@ namespace ConsoleMenuTests
         }
 
         [Test]
-        public void FindRoot_StartFromRoot_ReturnsSelf()
+        public void FindRoot_FromRoot_ReturnsSelf()
         {
             var mainMenu = (Menu)ArrangeItemAtLevelAndReturnRoot(3, typeof(Menu));
             Menu root = mainMenu.GetRoot();
             Assert.True(root.Equals(mainMenu));
         }
 
-        public void FindRoot_StartFrom3rdLevelMenu_ReturnsRoot()
+        [Test]
+        public void FindRoot_FromNestedMenu_ReturnsRoot()
         {
-            var grandchild = (Menu) ArrangeItemAtLevel(3, typeof (Menu));
+            var grandchild = (Menu) ArrangeItemAtLevel(FirstLevel + 2, typeof (Menu));
             Menu root = grandchild.GetRoot();
             Assert.True(root.IsRoot());
         }
 
-        public void FindRoot_FromLevel4Leaf_ReturnsRoot()
+        [Test]
+        public void FindRoot_FromNestedLeaf_ReturnsRoot()
         {
-            var leaf = (Leaf) ArrangeItemAtLevel(4, typeof(Leaf));
+            var leaf = (Leaf) ArrangeItemAtLevel(FirstLevel + 3, typeof(Leaf));
             Menu root = leaf.GetRoot();
             Assert.True(root.IsRoot());
+        }
+
+        [Test]
+        [ExpectedException]
+        public void AddChild_ToLeaf_ThrowsException()
+        {
+            var leaf1 = (Leaf)ArrangeItemAtLevel(FirstLevel, typeof(Leaf));
+            var leaf2 = (Leaf)ArrangeItemAtLevel(FirstLevel, typeof(Leaf));
+            leaf1.AddChild(leaf2);
+        }
+
+        [Test]
+        public void LevelOrderTraversal_FromRoot_CorrectWalk()
+        {
+            var testTree = new TraversalTestTree();
+            var i = new IteratorLevelOrderWalk(testTree.Root);
+            
+            var walkList = new List<string>();
+            while (!i.IsDone())
+            {
+                walkList.Add(i.CurrentItem().Title);
+                i.Next();
+            }
+            var isCorrectWalk = walkList.SequenceEqual(testTree.CorrectLevelOrder);
+            Assert.True(isCorrectWalk);
+        }
+
+        [Test]
+        public void SearchTree_TargetExists_ReturnsTarget()
+        {
+            var testTree = new TraversalTestTree();
+            var i = new IteratorLevelOrderWalk(testTree.Root);
+            var targetTitle = testTree.CorrectLevelOrder[testTree.CorrectLevelOrder.Count-1];
+            var target = i.SearchForTitle(targetTitle);
+
+            Assert.False(target.);
         }
 
     }

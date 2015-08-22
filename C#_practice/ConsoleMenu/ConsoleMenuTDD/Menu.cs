@@ -6,7 +6,6 @@ namespace ConsoleMenuTDD
     public class Menu : MenuItem
     {
         private readonly List<MenuItem> _children = new List<MenuItem>();
-        public int ChildrenCount = 0;
 
         public Menu(string title) : base(title)
         {
