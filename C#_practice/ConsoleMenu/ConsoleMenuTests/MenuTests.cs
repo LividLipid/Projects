@@ -27,7 +27,6 @@ namespace ConsoleMenuTests
         {
             // Arrange a nested item and return it.
             // All higher level items are of type Menu.
-
             if (targetLevel < FirstLevel)
                 throw new ArgumentException("Level must be" + FirstLevel + " or greater.");
             else
@@ -40,9 +39,9 @@ namespace ConsoleMenuTests
             var arrangedItem = CreateTestItem(targetLevel, itemType);
 
             // Go backwards and nest the item within submenus.
-            var currentLevel = targetLevel;
+            var currentLevel = targetLevel - 1;
             var currentItem = arrangedItem;
-            while (currentLevel > FirstLevel)
+            while (currentLevel >= FirstLevel)
             {
                 var higherItem = CreateTestItem(currentLevel, typeof(Menu));
                 higherItem.AddChild(currentItem);
@@ -273,6 +272,71 @@ namespace ConsoleMenuTests
             var originNode = testTree.ListOfNodes.Last();
 
             Assert.False(originNode.HasInTree(targetNode));
+        }
+
+        [Test]
+        public void SaveTree_FromRoot_ReportsSuccess()
+        {
+            var testRoot = new TestTree().Root;
+            testRoot.SetSaver(BinarySerializer.Instance);
+            testRoot.SetFilePath("Test");
+
+            Assert.True(testRoot.SaveTree());
+        }
+
+        [Test]
+        public void SaveTree_FromNestedItem_ReportsSuccess()
+        {
+            var testLeaf = new TestTree().GetLeaf();
+            testLeaf.SetSaver(BinarySerializer.Instance);
+            testLeaf.SetFilePath("Test");
+
+            Assert.True(testLeaf.SaveTree());
+        }
+
+        [Test]
+        [ExpectedException]
+        public void SaveTree_HasNoFilePath_ThrowsException()
+        {
+            var testRoot = new TestTree().Root;
+            testRoot.SaveTree();
+        }
+
+        [Test]
+        public void SaveTree_HasFilePath_ReportsSuccess()
+        {
+            var testRoot = new TestTree().Root;
+            testRoot.SetSaver(BinarySerializer.Instance);
+            testRoot.SetFilePath("Test");
+
+            Assert.True(testRoot.SaveTree());
+        }
+
+        [Test]
+        public void CreateBinarySerializer_DoesNotExist_IsCreated()
+        {
+            var treeSaver = BinarySerializer.Instance;
+
+            Assert.True(treeSaver is BinarySerializer);
+        }
+
+        [Test]
+        public void CreateBinarySerializer_AlreadyExists_AreTheSame()
+        {
+            var treeSaver1 = BinarySerializer.Instance;
+            var treeSaver2 = BinarySerializer.Instance;
+
+            Assert.True(treeSaver1 == treeSaver2);
+        }
+
+        [Test]
+        [ExpectedException]
+        public void SaveTree_HasNoTreeSaver_ThrowsException()
+        {
+            var testRoot = new TestTree().Root;
+            testRoot.SetFilePath("Test");
+
+            Assert.True(testRoot.SaveTree());
         }
     }
 }

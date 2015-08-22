@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using ConsoleMenuTDD;
 
 namespace ConsoleMenuTDD
@@ -10,6 +11,7 @@ namespace ConsoleMenuTDD
         // several different slgorithms.
         public Menu Root;
         public List<MenuItem> ListOfNodes = new List<MenuItem>();
+        public List<MenuItem> ListOfLeaves = new List<MenuItem>();
         public List<string> CorrectPreOrder;
         public List<string> CorrectInOrder;
         public List<string> CorrectPostOrder;
@@ -43,6 +45,10 @@ namespace ConsoleMenuTDD
             ListOfNodes.Add(h);
             ListOfNodes.Add(i);
 
+            ListOfLeaves.Add(c);
+            ListOfLeaves.Add(e);
+            ListOfLeaves.Add(h);
+
             d.AddChild(c);
             d.AddChild(e);
 
@@ -60,6 +66,11 @@ namespace ConsoleMenuTDD
             CorrectInOrder = new List<string> {"A", "B", "C", "D", "E", "F", "G", "H", "I"};
             CorrectPostOrder = new List<string> {"A", "C", "E", "D", "B", "H", "I", "G", "F"};
             CorrectLevelOrder = new List<string> {"F", "B", "G", "A", "D", "I", "C", "E", "H"};
+        }
+
+        public Leaf GetLeaf()
+        {
+            return (Leaf) ListOfLeaves.First();
         }
     }
 }
