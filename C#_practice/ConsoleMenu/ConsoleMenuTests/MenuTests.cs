@@ -10,7 +10,7 @@ namespace ConsoleMenuTests
     public class MenuTests
     {
         const int FirstLevel = 1;
-        public TraversalTestTree traversalTest;
+        public TestTree traversalTest;
 
         [SetUp]
         public void Init()
@@ -202,13 +202,14 @@ namespace ConsoleMenuTests
         {
             var leaf1 = (Leaf)ArrangeItemAtLevel(FirstLevel, typeof(Leaf));
             var leaf2 = (Leaf)ArrangeItemAtLevel(FirstLevel, typeof(Leaf));
+
             leaf1.AddChild(leaf2);
         }
 
         [Test]
         public void LevelOrderTraversal_FromRoot_CorrectWalk()
         {
-            var testTree = new TraversalTestTree();
+            var testTree = new TestTree();
             var i = new IteratorLevelOrderWalk(testTree.Root);
             
             var walkList = new List<string>();
@@ -224,13 +225,54 @@ namespace ConsoleMenuTests
         [Test]
         public void SearchTree_TargetExists_ReturnsTarget()
         {
-            var testTree = new TraversalTestTree();
+            var testTree = new TestTree();
             var i = new IteratorLevelOrderWalk(testTree.Root);
             var targetTitle = testTree.CorrectLevelOrder[testTree.CorrectLevelOrder.Count-1];
             var target = i.SearchForTitle(targetTitle);
 
-            Assert.False(target.);
+            Assert.True(target.Title.Equals(targetTitle));
         }
 
+        [Test]
+        public void SearchTree_TargetDoesNotExist_ReturnsSentinel()
+        {
+            var testTree = new TestTree();
+            var i = new IteratorLevelOrderWalk(testTree.Root);
+            var targetTitle = "Nonexisting title";
+            var target = i.SearchForTitle(targetTitle);
+
+            Assert.True(target.GetType() == typeof(Sentinel));
+        }
+
+        [Test]
+        [ExpectedException]
+        public void AddChild_IsAlreadyInTree_ThrowsException()
+        {
+            var mainMenu = CreateTestItem(FirstLevel, typeof (Menu));
+            var subMenu = CreateTestItem(FirstLevel + 1, typeof(Menu));
+
+            mainMenu.AddChild(subMenu);
+            mainMenu.AddChild(subMenu);
+        }
+
+        [Test]
+        public void CheckIfItemIsInTree_IsInTree_ReturnsTrue()
+        {
+            var testTree = new TestTree();
+            var targetNode = testTree.ListOfNodes.First();
+            var originNode = testTree.ListOfNodes.Last();
+
+            Assert.True(originNode.HasInTree(targetNode));
+        }
+
+        [Test]
+        public void CheckIfItemIsInTree_IsNotInTree_ReturnsFalse()
+        {
+            var testTree = new TestTree();
+            var targetNode = CreateTestItem(1, typeof (Menu));
+            var originNode = testTree.ListOfNodes.Last();
+
+            Assert.False(originNode.HasInTree(targetNode));
+        }
     }
 }

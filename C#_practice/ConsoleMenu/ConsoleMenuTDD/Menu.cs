@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace ConsoleMenuTDD
 {
@@ -15,9 +17,14 @@ namespace ConsoleMenuTDD
 
         public override void AddChild(MenuItem child)
         {
-            child.Parent = this;
-            _children.Add(child);
-            ChildrenCount++;
+            if (this.HasInTree(child))
+                throw new ArgumentException("Child already exists in Tree.");
+            else
+            {
+                child.Parent = this;
+                _children.Add(child);
+                ChildrenCount++;
+            }
         }
 
         public override MenuItem GetChild(int i)
