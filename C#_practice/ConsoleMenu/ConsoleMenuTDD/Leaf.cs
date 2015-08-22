@@ -3,6 +3,7 @@ using NUnit.Framework;
 
 namespace ConsoleMenuTDD
 {
+    [Serializable]
     public class Leaf : MenuItem
     {
         public Leaf(string title) : base(title)

@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 
 namespace ConsoleMenuTDD
 {
+    [Serializable]
     public class Menu : MenuItem
     {
         private readonly List<MenuItem> _children = new List<MenuItem>();

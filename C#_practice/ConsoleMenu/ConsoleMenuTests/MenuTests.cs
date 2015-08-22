@@ -10,7 +10,6 @@ namespace ConsoleMenuTests
     public class MenuTests
     {
         const int FirstLevel = 1;
-        public TestTree traversalTest;
 
         [SetUp]
         public void Init()
@@ -278,7 +277,7 @@ namespace ConsoleMenuTests
         public void SaveTree_FromRoot_ReportsSuccess()
         {
             var testRoot = new TestTree().Root;
-            testRoot.SetSaver(BinarySerializer.Instance);
+            testRoot.SetSaver(StubSaver.Instance);
             testRoot.SetFilePath("Test");
 
             Assert.True(testRoot.SaveTree());
@@ -288,7 +287,7 @@ namespace ConsoleMenuTests
         public void SaveTree_FromNestedItem_ReportsSuccess()
         {
             var testLeaf = new TestTree().GetLeaf();
-            testLeaf.SetSaver(BinarySerializer.Instance);
+            testLeaf.SetSaver(StubSaver.Instance);
             testLeaf.SetFilePath("Test");
 
             Assert.True(testLeaf.SaveTree());
@@ -306,27 +305,10 @@ namespace ConsoleMenuTests
         public void SaveTree_HasFilePath_ReportsSuccess()
         {
             var testRoot = new TestTree().Root;
-            testRoot.SetSaver(BinarySerializer.Instance);
+            testRoot.SetSaver(StubSaver.Instance);
             testRoot.SetFilePath("Test");
 
             Assert.True(testRoot.SaveTree());
-        }
-
-        [Test]
-        public void CreateBinarySerializer_DoesNotExist_IsCreated()
-        {
-            var treeSaver = BinarySerializer.Instance;
-
-            Assert.True(treeSaver is BinarySerializer);
-        }
-
-        [Test]
-        public void CreateBinarySerializer_AlreadyExists_AreTheSame()
-        {
-            var treeSaver1 = BinarySerializer.Instance;
-            var treeSaver2 = BinarySerializer.Instance;
-
-            Assert.True(treeSaver1 == treeSaver2);
         }
 
         [Test]

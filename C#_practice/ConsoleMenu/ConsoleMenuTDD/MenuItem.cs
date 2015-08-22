@@ -2,6 +2,7 @@
 
 namespace ConsoleMenuTDD
 {
+    [Serializable]
     public abstract class MenuItem
     {
 

@@ -1,5 +1,8 @@
-﻿namespace ConsoleMenuTDD
+﻿using System;
+
+namespace ConsoleMenuTDD
 {
+    [Serializable]
     public class Sentinel : MenuItem
     {
         public Sentinel(string title) : base(title)
