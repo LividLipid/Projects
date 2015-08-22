@@ -10,14 +10,16 @@ Design Patterns:
 - Iterator.
 - Special Case.
 - Factory Method.
+- Singleton.
 
 Algorithms:
-- Tree traversal.
+- Tree traversal algorithms.
 
 Arcitechture:
 - Decoupling of application architecture from UI+persistence.
 - Composition vs inheritance.
 - Dependency inversion.
+- Delegation.
 
 Clean Code:
 - Single responsibility classes.
