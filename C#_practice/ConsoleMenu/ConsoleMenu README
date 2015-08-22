@@ -3,7 +3,9 @@ Functionality includes reading RSS feeds and a to-do list.
 The Purpose was to learn several different techniques, including:
 
 Unit testing and TDD:
-- The entire project was written tests first.
+- TDD: everything written test first.
+- Testable design.
+- Stubs.
 
 Design Patterns:
 - Composite.
@@ -15,7 +17,7 @@ Design Patterns:
 Algorithms:
 - Tree traversal algorithms.
 
-Arcitechture:
+Architecture:
 - Decoupling of application architecture from UI+persistence.
 - Composition vs inheritance.
 - Dependency inversion.
