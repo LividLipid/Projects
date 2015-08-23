@@ -136,8 +136,8 @@ namespace ConsoleMenuTests
             var mainMenu = (Menu)ArrangeItemAtLevel(FirstLevel, typeof(Menu));
             var title1 = "Submenu1";
             var title2 = "Submenu2";
-            mainMenu.AddChild(MenuItemFactory.Create(typeof(Menu), title1));
-            mainMenu.AddChild(MenuItemFactory.Create(typeof(Menu), title2));
+            mainMenu.AddChild(new Menu(title1));
+            mainMenu.AddChild(new Menu(title2));
             var subMenuTitles = new List<string> {title1, title2};
             var readTitles = mainMenu.GetChildrenTitles();
             Assert.True(subMenuTitles.SequenceEqual(readTitles));

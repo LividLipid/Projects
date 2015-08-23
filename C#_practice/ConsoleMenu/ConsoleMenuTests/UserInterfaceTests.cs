@@ -9,7 +9,7 @@ namespace ConsoleMenuTests
         [Test]
         public void IssueReturnCommand_ToNonRoot_ShowsParentMenuItem()
         {
-            
+            var mainMenu = MenuItemFactory()
         }
 
         [Test]
