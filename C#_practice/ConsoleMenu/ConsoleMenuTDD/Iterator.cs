@@ -31,7 +31,7 @@ namespace ConsoleMenuTDD
                     return CurrentItem();
                 Next();
             }
-            return MenuItemFactory.Create(typeof (Sentinel), "Sentinel");
+            return MenuItemFactory.Create(typeof (MenuItemSentinel), "MenuItemSentinel");
         }
     }
 

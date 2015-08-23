@@ -17,7 +17,7 @@ namespace ConsoleMenuTDD
 
         public override MenuItem GetChild(int i)
         {
-            return new Sentinel("Sentinel");
+            return new MenuItemSentinel("MenuItemSentinel");
         }
 
         public override void RemoveChild(int i)

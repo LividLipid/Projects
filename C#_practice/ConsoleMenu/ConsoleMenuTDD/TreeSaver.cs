@@ -13,6 +13,7 @@ namespace ConsoleMenuTDD
         public abstract MenuItem LoadTree(string filePath);
     }
 
+    [Serializable]
     public class BinarySerializer : TreeSaver
     {
         // Singleton implementation.
@@ -48,6 +49,7 @@ namespace ConsoleMenuTDD
         }
     }
 
+    [Serializable]
     public class StubSaver : TreeSaver
     {
         // Singleton implementation.
@@ -63,7 +65,7 @@ namespace ConsoleMenuTDD
 
         public override MenuItem LoadTree(string filePath)
         {
-            return MenuItemFactory.Create(typeof(Sentinel),"Sentinel");
+            return MenuItemFactory.Create(typeof(MenuItemSentinel),"MenuItemSentinel");
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using NUnit.Framework;
 using ConsoleMenuTDD;
 
@@ -239,7 +241,7 @@ namespace ConsoleMenuTests
             var targetTitle = "Nonexisting title";
             var target = i.SearchForTitle(targetTitle);
 
-            Assert.True(target.GetType() == typeof(Sentinel));
+            Assert.True(target.GetType() == typeof(MenuItemSentinel));
         }
 
         [Test]
@@ -319,6 +321,32 @@ namespace ConsoleMenuTests
             testRoot.SetFilePath("Test");
 
             Assert.True(testRoot.SaveTree());
+        }
+
+        [Test]
+        public void LoadTree_CorrectRequest_ReturnsItem()
+        {
+            var loadedTree = StubSaver.Instance.LoadTree("Test");
+            Assert.True(loadedTree != null);
+        }
+
+        [Test]
+        [ExpectedException]
+        public void ShowUI_NoUISet_ThrowsException()
+        {
+            var testRoot = new TestTree().Root;
+            testRoot.ShowMenuItem();
+        }
+
+        [Test]
+        public void ShowUI_UIHasBeenSet_ReturnsInt()
+        {
+            var testRoot = new TestTree().Root;
+            var stubUI = new UserInterfaceStub();
+            testRoot.SetUserInterface(stubUI);
+            testRoot.ShowMenuItem();
+            
+            Assert.True(stubUI.HasBeenShown);
         }
     }
 }

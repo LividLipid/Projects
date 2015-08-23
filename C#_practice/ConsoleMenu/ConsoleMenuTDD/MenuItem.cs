@@ -5,15 +5,14 @@ namespace ConsoleMenuTDD
     [Serializable]
     public abstract class MenuItem
     {
-
-
         // The title uniquely identifies a menuitem,
         // and the same item cannot exist twice in the same tree.
         public string Title { get; } 
-        public Menu Parent { get; set; }
+        public MenuItem Parent { get; set; }
         public int ChildrenCount { get; set; }
         private string _filePath;
         private TreeSaver _saver;
+        private UserInterface _ui;
 
         protected MenuItem(string title)
         {
@@ -86,6 +85,30 @@ namespace ConsoleMenuTDD
             else
                 GetRoot().SetSaver(saver);
         }
+
+        public void SetUserInterface(UserInterface ui)
+        {
+            if (IsRoot())
+                _ui = ui;
+            else
+                GetRoot().SetUserInterface(ui);
+        }
+
+        public virtual void ShowMenuItem()
+        {
+            if (IsRoot())
+                ExecuteUserInterfaceOperation(this);
+            else
+                GetRoot().ExecuteUserInterfaceOperation(this);
+        }
+
+        private void ExecuteUserInterfaceOperation(MenuItem item)
+        {
+            if (_ui == null)
+                throw new Exception("User interface has not been set.");
+            _ui.ShowMenuItem(item);
+        }
+
 
     }
 }

@@ -3,9 +3,9 @@
 namespace ConsoleMenuTDD
 {
     [Serializable]
-    public class Sentinel : MenuItem
+    public class MenuItemSentinel : MenuItem
     {
-        public Sentinel(string title) : base(title)
+        public MenuItemSentinel(string title) : base(title)
         {
         }
 
