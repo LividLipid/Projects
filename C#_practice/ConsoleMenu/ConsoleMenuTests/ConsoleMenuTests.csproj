@@ -50,9 +50,11 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="StubMenu.cs" />
+    <Compile Include="StubSaver.cs" />
+    <Compile Include="StubHandler.cs" />
     <Compile Include="TestsMenu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestsHandler.cs" />
     <Compile Include="TestsTreeSaver.cs" />
     <Compile Include="TestsUserInterface.cs" />
     <Compile Include="StubUserInterface.cs" />

@@ -1,6 +1,7 @@
 ﻿using System;
+using ConsoleMenuTDD;
 
-namespace ConsoleMenuTDD
+namespace ConsoleMenuTests
 {
     [Serializable]
     public class StubUserInterface : UserInterface

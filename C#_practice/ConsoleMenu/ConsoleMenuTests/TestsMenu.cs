@@ -152,10 +152,10 @@ namespace ConsoleMenuTests
         }
 
         [Test]
-        public void RootIsItsOwnParent()
+        public void GetParent_OfRoot_IsSentinel()
         {
             var mainMenu = (Menu)ArrangeItemAtLevel(FirstLevel, typeof(Menu));
-            Assert.True(mainMenu.Equals(mainMenu.Parent));
+            Assert.True(mainMenu.Parent.IsSentinel());
         }
 
         [Test]
@@ -176,7 +176,7 @@ namespace ConsoleMenuTests
         public void FindRoot_FromRoot_ReturnsSelf()
         {
             var mainMenu = (Menu)ArrangeItemAtLevelAndReturnRoot(3, typeof(Menu));
-            Menu root = mainMenu.GetRoot();
+            var root = mainMenu.GetRoot();
             Assert.True(root.Equals(mainMenu));
         }
 
@@ -184,7 +184,7 @@ namespace ConsoleMenuTests
         public void FindRoot_FromNestedMenu_ReturnsRoot()
         {
             var grandchild = (Menu) ArrangeItemAtLevel(FirstLevel + 2, typeof (Menu));
-            Menu root = grandchild.GetRoot();
+            var root = grandchild.GetRoot();
             Assert.True(root.IsRoot());
         }
 
@@ -192,7 +192,7 @@ namespace ConsoleMenuTests
         public void FindRoot_FromNestedLeaf_ReturnsRoot()
         {
             var leaf = (Leaf) ArrangeItemAtLevel(FirstLevel + 3, typeof(Leaf));
-            Menu root = leaf.GetRoot();
+            var root = leaf.GetRoot();
             Assert.True(root.IsRoot());
         }
 
@@ -209,7 +209,7 @@ namespace ConsoleMenuTests
         [Test]
         public void LevelOrderTraversal_FromRoot_CorrectWalk()
         {
-            var testTree = new TreeExample();
+            var testTree = new ExampleTree();
             var i = new IteratorLevelOrderWalk(testTree.Root);
             
             var walkList = new List<string>();
@@ -225,7 +225,7 @@ namespace ConsoleMenuTests
         [Test]
         public void SearchTree_TargetExists_ReturnsTarget()
         {
-            var testTree = new TreeExample();
+            var testTree = new ExampleTree();
             var i = new IteratorLevelOrderWalk(testTree.Root);
             var targetTitle = testTree.CorrectLevelOrder[testTree.CorrectLevelOrder.Count-1];
             var target = i.SearchForTitle(targetTitle);
@@ -236,7 +236,7 @@ namespace ConsoleMenuTests
         [Test]
         public void SearchTree_TargetDoesNotExist_ReturnsSentinel()
         {
-            var testTree = new TreeExample();
+            var testTree = new ExampleTree();
             var i = new IteratorLevelOrderWalk(testTree.Root);
             var targetTitle = "Nonexisting title";
             var target = i.SearchForTitle(targetTitle);
@@ -258,7 +258,7 @@ namespace ConsoleMenuTests
         [Test]
         public void CheckIfItemIsInTree_IsInTree_ReturnsTrue()
         {
-            var testTree = new TreeExample();
+            var testTree = new ExampleTree();
             var targetNode = testTree.ListOfNodes.First();
             var originNode = testTree.ListOfNodes.Last();
 
@@ -268,7 +268,7 @@ namespace ConsoleMenuTests
         [Test]
         public void CheckIfItemIsInTree_IsNotInTree_ReturnsFalse()
         {
-            var testTree = new TreeExample();
+            var testTree = new ExampleTree();
             var targetNode = CreateTestItem(1, typeof (Menu));
             var originNode = testTree.ListOfNodes.Last();
 
@@ -276,77 +276,24 @@ namespace ConsoleMenuTests
         }
 
         [Test]
-        public void SaveTree_FromRoot_ReportsSuccess()
+        public void SaveTree_FromRoot_IsSaved()
         {
-            var testRoot = new TreeExample().Root;
-            testRoot.SetSaver(StubSaver.Instance);
-            testRoot.SetFilePath("Test");
+            var root = new ExampleTree().Root;
+            var stub = new StubHandler();
+            stub.SetTreeRoot(root);
+            root.SaveTree();
 
-            Assert.True(testRoot.SaveTree());
+            //Assert.True(stub.HasBeenSaved);
         }
 
-        [Test]
-        public void SaveTree_FromNestedItem_ReportsSuccess()
-        {
-            var testLeaf = new TreeExample().GetLeaf();
-            testLeaf.SetSaver(StubSaver.Instance);
-            testLeaf.SetFilePath("Test");
+        //[Test]
+        //public void SaveTree_FromNestedItem_ReportsSuccess()
+        //{
+        //    var testLeaf = new ExampleTree().GetLeaf();
+        //    testLeaf.SetSaver(StubSaver.Instance);
+        //    testLeaf.SetFilePath("Test");
 
-            Assert.True(testLeaf.SaveTree());
-        }
-
-        [Test]
-        [ExpectedException]
-        public void SaveTree_HasNoFilePath_ThrowsException()
-        {
-            var testRoot = new TreeExample().Root;
-            testRoot.SaveTree();
-        }
-
-        [Test]
-        public void SaveTree_HasFilePath_ReportsSuccess()
-        {
-            var testRoot = new TreeExample().Root;
-            testRoot.SetSaver(StubSaver.Instance);
-            testRoot.SetFilePath("Test");
-
-            Assert.True(testRoot.SaveTree());
-        }
-
-        [Test]
-        [ExpectedException]
-        public void SaveTree_HasNoTreeSaver_ThrowsException()
-        {
-            var testRoot = new TreeExample().Root;
-            testRoot.SetFilePath("Test");
-
-            Assert.True(testRoot.SaveTree());
-        }
-
-        [Test]
-        public void LoadTree_CorrectRequest_ReturnsItem()
-        {
-            var loadedTree = StubSaver.Instance.LoadTree("Test");
-            Assert.True(loadedTree != null);
-        }
-
-        [Test]
-        [ExpectedException]
-        public void ShowUI_NoUISet_ThrowsException()
-        {
-            var testRoot = new TreeExample().Root;
-            testRoot.ShowMenuItem();
-        }
-
-        [Test]
-        public void ShowUI_UIHasBeenSet_ReturnsInt()
-        {
-            var testRoot = new TreeExample().Root;
-            var stubUI = new StubUserInterface();
-            testRoot.SetUserInterface(stubUI);
-            testRoot.ShowMenuItem();
-            
-            Assert.True(stubUI.HasBeenShown);
-        }
+        //    Assert.True(testLeaf.SaveTree());
+        //}
     }
 }

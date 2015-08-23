@@ -12,8 +12,7 @@ namespace ConsoleMenuTDD
 
         public Menu(string title) : base(title)
         {
-            // A new menu is its own parent until it becomes a submenu.
-            Parent = this; 
+            Parent = new ItemSentinel("Sentinel");
         }
 
         public override void AddChild(Item child)
@@ -42,15 +41,15 @@ namespace ConsoleMenuTDD
             ChildrenCount--;
         }
 
+        public override bool IsSentinel()
+        {
+            return false;
+        }
+
         public List<string> GetChildrenTitles()
         {
             var titles = _children.Select(child => child.Title).ToList();
             return titles;
-        }
-
-        public override bool IsRoot()
-        {
-            return this.Equals(Parent);
         }
     }
 }

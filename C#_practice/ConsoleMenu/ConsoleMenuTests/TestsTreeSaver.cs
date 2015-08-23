@@ -7,12 +7,24 @@ namespace ConsoleMenuTests
     [TestFixture]
     public class TestsTreeSaver
     {
-        public static string TestFolderPath = @"C:\Projects\C#_practice\ConsoleMenu\SavedMenus\TestFiles";
-        public static string TestFileName = "TestFile";
-        public static string TestFilePath = TestFolderPath + @"\" + TestFileName;
+
+        private static string TestFolderPath = TestsHandler.TestFolderPath;
+        private static string TestName = TestsHandler.TestName;
+        private static string TestFilePath = TestsHandler.TestFilePath;
 
         [SetUp]
         public void Init()
+        {
+            ResetTestFolder();
+        }
+
+        [TearDown]
+        public void Cleanup()
+        {
+            ResetTestFolder();
+        }
+
+        private void ResetTestFolder()
         {
             var deleteFiles = true;
             if (Directory.Exists(TestFolderPath))
@@ -21,50 +33,44 @@ namespace ConsoleMenuTests
         }
 
         [Test]
-        public void CreateBinarySerializer_DoesNotExist_IsCreated()
+        public void CreateBinarySerializer()
         {
-            var treeSaver = BinarySerializer.Instance;
+            var saver = new SaverBinarySerializer();
 
-            Assert.True(treeSaver is BinarySerializer);
-        }
-
-        [Test]
-        public void CreateBinarySerializer_AlreadyExists_AreTheSame()
-        {
-            var treeSaver1 = BinarySerializer.Instance;
-            var treeSaver2 = BinarySerializer.Instance;
-
-            Assert.True(treeSaver1 == treeSaver2);
+            Assert.True(saver is SaverBinarySerializer);
         }
 
         [Test]
         public void SerializeTree_NonExistantFile_FileExists()
         {
-            var saver = BinarySerializer.Instance;
-            var tree = new TreeExample().Root;
-            saver.SaveTree(tree, TestFilePath);
+            var testHandler = TestsHandler.CreateDefault();
+            string path = testHandler.GetFilePath();
 
-            Assert.True(File.Exists(TestFilePath));
+            bool wasExisting = File.Exists(path);
+            testHandler.SaveHandler();
+            bool isExisting = File.Exists(path);
+
+            Assert.True(!wasExisting && isExisting);
         }
 
         [Test]
         [ExpectedException]
         public void LoadSerializedTree_NonExistingFile_ThrowsException()
         {
-            var saver = BinarySerializer.Instance;
-            var tree = saver.LoadTree(TestFilePath);
+            var saver = new SaverBinarySerializer();
+            saver.LoadHandler(TestFilePath);
         }
 
         [Test]
-        public void LoadSerializedTree_ExistantFile_TreeIsLoaded()
+        public void LoadSerializedTree_FileExists_TreeIsLoaded()
         {
-            var saver = BinarySerializer.Instance;
-            var tree = new TreeExample().Root;
-            saver.SaveTree(tree, TestFilePath);
+            var testHandler = TestsHandler.CreateDefault();
+            testHandler.SaveHandler();
+            var path = testHandler.GetFilePath();
 
-            var loadedTree = saver.LoadTree(TestFilePath);
+            var loadedHandler = HandlerMenu.LoadHandler(new SaverBinarySerializer(), path);
 
-            Assert.True(loadedTree != null);
+            Assert.True(testHandler.GetFilePath() == loadedHandler.GetFilePath());
         }
     }
 }

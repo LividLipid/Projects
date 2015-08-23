@@ -7,12 +7,10 @@ namespace ConsoleMenuTDD
     {
         // The title uniquely identifies a menuitem,
         // and the same item cannot exist twice in the same tree.
+        public Handler TreeHandler;
+        public Item Parent;
         public string Title { get; } 
-        public Item Parent { get; set; }
         public int ChildrenCount { get; set; }
-        private string _filePath;
-        private TreeSaver _saver;
-        private UserInterface _ui;
 
         protected Item(string title)
         {
@@ -23,18 +21,24 @@ namespace ConsoleMenuTDD
         public abstract void AddChild(Item child);
         public abstract Item GetChild(int i);
         public abstract void RemoveChild(int i);
-        //public abstract Item DisplayAndReturnNextMenu();
-        public abstract bool IsRoot();
+        public abstract bool IsSentinel();
 
-        public virtual bool IsSentinel()
+        public bool IsRoot()
         {
-            return false;
+            return Parent.IsSentinel();
         }
 
-        public Menu GetRoot()
+        public Handler GetHandler()
         {
+            return IsRoot() ? TreeHandler : GetRoot().GetHandler();
+        }
+
+        public Item GetRoot()
+        {
+            if (IsRoot())
+                return this;
             var i = new IteratorParentWalk(this);
-            return (Menu) i.GetFinal();
+            return (Menu)i.GetFinal();
         }
 
         public bool HasInTree(Item item)
@@ -54,61 +58,9 @@ namespace ConsoleMenuTDD
             return isInSubTree;
         }
 
-        public bool SaveTree()
+        public void SaveTree()
         {
-            var outcome = IsRoot() ? ExecuteSaveOperation() : GetRoot().ExecuteSaveOperation();
-            return outcome;
+            GetHandler().SaveHandler();
         }
-
-        public void SetFilePath(string filePath)
-        {
-            if (IsRoot())
-                _filePath = filePath;
-            else
-                GetRoot().SetFilePath(filePath);
-        }
-
-        private bool ExecuteSaveOperation()
-        {
-            if (_filePath == null)
-                throw new Exception("Filepath has not been set.");
-            if (_saver == null)
-                throw new Exception("Treesaver has not been set.");
-            var outcome = _saver.SaveTree(this, _filePath);
-            return outcome;
-        }
-
-        public void SetSaver(TreeSaver saver)
-        {
-            if (IsRoot())
-                _saver = saver;
-            else
-                GetRoot().SetSaver(saver);
-        }
-
-        public void SetUserInterface(UserInterface ui)
-        {
-            if (IsRoot())
-                _ui = ui;
-            else
-                GetRoot().SetUserInterface(ui);
-        }
-
-        public virtual void ShowMenuItem()
-        {
-            if (IsRoot())
-                ExecuteUserInterfaceOperation(this);
-            else
-                GetRoot().ExecuteUserInterfaceOperation(this);
-        }
-
-        private void ExecuteUserInterfaceOperation(Item item)
-        {
-            if (_ui == null)
-                throw new Exception("User interface has not been set.");
-            _ui.ShowMenuItem(item);
-        }
-
-
     }
 }

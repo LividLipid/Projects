@@ -8,6 +8,7 @@ namespace ConsoleMenuTDD
     {
         public Leaf(string title) : base(title)
         {
+            Parent = new ItemSentinel("Sentinel");
         }
 
         public override void AddChild(Item child)
@@ -24,7 +25,7 @@ namespace ConsoleMenuTDD
         {
         }
 
-        public override bool IsRoot()
+        public override bool IsSentinel()
         {
             return false;
         }

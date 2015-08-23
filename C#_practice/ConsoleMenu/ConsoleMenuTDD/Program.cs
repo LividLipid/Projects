@@ -10,12 +10,11 @@ namespace ConsoleMenuTDD
     {
         static void Main(string[] args)
         {
+            var mainmenu = ItemFactory.Create(typeof(Menu), "mainmenu");
+            var submenu = ItemFactory.Create(typeof(Menu), "submenu");
 
-            var testTree = new TreeExample();
-            var targetNode = new Menu("hej");
-            var originNode = testTree.ListOfNodes.Last();
-
-            Console.WriteLine(originNode.HasInTree(targetNode));
+            mainmenu.AddChild(submenu);
+            mainmenu.AddChild(submenu);
         }
     }
 }

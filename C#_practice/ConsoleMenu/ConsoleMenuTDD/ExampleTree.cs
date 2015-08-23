@@ -4,7 +4,7 @@ using ConsoleMenuTDD;
 
 namespace ConsoleMenuTDD
 {
-    public class TreeExample
+    public class ExampleTree
     {
         // This class defines a test tree which can be used for testing
         // traversal algorithms. It also contains correct sequences for
@@ -23,7 +23,7 @@ namespace ConsoleMenuTDD
         //     A      D       I
         //          C   E       H
 
-        public TreeExample()
+        public ExampleTree()
         {
             var a = ItemFactory.Create(typeof(Menu), "A");
             var b = ItemFactory.Create(typeof(Menu), "B");

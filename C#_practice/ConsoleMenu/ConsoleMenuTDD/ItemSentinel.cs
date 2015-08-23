@@ -7,6 +7,7 @@ namespace ConsoleMenuTDD
     {
         public ItemSentinel(string title) : base(title)
         {
+            Parent = null;
         }
 
         public override void AddChild(Item child)
@@ -20,11 +21,6 @@ namespace ConsoleMenuTDD
 
         public override void RemoveChild(int i)
         {
-        }
-
-        public override bool IsRoot()
-        {
-            return false;
         }
 
         public override bool IsSentinel()

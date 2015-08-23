@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ConsoleMenuTDD
 {
+    [Serializable]
     public class UserInterfaceConsoleMenu
     {
         public void ShowMenu(Menu menu)
