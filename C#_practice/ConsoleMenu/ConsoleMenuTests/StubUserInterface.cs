@@ -3,11 +3,11 @@
 namespace ConsoleMenuTDD
 {
     [Serializable]
-    public class UserInterfaceStub : UserInterface
+    public class StubUserInterface : UserInterface
     {
         public bool HasBeenShown = false;
 
-        public override void ShowMenuItem(MenuItem item)
+        public override void ShowMenuItem(Item item)
         {
             HasBeenShown = true;
         }

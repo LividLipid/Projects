@@ -11,7 +11,7 @@ namespace ConsoleMenuTDD
         static void Main(string[] args)
         {
 
-            var testTree = new TestTree();
+            var testTree = new TreeExample();
             var targetNode = new Menu("hej");
             var originNode = testTree.ListOfNodes.Last();
 

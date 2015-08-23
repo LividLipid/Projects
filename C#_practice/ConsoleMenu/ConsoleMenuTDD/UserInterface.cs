@@ -11,6 +11,6 @@ namespace ConsoleMenuTDD
             Return = -1,
             Save = -1
         }
-        public abstract void ShowMenuItem(MenuItem item);
+        public abstract void ShowMenuItem(Item item);
     }
 }

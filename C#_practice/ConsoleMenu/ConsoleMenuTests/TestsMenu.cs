@@ -9,7 +9,7 @@ using ConsoleMenuTDD;
 namespace ConsoleMenuTests
 {
     [TestFixture]
-    public class MenuTests
+    public class TestsMenu
     {
         const int FirstLevel = 1;
 
@@ -24,7 +24,7 @@ namespace ConsoleMenuTests
         }
 
 
-        private MenuItem ArrangeItemAtLevel(int targetLevel, Type itemType)
+        private Item ArrangeItemAtLevel(int targetLevel, Type itemType)
         {
             // Arrange a nested item and return it.
             // All higher level items are of type Menu.
@@ -34,7 +34,7 @@ namespace ConsoleMenuTests
                 return GenerateArrangedItemAtLevel(targetLevel, itemType);
         }
 
-        private MenuItem GenerateArrangedItemAtLevel(int targetLevel, Type itemType)
+        private Item GenerateArrangedItemAtLevel(int targetLevel, Type itemType)
         {
             // Most deeply nested item of selected type.
             var arrangedItem = CreateTestItem(targetLevel, itemType);
@@ -52,16 +52,16 @@ namespace ConsoleMenuTests
             return arrangedItem;
         }
 
-        private MenuItem ArrangeItemAtLevelAndReturnRoot(int level, Type itemType)
+        private Item ArrangeItemAtLevelAndReturnRoot(int level, Type itemType)
         {
             var item = ArrangeItemAtLevel(level, itemType);
             return item.GetRoot();
         }
 
-        private MenuItem CreateTestItem(int level, Type type)
+        private Item CreateTestItem(int level, Type type)
         {
             var title = CreateTestItemTitle(level, type);
-            return MenuItemFactory.Create(type, title);
+            return ItemFactory.Create(type, title);
         }
 
         private string CreateTestItemTitle(int level, Type type)
@@ -88,7 +88,7 @@ namespace ConsoleMenuTests
         public void MenuIsComponentSubtype()
         {
             var menu = (Menu)ArrangeItemAtLevel(FirstLevel, typeof(Menu));
-            Assert.True(menu.GetType().IsSubclassOf(typeof(MenuItem)));
+            Assert.True(menu.GetType().IsSubclassOf(typeof(Item)));
         }
 
         [Test]
@@ -209,7 +209,7 @@ namespace ConsoleMenuTests
         [Test]
         public void LevelOrderTraversal_FromRoot_CorrectWalk()
         {
-            var testTree = new TestTree();
+            var testTree = new TreeExample();
             var i = new IteratorLevelOrderWalk(testTree.Root);
             
             var walkList = new List<string>();
@@ -225,7 +225,7 @@ namespace ConsoleMenuTests
         [Test]
         public void SearchTree_TargetExists_ReturnsTarget()
         {
-            var testTree = new TestTree();
+            var testTree = new TreeExample();
             var i = new IteratorLevelOrderWalk(testTree.Root);
             var targetTitle = testTree.CorrectLevelOrder[testTree.CorrectLevelOrder.Count-1];
             var target = i.SearchForTitle(targetTitle);
@@ -236,12 +236,12 @@ namespace ConsoleMenuTests
         [Test]
         public void SearchTree_TargetDoesNotExist_ReturnsSentinel()
         {
-            var testTree = new TestTree();
+            var testTree = new TreeExample();
             var i = new IteratorLevelOrderWalk(testTree.Root);
             var targetTitle = "Nonexisting title";
             var target = i.SearchForTitle(targetTitle);
 
-            Assert.True(target.GetType() == typeof(MenuItemSentinel));
+            Assert.True(target.GetType() == typeof(ItemSentinel));
         }
 
         [Test]
@@ -258,7 +258,7 @@ namespace ConsoleMenuTests
         [Test]
         public void CheckIfItemIsInTree_IsInTree_ReturnsTrue()
         {
-            var testTree = new TestTree();
+            var testTree = new TreeExample();
             var targetNode = testTree.ListOfNodes.First();
             var originNode = testTree.ListOfNodes.Last();
 
@@ -268,7 +268,7 @@ namespace ConsoleMenuTests
         [Test]
         public void CheckIfItemIsInTree_IsNotInTree_ReturnsFalse()
         {
-            var testTree = new TestTree();
+            var testTree = new TreeExample();
             var targetNode = CreateTestItem(1, typeof (Menu));
             var originNode = testTree.ListOfNodes.Last();
 
@@ -278,7 +278,7 @@ namespace ConsoleMenuTests
         [Test]
         public void SaveTree_FromRoot_ReportsSuccess()
         {
-            var testRoot = new TestTree().Root;
+            var testRoot = new TreeExample().Root;
             testRoot.SetSaver(StubSaver.Instance);
             testRoot.SetFilePath("Test");
 
@@ -288,7 +288,7 @@ namespace ConsoleMenuTests
         [Test]
         public void SaveTree_FromNestedItem_ReportsSuccess()
         {
-            var testLeaf = new TestTree().GetLeaf();
+            var testLeaf = new TreeExample().GetLeaf();
             testLeaf.SetSaver(StubSaver.Instance);
             testLeaf.SetFilePath("Test");
 
@@ -299,14 +299,14 @@ namespace ConsoleMenuTests
         [ExpectedException]
         public void SaveTree_HasNoFilePath_ThrowsException()
         {
-            var testRoot = new TestTree().Root;
+            var testRoot = new TreeExample().Root;
             testRoot.SaveTree();
         }
 
         [Test]
         public void SaveTree_HasFilePath_ReportsSuccess()
         {
-            var testRoot = new TestTree().Root;
+            var testRoot = new TreeExample().Root;
             testRoot.SetSaver(StubSaver.Instance);
             testRoot.SetFilePath("Test");
 
@@ -317,7 +317,7 @@ namespace ConsoleMenuTests
         [ExpectedException]
         public void SaveTree_HasNoTreeSaver_ThrowsException()
         {
-            var testRoot = new TestTree().Root;
+            var testRoot = new TreeExample().Root;
             testRoot.SetFilePath("Test");
 
             Assert.True(testRoot.SaveTree());
@@ -334,15 +334,15 @@ namespace ConsoleMenuTests
         [ExpectedException]
         public void ShowUI_NoUISet_ThrowsException()
         {
-            var testRoot = new TestTree().Root;
+            var testRoot = new TreeExample().Root;
             testRoot.ShowMenuItem();
         }
 
         [Test]
         public void ShowUI_UIHasBeenSet_ReturnsInt()
         {
-            var testRoot = new TestTree().Root;
-            var stubUI = new UserInterfaceStub();
+            var testRoot = new TreeExample().Root;
+            var stubUI = new StubUserInterface();
             testRoot.SetUserInterface(stubUI);
             testRoot.ShowMenuItem();
             

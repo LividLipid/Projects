@@ -12,7 +12,7 @@ namespace ConsoleMenuTDD
 
         public static UserInterfaceConsole Instance { get { return _instance; } }
 
-        public override void ShowMenuItem(MenuItem item)
+        public override void ShowMenuItem(Item item)
         {
             var typeName = item.GetType().Name;
             switch (typeName)

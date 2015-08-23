@@ -4,14 +4,14 @@ using ConsoleMenuTDD;
 
 namespace ConsoleMenuTDD
 {
-    public class TestTree
+    public class TreeExample
     {
         // This class defines a test tree which can be used for testing
         // traversal algorithms. It also contains correct sequences for
         // several different slgorithms.
         public Menu Root;
-        public List<MenuItem> ListOfNodes = new List<MenuItem>();
-        public List<MenuItem> ListOfLeaves = new List<MenuItem>();
+        public List<Item> ListOfNodes = new List<Item>();
+        public List<Item> ListOfLeaves = new List<Item>();
         public List<string> CorrectPreOrder;
         public List<string> CorrectInOrder;
         public List<string> CorrectPostOrder;
@@ -23,17 +23,17 @@ namespace ConsoleMenuTDD
         //     A      D       I
         //          C   E       H
 
-        public TestTree()
+        public TreeExample()
         {
-            var a = MenuItemFactory.Create(typeof(Menu), "A");
-            var b = MenuItemFactory.Create(typeof(Menu), "B");
-            var c = MenuItemFactory.Create(typeof(Leaf), "C");
-            var d = MenuItemFactory.Create(typeof(Menu), "D");
-            var e = MenuItemFactory.Create(typeof(Leaf), "E");
-            var f = MenuItemFactory.Create(typeof(Menu), "F");
-            var g = MenuItemFactory.Create(typeof(Menu), "G");
-            var h = MenuItemFactory.Create(typeof(Leaf), "H");
-            var i = MenuItemFactory.Create(typeof(Menu), "I");
+            var a = ItemFactory.Create(typeof(Menu), "A");
+            var b = ItemFactory.Create(typeof(Menu), "B");
+            var c = ItemFactory.Create(typeof(Leaf), "C");
+            var d = ItemFactory.Create(typeof(Menu), "D");
+            var e = ItemFactory.Create(typeof(Leaf), "E");
+            var f = ItemFactory.Create(typeof(Menu), "F");
+            var g = ItemFactory.Create(typeof(Menu), "G");
+            var h = ItemFactory.Create(typeof(Leaf), "H");
+            var i = ItemFactory.Create(typeof(Menu), "I");
 
             ListOfNodes.Add(a);
             ListOfNodes.Add(b);

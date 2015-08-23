@@ -6,9 +6,9 @@ using System.Runtime.CompilerServices;
 namespace ConsoleMenuTDD
 {
     [Serializable]
-    public class Menu : MenuItem
+    public class Menu : Item
     {
-        private readonly List<MenuItem> _children = new List<MenuItem>();
+        private readonly List<Item> _children = new List<Item>();
 
         public Menu(string title) : base(title)
         {
@@ -16,7 +16,7 @@ namespace ConsoleMenuTDD
             Parent = this; 
         }
 
-        public override void AddChild(MenuItem child)
+        public override void AddChild(Item child)
         {
             if (this.HasInTree(child))
                 throw new ArgumentException("Child already exists in Tree.");
@@ -28,7 +28,7 @@ namespace ConsoleMenuTDD
             }
         }
 
-        public override MenuItem GetChild(int i)
+        public override Item GetChild(int i)
         {
             return _children[i];
         }

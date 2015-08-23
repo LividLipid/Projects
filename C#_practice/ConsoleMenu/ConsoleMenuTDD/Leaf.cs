@@ -4,20 +4,20 @@ using NUnit.Framework;
 namespace ConsoleMenuTDD
 {
     [Serializable]
-    public class Leaf : MenuItem
+    public class Leaf : Item
     {
         public Leaf(string title) : base(title)
         {
         }
 
-        public override void AddChild(MenuItem child)
+        public override void AddChild(Item child)
         {
             throw new Exception("Cannot assign child to leaf.");
         }
 
-        public override MenuItem GetChild(int i)
+        public override Item GetChild(int i)
         {
-            return new MenuItemSentinel("MenuItemSentinel");
+            return new ItemSentinel("ItemSentinel");
         }
 
         public override void RemoveChild(int i)

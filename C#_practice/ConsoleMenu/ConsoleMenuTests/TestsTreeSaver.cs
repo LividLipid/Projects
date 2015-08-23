@@ -5,7 +5,7 @@ using NUnit.Framework;
 namespace ConsoleMenuTests
 {
     [TestFixture]
-    public class TreeSaverTests
+    public class TestsTreeSaver
     {
         public static string TestFolderPath = @"C:\Projects\C#_practice\ConsoleMenu\SavedMenus\TestFiles";
         public static string TestFileName = "TestFile";
@@ -41,7 +41,7 @@ namespace ConsoleMenuTests
         public void SerializeTree_NonExistantFile_FileExists()
         {
             var saver = BinarySerializer.Instance;
-            var tree = new TestTree().Root;
+            var tree = new TreeExample().Root;
             saver.SaveTree(tree, TestFilePath);
 
             Assert.True(File.Exists(TestFilePath));
@@ -59,7 +59,7 @@ namespace ConsoleMenuTests
         public void LoadSerializedTree_ExistantFile_TreeIsLoaded()
         {
             var saver = BinarySerializer.Instance;
-            var tree = new TestTree().Root;
+            var tree = new TreeExample().Root;
             saver.SaveTree(tree, TestFilePath);
 
             var loadedTree = saver.LoadTree(TestFilePath);

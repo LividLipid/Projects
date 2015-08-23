@@ -9,8 +9,8 @@ namespace ConsoleMenuTDD
     [Serializable]
     public abstract class TreeSaver
     {
-        public abstract bool SaveTree(MenuItem tree, string filePath);
-        public abstract MenuItem LoadTree(string filePath);
+        public abstract bool SaveTree(Item tree, string filePath);
+        public abstract Item LoadTree(string filePath);
     }
 
     [Serializable]
@@ -22,7 +22,7 @@ namespace ConsoleMenuTDD
 
         public static BinarySerializer Instance { get { return _instance; } }
 
-        public override bool SaveTree(MenuItem tree, string filePath)
+        public override bool SaveTree(Item tree, string filePath)
         {
             IFormatter formatter = new BinaryFormatter();
             Stream stream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None);
@@ -32,7 +32,7 @@ namespace ConsoleMenuTDD
             return true;
         }
 
-        public override MenuItem LoadTree(string filePath)
+        public override Item LoadTree(string filePath)
         {
             if (!File.Exists(filePath))
                 throw new Exception("File does not exist.");
@@ -40,7 +40,7 @@ namespace ConsoleMenuTDD
             {
                 IFormatter formatter = new BinaryFormatter();
                 Stream stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
-                MenuItem loadedTree = (MenuItem)formatter.Deserialize(stream);
+                Item loadedTree = (Item)formatter.Deserialize(stream);
                 stream.Close();
 
                 return loadedTree;
@@ -58,14 +58,14 @@ namespace ConsoleMenuTDD
 
         public static StubSaver Instance { get { return _instance; } }
 
-        public override bool SaveTree(MenuItem tree, string filePath)
+        public override bool SaveTree(Item tree, string filePath)
         {
             return true;
         }
 
-        public override MenuItem LoadTree(string filePath)
+        public override Item LoadTree(string filePath)
         {
-            return MenuItemFactory.Create(typeof(MenuItemSentinel),"MenuItemSentinel");
+            return ItemFactory.Create(typeof(ItemSentinel),"ItemSentinel");
         }
     }
 }

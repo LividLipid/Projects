@@ -3,17 +3,17 @@
 namespace ConsoleMenuTDD
 {
     [Serializable]
-    public class MenuItemSentinel : MenuItem
+    public class ItemSentinel : Item
     {
-        public MenuItemSentinel(string title) : base(title)
+        public ItemSentinel(string title) : base(title)
         {
         }
 
-        public override void AddChild(MenuItem child)
+        public override void AddChild(Item child)
         {
         }
 
-        public override MenuItem GetChild(int i)
+        public override Item GetChild(int i)
         {
             return this;
         }

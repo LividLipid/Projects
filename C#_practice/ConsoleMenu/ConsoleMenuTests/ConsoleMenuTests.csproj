@@ -50,10 +50,12 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="MenuTests.cs" />
+    <Compile Include="StubMenu.cs" />
+    <Compile Include="TestsMenu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TreeSaverTests.cs" />
-    <Compile Include="UserInterfaceTests.cs" />
+    <Compile Include="TestsTreeSaver.cs" />
+    <Compile Include="TestsUserInterface.cs" />
+    <Compile Include="StubUserInterface.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

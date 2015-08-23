@@ -3,27 +3,27 @@
 namespace ConsoleMenuTDD
 {
     [Serializable]
-    public abstract class MenuItem
+    public abstract class Item
     {
         // The title uniquely identifies a menuitem,
         // and the same item cannot exist twice in the same tree.
         public string Title { get; } 
-        public MenuItem Parent { get; set; }
+        public Item Parent { get; set; }
         public int ChildrenCount { get; set; }
         private string _filePath;
         private TreeSaver _saver;
         private UserInterface _ui;
 
-        protected MenuItem(string title)
+        protected Item(string title)
         {
             Title = title;
             ChildrenCount = 0;
         }
 
-        public abstract void AddChild(MenuItem child);
-        public abstract MenuItem GetChild(int i);
+        public abstract void AddChild(Item child);
+        public abstract Item GetChild(int i);
         public abstract void RemoveChild(int i);
-        //public abstract MenuItem DisplayAndReturnNextMenu();
+        //public abstract Item DisplayAndReturnNextMenu();
         public abstract bool IsRoot();
 
         public virtual bool IsSentinel()
@@ -37,7 +37,7 @@ namespace ConsoleMenuTDD
             return (Menu) i.GetFinal();
         }
 
-        public bool HasInTree(MenuItem item)
+        public bool HasInTree(Item item)
         {
             var root = GetRoot();
             var isInTree = root.HasInSubTree(item);
@@ -45,7 +45,7 @@ namespace ConsoleMenuTDD
             return isInTree;
         }
 
-        public bool HasInSubTree(MenuItem item)
+        public bool HasInSubTree(Item item)
         {
             var i = new IteratorLevelOrderWalk(this);
             var foundItem = i.SearchForTitle(item.Title);
@@ -102,7 +102,7 @@ namespace ConsoleMenuTDD
                 GetRoot().ExecuteUserInterfaceOperation(this);
         }
 
-        private void ExecuteUserInterfaceOperation(MenuItem item)
+        private void ExecuteUserInterfaceOperation(Item item)
         {
             if (_ui == null)
                 throw new Exception("User interface has not been set.");
