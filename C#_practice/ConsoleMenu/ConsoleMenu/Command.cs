@@ -1,5 +1,8 @@
-﻿namespace ConsoleMenu
+﻿using System;
+
+namespace ConsoleMenu
 {
+    [Serializable]
     public abstract class Command
     {
         protected Handler Receiver;

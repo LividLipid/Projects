@@ -2,6 +2,7 @@
 
 namespace ConsoleMenu
 {
+    [Serializable]
     public class CommandSelect : Command
     {
 

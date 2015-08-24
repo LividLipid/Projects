@@ -1,5 +1,8 @@
-﻿namespace ConsoleMenu
+﻿using System;
+
+namespace ConsoleMenu
 {
+    [Serializable]
     public class CommandReturn : Command
     {
         public CommandReturn(Handler receiver) : base(receiver)

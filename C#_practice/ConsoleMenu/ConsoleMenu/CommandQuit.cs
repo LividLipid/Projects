@@ -1,5 +1,8 @@
-﻿namespace ConsoleMenu
+﻿using System;
+
+namespace ConsoleMenu
 {
+    [Serializable]
     public class CommandQuit : Command
     {
         public CommandQuit(Handler receiver) : base(receiver)

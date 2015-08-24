@@ -1,5 +1,8 @@
-﻿namespace ConsoleMenu
+﻿using System;
+
+namespace ConsoleMenu
 {
+    [Serializable]
     public class CommandSave : Command
     {
         public CommandSave(Handler receiver) : base(receiver)
