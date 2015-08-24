@@ -3,18 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NUnit.Framework;
 
 namespace ConsoleMenuTDD
 {
-    class Program
+    public class Program
     {
         static void Main(string[] args)
         {
-            var mainmenu = ItemFactory.Create(typeof(Menu), "mainmenu");
-            var submenu = ItemFactory.Create(typeof(Menu), "submenu");
+            var testTree = new ExampleTree();
+            var knownLeaves = testTree.ListOfLeaves;
+            var foundLeaves = testTree.Root.GetSubTreeLeaves();
 
-            mainmenu.AddChild(submenu);
-            mainmenu.AddChild(submenu);
+            var areEqual = Enumerable.SequenceEqual(knownLeaves.OrderBy(t => t.Title), foundLeaves.OrderBy(t => t.Title));
+            //Console.WriteLine(areEqual);
         }
     }
 }

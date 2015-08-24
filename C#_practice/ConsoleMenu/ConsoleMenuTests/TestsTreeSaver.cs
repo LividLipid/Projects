@@ -43,7 +43,7 @@ namespace ConsoleMenuTests
         [Test]
         public void SerializeTree_NonExistantFile_FileExists()
         {
-            var testHandler = TestsHandler.CreateDefault();
+            var testHandler = TestsHandler.CreateDefaultHandler();
             string path = testHandler.GetFilePath();
 
             bool wasExisting = File.Exists(path);
@@ -64,7 +64,7 @@ namespace ConsoleMenuTests
         [Test]
         public void LoadSerializedTree_FileExists_TreeIsLoaded()
         {
-            var testHandler = TestsHandler.CreateDefault();
+            var testHandler = TestsHandler.CreateDefaultHandler();
             testHandler.SaveHandler();
             var path = testHandler.GetFilePath();
 

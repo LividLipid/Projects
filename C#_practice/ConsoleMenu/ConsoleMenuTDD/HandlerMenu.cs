@@ -5,11 +5,8 @@ namespace ConsoleMenuTDD
     [Serializable]
     public class HandlerMenu : Handler
     {
-        private Item _treeRoot;
-        public string _treeName;
         public UserInterface _ui = new UserInterfaceConsole();
         public Saver _saver = new SaverBinarySerializer();
-        public string _folderPath = @"C:\Projects\C#_practice\ConsoleMenu\SavedMenus";
 
         public HandlerMenu()
         {

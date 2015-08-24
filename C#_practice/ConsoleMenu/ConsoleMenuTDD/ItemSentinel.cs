@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace ConsoleMenuTDD
 {
@@ -26,6 +27,16 @@ namespace ConsoleMenuTDD
         public override bool IsSentinel()
         {
             return true;
+        }
+
+        public override bool IsLeaf()
+        {
+            return false;
+        }
+
+        public override List<Leaf> GetSubTreeLeaves()
+        {
+            throw new Exception("A sentinel has no leaves.");
         }
     }
 }

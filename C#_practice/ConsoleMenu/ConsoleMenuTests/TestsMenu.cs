@@ -69,6 +69,20 @@ namespace ConsoleMenuTests
             return "Level " + level + " " + type.Name;
         }
 
+        private bool CompareItemListTitles(IEnumerable<Item> list1, IEnumerable<Item> list2)
+        {
+            var ordered1 = list1.OrderBy(t => t.Title);
+            var ordered2 = list2.OrderBy(t => t.Title);
+            return ordered1.SequenceEqual(ordered2); ;
+        }
+
+        private StubHandler CreateTreeWithStubHandler()
+        {
+            var root = new ExampleTree().Root;
+            var stub = new StubHandler();
+            stub.SetTreeRoot(root);
+            return stub;
+        }
 
         [Test]
         public void CreateEmptyMenu()
@@ -276,24 +290,47 @@ namespace ConsoleMenuTests
         }
 
         [Test]
-        public void SaveTree_FromRoot_IsSaved()
+        public void GetSubTreeLeaves_FromRoot_ReturnsLeaves()
         {
-            var root = new ExampleTree().Root;
-            var stub = new StubHandler();
-            stub.SetTreeRoot(root);
-            root.SaveTree();
+            var testTree = new ExampleTree();
+            var knownLeaves = testTree.ListOfLeaves;
+            var foundLeaves = testTree.Root.GetSubTreeLeaves();
+            var areEqual = CompareItemListTitles(knownLeaves, foundLeaves);
 
-            //Assert.True(stub.HasBeenSaved);
+            Assert.True(areEqual);
         }
 
-        //[Test]
-        //public void SaveTree_FromNestedItem_ReportsSuccess()
-        //{
-        //    var testLeaf = new ExampleTree().GetLeaf();
-        //    testLeaf.SetSaver(StubSaver.Instance);
-        //    testLeaf.SetFilePath("Test");
+        [Test]
+        public void GetSubTreeLeaves_FromLeaf_ReturnsSelf()
+        {
+            var menu = new Menu("Mainmenu");
+            var leaf = new Leaf("Leaf");
+            menu.AddChild(leaf);
+            var leaves = leaf.GetSubTreeLeaves();
+            bool returnedSelf = (leaf == leaves.First()) && (leaf == leaves.Last());
 
-        //    Assert.True(testLeaf.SaveTree());
-        //}
+            Assert.True(returnedSelf);
+        }
+
+        [Test]
+        public void SaveTree_FromRoot_IsSaved()
+        {
+            var stub = CreateTreeWithStubHandler();
+            var root = stub.GetTreeRoot();
+            root.SaveTree();
+
+            Assert.True(stub.HasBeenSaved);
+        }
+
+        [Test]
+        public void SaveTree_FromNestedItem_IsSaved()
+        {
+            var stub = CreateTreeWithStubHandler();
+            var root = stub.GetTreeRoot();
+            var leaves = root.GetSubTreeLeaves();
+            leaves[0].SaveTree();
+
+            Assert.True(stub.HasBeenSaved);
+        }
     }
 }

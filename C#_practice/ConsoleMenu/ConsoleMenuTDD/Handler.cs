@@ -5,11 +5,12 @@ namespace ConsoleMenuTDD
     [Serializable]
     public abstract class Handler
     {
+        public static string DefaultFolderPath = @"C:\Projects\C#_practice\ConsoleMenu\SavedMenus";
         private Item _treeRoot;
         public string _treeName;
         public UserInterface _ui;
         public Saver _saver;
-        public string _folderPath;
+        public string _folderPath = DefaultFolderPath;
 
         public void SetTreeRoot(Item tree)
         {

@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace ConsoleMenuTDD
 {
     [Serializable]
     public abstract class Item
     {
-        // The title uniquely identifies a menuitem,
+        // The title uniquely identifies an item,
         // and the same item cannot exist twice in the same tree.
         public Handler TreeHandler;
         public Item Parent;
@@ -22,6 +23,8 @@ namespace ConsoleMenuTDD
         public abstract Item GetChild(int i);
         public abstract void RemoveChild(int i);
         public abstract bool IsSentinel();
+        public abstract bool IsLeaf();
+        public abstract List<Leaf> GetSubTreeLeaves();
 
         public bool IsRoot()
         {

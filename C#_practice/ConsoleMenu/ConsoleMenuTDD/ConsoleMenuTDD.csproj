@@ -55,7 +55,6 @@
     <Compile Include="ItemFactory.cs" />
     <Compile Include="HandlerMenu.cs" />
     <Compile Include="SaverBinarySerializer.cs" />
-    <Compile Include="UserInterfaceConsole.cs" />
     <Compile Include="Leaf.cs" />
     <Compile Include="Item.cs" />
     <Compile Include="Menu.cs" />
@@ -66,7 +65,7 @@
     <Compile Include="ExampleTree.cs" />
     <Compile Include="Saver.cs" />
     <Compile Include="UserInterface.cs" />
-    <Compile Include="UserInterfaceConsoleMenu.cs" />
+    <Compile Include="UserInterfaceConsole.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

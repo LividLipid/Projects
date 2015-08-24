@@ -46,6 +46,24 @@ namespace ConsoleMenuTDD
             return false;
         }
 
+        public override bool IsLeaf()
+        {
+            return false;
+        }
+
+        public override List<Leaf> GetSubTreeLeaves()
+        {
+            var leaves = new List<Leaf>();
+            var i = new IteratorLevelOrderWalk(this);
+            while (!i.IsDone())
+            {
+                if (i.CurrentItem().IsLeaf())
+                    leaves.Add((Leaf)i.CurrentItem());
+                i.Next();
+            }
+            return leaves;
+        }
+
         public List<string> GetChildrenTitles()
         {
             var titles = _children.Select(child => child.Title).ToList();

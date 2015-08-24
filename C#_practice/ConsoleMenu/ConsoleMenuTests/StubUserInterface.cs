@@ -8,7 +8,7 @@ namespace ConsoleMenuTests
     {
         public bool HasBeenShown = false;
 
-        public override void ShowMenuItem(Item item)
+        public override void Show(Item item)
         {
             HasBeenShown = true;
         }

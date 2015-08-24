@@ -11,7 +11,7 @@ namespace ConsoleMenuTDD
         // several different slgorithms.
         public Menu Root;
         public List<Item> ListOfNodes = new List<Item>();
-        public List<Item> ListOfLeaves = new List<Item>();
+        public List<Leaf> ListOfLeaves = new List<Leaf>();
         public List<string> CorrectPreOrder;
         public List<string> CorrectInOrder;
         public List<string> CorrectPostOrder;
@@ -45,9 +45,9 @@ namespace ConsoleMenuTDD
             ListOfNodes.Add(h);
             ListOfNodes.Add(i);
 
-            ListOfLeaves.Add(c);
-            ListOfLeaves.Add(e);
-            ListOfLeaves.Add(h);
+            ListOfLeaves.Add((Leaf) c);
+            ListOfLeaves.Add((Leaf) e);
+            ListOfLeaves.Add((Leaf) h);
 
             d.AddChild(c);
             d.AddChild(e);

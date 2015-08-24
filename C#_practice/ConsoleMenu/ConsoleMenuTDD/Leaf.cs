@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 
 namespace ConsoleMenuTDD
@@ -28,6 +29,16 @@ namespace ConsoleMenuTDD
         public override bool IsSentinel()
         {
             return false;
+        }
+
+        public override bool IsLeaf()
+        {
+            return true;
+        }
+
+        public override List<Leaf> GetSubTreeLeaves()
+        {
+            return new List<Leaf>() { this };
         }
     }
 }

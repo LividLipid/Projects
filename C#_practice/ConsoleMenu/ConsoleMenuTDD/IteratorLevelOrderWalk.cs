@@ -4,7 +4,7 @@ namespace ConsoleMenuTDD
 {
     public class IteratorLevelOrderWalk : Iterator
     {
-        private Queue<Item> _walkSequence = new Queue<Item>();
+        private readonly Queue<Item> _walkSequence = new Queue<Item>();
 
         public IteratorLevelOrderWalk(Item item) : base(item)
         {
