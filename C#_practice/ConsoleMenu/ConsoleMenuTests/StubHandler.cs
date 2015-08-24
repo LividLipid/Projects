@@ -1,5 +1,5 @@
 ﻿using System;
-using ConsoleMenuTDD;
+using ConsoleMenu;
 
 namespace ConsoleMenuTests
 {

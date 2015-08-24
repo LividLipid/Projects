@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
-namespace ConsoleMenuTDD
+namespace ConsoleMenu
 {
     [Serializable]
     public class Menu : Item
@@ -49,6 +49,11 @@ namespace ConsoleMenuTDD
         public override bool IsLeaf()
         {
             return false;
+        }
+
+        public override bool IsMenu()
+        {
+            return true;
         }
 
         public override List<Leaf> GetSubTreeLeaves()

@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace ConsoleMenuTDD
+namespace ConsoleMenu
 {
     [Serializable]
     public abstract class UserInterface
     {
         
-        public abstract void Show(Item item);
+        public abstract void Show(Handler handler, Data data);
     }
 }

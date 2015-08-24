@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using ConsoleMenuTDD;
+using ConsoleMenu;
 
-namespace ConsoleMenuTDD
+namespace ConsoleMenu
 {
     public class ExampleTree
     {

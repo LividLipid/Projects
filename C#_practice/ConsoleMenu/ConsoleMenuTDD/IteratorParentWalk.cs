@@ -1,4 +1,4 @@
-﻿namespace ConsoleMenuTDD
+﻿namespace ConsoleMenu
 {
     public class IteratorParentWalk : Iterator
     {

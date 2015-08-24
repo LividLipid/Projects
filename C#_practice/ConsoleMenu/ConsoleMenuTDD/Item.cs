@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ConsoleMenuTDD
+namespace ConsoleMenu
 {
     [Serializable]
     public abstract class Item
@@ -24,6 +24,7 @@ namespace ConsoleMenuTDD
         public abstract void RemoveChild(int i);
         public abstract bool IsSentinel();
         public abstract bool IsLeaf();
+        public abstract bool IsMenu();
         public abstract List<Leaf> GetSubTreeLeaves();
 
         public bool IsRoot()

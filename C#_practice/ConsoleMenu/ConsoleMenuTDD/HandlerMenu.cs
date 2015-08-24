@@ -1,13 +1,10 @@
 ﻿using System;
 
-namespace ConsoleMenuTDD
+namespace ConsoleMenu
 {
     [Serializable]
     public class HandlerMenu : Handler
     {
-        public UserInterface _ui = new UserInterfaceConsole();
-        public Saver _saver = new SaverBinarySerializer();
-
         public HandlerMenu()
         {
 

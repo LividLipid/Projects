@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using NUnit.Framework;
 
-namespace ConsoleMenuTDD
+namespace ConsoleMenu
 {
     [Serializable]
     public class Leaf : Item
@@ -34,6 +34,11 @@ namespace ConsoleMenuTDD
         public override bool IsLeaf()
         {
             return true;
+        }
+
+        public override bool IsMenu()
+        {
+            return false;
         }
 
         public override List<Leaf> GetSubTreeLeaves()

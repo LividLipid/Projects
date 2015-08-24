@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using ConsoleMenuTDD;
+using ConsoleMenu;
 
 namespace ConsoleMenuTests
 {

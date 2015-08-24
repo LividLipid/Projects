@@ -1,5 +1,5 @@
 ﻿using System;
-using ConsoleMenuTDD;
+using ConsoleMenu;
 
 namespace ConsoleMenuTests
 {
@@ -8,7 +8,7 @@ namespace ConsoleMenuTests
     {
         public bool HasBeenShown = false;
 
-        public override void Show(Item item)
+        public override void Show(Handler handler, Data data)
         {
             HasBeenShown = true;
         }

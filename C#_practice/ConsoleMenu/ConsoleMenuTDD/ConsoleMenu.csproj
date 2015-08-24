@@ -47,13 +47,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommandSave.cs" />
     <Compile Include="Command.cs" />
+    <Compile Include="CommandQuit.cs" />
     <Compile Include="CommandReturn.cs" />
+    <Compile Include="CommandSelect.cs" />
+    <Compile Include="Data.cs" />
+    <Compile Include="DataLeaf.cs" />
     <Compile Include="Handler.cs" />
     <Compile Include="IteratorLevelOrderWalk.cs" />
     <Compile Include="IteratorParentWalk.cs" />
     <Compile Include="ItemFactory.cs" />
     <Compile Include="HandlerMenu.cs" />
+    <Compile Include="DataMenu.cs" />
     <Compile Include="SaverBinarySerializer.cs" />
     <Compile Include="Leaf.cs" />
     <Compile Include="Item.cs" />
@@ -66,6 +72,7 @@
     <Compile Include="Saver.cs" />
     <Compile Include="UserInterface.cs" />
     <Compile Include="UserInterfaceConsole.cs" />
+    <Compile Include="UserInterfaceConsoleMenu.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

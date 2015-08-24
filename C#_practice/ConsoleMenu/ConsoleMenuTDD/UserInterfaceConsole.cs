@@ -1,14 +1,21 @@
 ﻿using System;
 
-namespace ConsoleMenuTDD
+namespace ConsoleMenu
 {
     [Serializable]
     public class UserInterfaceConsole : UserInterface
     {
+
         
-        public override void Show(Item item)
+
+        public override void Show(Handler handler, Data data)
         {
-            throw new System.NotImplementedException();
+            
+            if (data.GetType() == typeof (DataMenu))
+            {
+                var ui = new UserInterfaceConsoleMenu(handler, (DataMenu) data);
+                ui.Display_Menu();
+            }
         }
     }
 }

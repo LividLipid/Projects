@@ -1,14 +1,14 @@
 ﻿namespace ConsoleMenu
 {
-    public class CommandReturn : Command
+    public class CommandSave : Command
     {
-        public CommandReturn(Handler receiver) : base(receiver)
+        public CommandSave(Handler receiver) : base(receiver)
         {
         }
 
         public override void Execute()
         {
-            Receiver.ExecuteReturnCommand();
+            Receiver.ExecuteSaveCommand();
         }
 
         public override void UnExecute()

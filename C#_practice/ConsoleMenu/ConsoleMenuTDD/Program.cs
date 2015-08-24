@@ -5,18 +5,16 @@ using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
 
-namespace ConsoleMenuTDD
+namespace ConsoleMenu
 {
     public class Program
     {
         static void Main(string[] args)
         {
-            var testTree = new ExampleTree();
-            var knownLeaves = testTree.ListOfLeaves;
-            var foundLeaves = testTree.Root.GetSubTreeLeaves();
+            var tree = new ExampleTree().Root;
+            var handler = new HandlerMenu("Test", tree);
 
-            var areEqual = Enumerable.SequenceEqual(knownLeaves.OrderBy(t => t.Title), foundLeaves.OrderBy(t => t.Title));
-            //Console.WriteLine(areEqual);
+            handler.ShowTree();
         }
     }
 }

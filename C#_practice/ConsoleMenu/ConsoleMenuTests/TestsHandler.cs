@@ -1,4 +1,4 @@
-﻿using ConsoleMenuTDD;
+﻿using ConsoleMenu;
 using ConsoleMenuTests;
 using NUnit.Framework;
 

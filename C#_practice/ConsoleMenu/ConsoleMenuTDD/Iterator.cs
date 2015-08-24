@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ConsoleMenuTDD
+namespace ConsoleMenu
 {
     public abstract class Iterator
     {

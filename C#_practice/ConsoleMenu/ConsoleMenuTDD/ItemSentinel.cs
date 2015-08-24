@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ConsoleMenuTDD
+namespace ConsoleMenu
 {
     [Serializable]
     public class ItemSentinel : Item
@@ -30,6 +30,11 @@ namespace ConsoleMenuTDD
         }
 
         public override bool IsLeaf()
+        {
+            return false;
+        }
+
+        public override bool IsMenu()
         {
             return false;
         }
