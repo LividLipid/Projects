@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ConsoleMenu
 {
@@ -61,6 +62,14 @@ namespace ConsoleMenu
                 ExecuteQuitCommand();
         }
 
+        public void ExecuteNewItemCommand()
+        {
+
+            var creatableTypes = Item.GetCreatableItemTypes();
+            var data = new UIDataNewItem("Add new item", creatableTypes);
+            _ui.Show(this, data);
+        }
+
         public void ExecuteSaveCommand()
         {
 
@@ -77,6 +86,6 @@ namespace ConsoleMenu
         private void ForgetPreviousCommands()
         {
             ExecutedCommands = new List<Command>();
-    }
+        }
     }
 }

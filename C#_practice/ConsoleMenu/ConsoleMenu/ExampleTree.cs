@@ -25,6 +25,7 @@ namespace ConsoleMenu
 
         public ExampleTree()
         {
+            //var a = ItemFactory.Create(typeof(ItemLeaf), "A");
             var a = ItemFactory.Create(typeof(ItemMenu), "A");
             var b = ItemFactory.Create(typeof(ItemMenu), "B");
             var c = ItemFactory.Create(typeof(ItemLeaf), "C");
@@ -45,6 +46,7 @@ namespace ConsoleMenu
             ListOfNodes.Add(h);
             ListOfNodes.Add(i);
 
+            //ListOfLeaves.Add((ItemLeaf) a);
             ListOfLeaves.Add((ItemLeaf) c);
             ListOfLeaves.Add((ItemLeaf) e);
             ListOfLeaves.Add((ItemLeaf) h);

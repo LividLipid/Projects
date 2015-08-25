@@ -1,65 +1,59 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace ConsoleMenu
 {
-    public class ConsoleScreenMenu : ConsoleScreen
+    public abstract class ConsoleScreenMenu : ConsoleScreen
     {
-        private readonly List<Command> _menuCommands = new List<Command>();
-        private readonly List<string> _menuText = new List<string>();
-        private readonly List<int> _blankLineNrs = new List<int>();
-        private readonly bool _menuHasItems;
+        protected readonly List<Command> MenuCommands = new List<Command>();
+        protected readonly List<string> MenuText = new List<string>();
+        protected readonly List<int> BlankLineNrs = new List<int>();
+        protected bool MenuHasItems;
 
-        private int _cursorPosition = 0;
-        private int _firstEntryNumber = 1;
+        protected int CursorPosition = 0;
+        protected int FirstEntryNumber = 1;
 
-        public ConsoleScreenMenu(Handler handler, DataMenu data) : base(handler, data)
+        protected ConsoleScreenMenu(Handler handler, UIData data) : base(handler, data)
         {
-            var titles = data.ChildrenTitles;
-            _menuHasItems = titles.Count >= 1;
+        }
 
-            if (_menuHasItems)
-                BuildMenuEntriesSection(titles);
+        protected abstract void BuildMenuDefaultSection();
+        protected abstract void WriteInstructions(ConsoleColor color);
+        protected abstract void ProcessNonDigitInput(ConsoleKey keyPress);
+
+        protected void BuildMenu(List<string> entries)
+        {
+            if (MenuHasItems)
+                BuildMenuEntriesSection(entries);
             BuildMenuDefaultSection();
         }
 
-        private void BuildMenuEntriesSection(List<string> titles)
+        protected void BuildMenuEntriesSection(List<string> entries)
         {
-            for (var i = 0; i < titles.Count; i++)
+            for (var i = 0; i < entries.Count; i++)
             {
-                AddSelectLine(new CommandSelect(Handler, i), titles[i]);
+                AddSelectLine(new CommandSelect(Handler, i), entries[i]);
             }
             AddBlankLine();
         }
 
-        private void BuildMenuDefaultSection()
+        protected void AddSelectLine(Command cmd, string lineText)
         {
-            AddDefaultLine(new CommandReturn(Handler));
-            AddDefaultLine(new CommandNewItem(Handler));
-            AddDefaultLine(new CommandSave(Handler));
-
-            AddBlankLine();
-            AddDefaultLine(new CommandQuit(Handler));
+            MenuCommands.Add(cmd);
+            MenuText.Add(lineText);
         }
 
-        private void AddSelectLine(Command cmd, string lineText)
+        protected void AddDefaultLine(Command cmd)
         {
-            _menuCommands.Add(cmd);
-            _menuText.Add(lineText);
+            MenuCommands.Add(cmd);
+            MenuText.Add(cmd.GetDefaultText());
         }
 
-        private void AddDefaultLine(Command cmd)
+        protected void AddBlankLine()
         {
-            _menuCommands.Add(cmd);
-            _menuText.Add(cmd.GetDefaultText());
-        }
-
-        private void AddBlankLine()
-        {
-            _menuCommands.Add(new CommandNull(Handler));
-            _menuText.Add("");
-            _blankLineNrs.Add(_menuText.Count-1);
+            MenuCommands.Add(new CommandNull(Handler));
+            MenuText.Add("");
+            BlankLineNrs.Add(MenuText.Count - 1);
         }
 
         public override void Display()
@@ -72,14 +66,14 @@ namespace ConsoleMenu
             ChosenCommand.AddToCommandQueue();
         }
 
-        public void UpdateMenu()
+        protected void UpdateMenu()
         {
             PrintMenuText();
             ReadKey();
             LoopCursorPosition();
         }
 
-        private void ReadKey()
+        protected void ReadKey()
         {
             ConsoleKeyInfo cki = Console.ReadKey(true);
             bool keyIsDigit = char.IsDigit(cki.KeyChar);
@@ -89,62 +83,37 @@ namespace ConsoleMenu
                 ProcessNonDigitInput(cki.Key);
         }
 
-        private void ProcessDigitInput(char keyChar)
+        protected void ProcessDigitInput(char keyChar)
         {
             var digitMenuIndexed = (int)char.GetNumericValue(keyChar);
-            var digit = digitMenuIndexed - _firstEntryNumber;
+            var digit = digitMenuIndexed - FirstEntryNumber;
             ChooseCommand(digit);
         }
 
-        private void ProcessNonDigitInput(ConsoleKey keyPress)
+        protected void DecrementtCursorPosition()
         {
-            switch (keyPress)
-            {
-                case ConsoleKey.Enter:
-                    ChooseCommand(_cursorPosition);
-                    break;
-                case ConsoleKey.Escape:
-                    IssueReturnCommand();
-                    break;
-                case ConsoleKey.Backspace:
-                    IssueReturnCommand();
-                    break;
-                case ConsoleKey.Delete:
-                    IssueRemoveItemCommand();
-                    break;
-                case ConsoleKey.UpArrow:
-                    DecrementtCursorPosition();
-                    break;
-                case ConsoleKey.DownArrow:
-                    IncrementCursorPosition();
-                    break;
-            }
+            CursorPosition--;
+            if (BlankLineNrs.Contains(CursorPosition))
+                CursorPosition--;
         }
 
-        private void DecrementtCursorPosition()
+        protected void IncrementCursorPosition()
         {
-            _cursorPosition--;
-            if (_blankLineNrs.Contains(_cursorPosition))
-                _cursorPosition--;
+            CursorPosition++;
+            if (BlankLineNrs.Contains(CursorPosition))
+                CursorPosition++;
         }
 
-        private void IncrementCursorPosition()
-        {
-            _cursorPosition++;
-            if (_blankLineNrs.Contains(_cursorPosition))
-                _cursorPosition++;
-        }
-
-        private void PrintMenuText()
+        protected void PrintMenuText()
         {
             WriteTitleSection(ConsoleColor.Red);
-            if (!_menuHasItems)
+            if (!MenuHasItems)
                 WriteEmptyEntryMessage(ConsoleColor.Yellow);
             WriteEntrySection();
             WriteInstructions(ConsoleColor.Red);
         }
 
-        private void WriteTitleSection(ConsoleColor color)
+        protected void WriteTitleSection(ConsoleColor color)
         {
             Console.ForegroundColor = color;
             Console.Clear();
@@ -153,7 +122,7 @@ namespace ConsoleMenu
             Console.ResetColor();
         }
 
-        private void WriteEmptyEntryMessage(ConsoleColor color)
+        protected void WriteEmptyEntryMessage(ConsoleColor color)
         {
             Console.ForegroundColor = color;
             Console.WriteLine("This menu contains no items.");
@@ -161,30 +130,18 @@ namespace ConsoleMenu
             Console.ResetColor();
         }
 
-        private void WriteEntrySection()
+        protected void WriteEntrySection()
         {
-            for (int i = 0; i < _menuText.Count; i++)
+            for (int i = 0; i < MenuText.Count; i++)
             {
-                if (i == _cursorPosition)
-                    WriteHighlightedLine(_menuText[i]);
+                if (i == CursorPosition)
+                    WriteHighlightedLine(MenuText[i]);
                 else
-                    WriteLine(_menuText[i]);
+                    WriteLine(MenuText[i]);
             }
         }
 
-        private void WriteInstructions(ConsoleColor color)
-        {
-            Console.ForegroundColor = color;
-            Console.WriteLine();
-            Console.WriteLine("Select item with arrow keys and Enter.");
-            Console.WriteLine("Press Escape or Backspace to return.");
-            if (_menuHasItems)
-                Console.WriteLine("Press Delete to delete item.");
-            Console.WriteLine();
-            Console.ResetColor();
-        }
-
-        private void WriteHighlightedLine(string line)
+        protected void WriteHighlightedLine(string line)
         {
             Console.BackgroundColor = ConsoleColor.Gray;
             Console.ForegroundColor = ConsoleColor.Black;
@@ -192,36 +149,36 @@ namespace ConsoleMenu
             Console.ResetColor();
         }
 
-        private void WriteLine(string line)
+        protected void WriteLine(string line)
         {
             Console.WriteLine(line);
         }
 
-        private void LoopCursorPosition()
+        protected void LoopCursorPosition()
         {
-            if (_cursorPosition < 0)
-                _cursorPosition = _menuCommands.Count-1;
-            if (_cursorPosition > _menuCommands.Count-1)
-                _cursorPosition = 0;
+            if (CursorPosition < 0)
+                CursorPosition = MenuCommands.Count - 1;
+            if (CursorPosition > MenuCommands.Count - 1)
+                CursorPosition = 0;
         }
 
-        private void ChooseCommand(int entrySelection)
+        protected void ChooseCommand(int entrySelection)
         {
             if (IsSelectionWithinBounds(entrySelection))
-                ChosenCommand = _menuCommands[entrySelection];
+                ChosenCommand = MenuCommands[entrySelection];
         }
 
-        private bool IsSelectionWithinBounds(int entrySelection)
+        protected bool IsSelectionWithinBounds(int entrySelection)
         {
-            return (entrySelection >= 0) && (entrySelection <= _menuCommands.Count);
+            return (entrySelection >= 0) && (entrySelection <= MenuCommands.Count);
         }
 
-        private void IssueReturnCommand()
+        protected void IssueReturnCommand()
         {
             ChosenCommand = new CommandReturn(Handler);
         }
 
-        private void IssueQuitCommand()
+        protected void IssueQuitCommand()
         {
             ChosenCommand = new CommandQuit(Handler);
         }
@@ -234,6 +191,33 @@ namespace ConsoleMenu
         private void IssueRemoveItemCommand()
         {
             ChosenCommand = new CommandRemoveItem(Handler);
+        }
+
+        protected virtual void ProcessEnterKey()
+        {
+            ChooseCommand(CursorPosition);
+        }
+
+        protected virtual void ProcessEscapeKey()
+        {
+            IssueReturnCommand();
+        }
+        protected virtual void ProcessBackspaceKey()
+        {
+            IssueReturnCommand();
+        }
+        protected virtual void ProcessDeleteKey()
+        {
+            IssueRemoveItemCommand();
+        }
+        protected virtual void ProcessUpArrowKey()
+        {
+            DecrementtCursorPosition();
+        }
+
+        protected virtual void ProcessDownArrowKey()
+        {
+            IncrementCursorPosition();
         }
     }
 }

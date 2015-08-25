@@ -6,12 +6,14 @@ namespace ConsoleMenu
     public class UserInterfaceConsole : UserInterface
     {
 
-        public override void Show(Handler handler, Data data)
+        public override void Show(Handler handler, UIData data)
         {
-            if (data.GetType() == typeof(DataMenu))
-                new ConsoleScreenMenu(handler, (DataMenu) data).Display();
-            if (data.GetType() == typeof(DataLeaf))
-                new ConsoleScreenLeaf(handler, (DataLeaf)data).Display();
+            if (data.GetType() == typeof(UIDataMenu))
+                new ConsoleScreenMenuMain(handler, (UIDataMenu) data).Display();
+            if (data.GetType() == typeof(UIDataLeaf))
+                new ConsoleScreenLeaf(handler, (UIDataLeaf)data).Display();
+            if (data.GetType() == typeof(UIDataNewItem))
+                new ConsoleScreenMenuAddNew(handler, (UIDataNewItem)data).Display();
         }
     }
 }

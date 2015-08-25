@@ -5,7 +5,7 @@ namespace ConsoleMenu
     public class ConsoleScreenLeaf : ConsoleScreen
     {
 
-        public ConsoleScreenLeaf(Handler handler, Data data) : base(handler, data)
+        public ConsoleScreenLeaf(Handler handler, UIData data) : base(handler, data)
         {
 
         }
@@ -20,13 +20,16 @@ namespace ConsoleMenu
 
         public virtual void PrintLeafText()
         {
-
-            Console.ForegroundColor = ConsoleColor.Yellow;
             Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine(Title);
             Console.WriteLine();
+
+            Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("Empty leaf.");
             Console.WriteLine();
+
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("Press any key to return.");
             Console.WriteLine();
             Console.ResetColor();

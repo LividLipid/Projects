@@ -44,9 +44,14 @@ namespace ConsoleMenu
             throw new Exception("A sentinel has no leaves.");
         }
 
-        public override Data GetDataStructure()
+        public override UIData GetDataStructure()
         {
             throw new NotImplementedException();
+        }
+
+        public override string GetItemTypeName()
+        {
+            return "Sentinel";
         }
     }
 }

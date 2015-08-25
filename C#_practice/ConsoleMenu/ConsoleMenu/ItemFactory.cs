@@ -12,6 +12,8 @@ namespace ConsoleMenu
                     return new ItemMenu(title);
                 case "ItemLeaf":
                     return new ItemLeaf(title);
+                case "ItemLeafRSS":
+                    return new ItemLeafRSS(title);
                 case "ItemSentinel":
                     return new ItemSentinel(title);
                 default:

@@ -46,13 +46,14 @@ namespace ConsoleMenu
             return new List<ItemLeaf>() { this };
         }
 
-        public override Data GetDataStructure()
+        public override UIData GetDataStructure()
         {
-            var itemData = new DataLeaf()
-            {
-                Title = Title,
-            };
-            return itemData;
+            return new UIDataLeaf(Title);
+        }
+
+        public override string GetItemTypeName()
+        {
+            return "Blank leaf";
         }
     }
 }

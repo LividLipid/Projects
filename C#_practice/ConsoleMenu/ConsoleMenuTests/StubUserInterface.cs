@@ -8,7 +8,7 @@ namespace ConsoleMenuTests
     {
         public bool HasBeenShown = false;
 
-        public override void Show(Handler handler, Data data)
+        public override void Show(Handler handler, UIData data)
         {
             HasBeenShown = true;
         }

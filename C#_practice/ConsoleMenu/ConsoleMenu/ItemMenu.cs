@@ -69,14 +69,14 @@ namespace ConsoleMenu
             return leaves;
         }
 
-        public override Data GetDataStructure()
+        public override UIData GetDataStructure()
         {
-            var itemData = new DataMenu()
-            {
-                Title = Title,
-                ChildrenTitles = GetChildrenTitles()
-            };
-            return itemData;
+            return new UIDataMenu(Title, GetChildrenTitles());
+        }
+
+        public override string GetItemTypeName()
+        {
+            return "Menu";
         }
 
         public List<string> GetChildrenTitles()

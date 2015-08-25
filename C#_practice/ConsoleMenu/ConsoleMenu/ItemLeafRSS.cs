@@ -8,14 +8,14 @@
         {
         }
 
-        public override Data GetDataStructure()
+        public override UIData GetDataStructure()
         {
-            var itemData = new DataLeafRSS()
-            {
-                Title = Title,
-                Address = Address
-            };
-            return itemData;
+            return new UIDataLeafRSS(Title, Address);
+        }
+
+        public override string GetItemTypeName()
+        {
+            return "RSS Feed";
         }
     }
 }

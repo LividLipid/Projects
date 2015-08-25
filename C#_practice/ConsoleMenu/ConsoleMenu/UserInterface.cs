@@ -6,6 +6,6 @@ namespace ConsoleMenu
     public abstract class UserInterface
     {
         
-        public abstract void Show(Handler handler, Data data);
+        public abstract void Show(Handler handler, UIData data);
     }
 }
