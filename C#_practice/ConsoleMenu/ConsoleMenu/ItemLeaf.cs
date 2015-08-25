@@ -50,7 +50,7 @@ namespace ConsoleMenu
         {
             var itemData = new DataLeaf()
             {
-                LeafTitle = Title,
+                Title = Title,
             };
             return itemData;
         }

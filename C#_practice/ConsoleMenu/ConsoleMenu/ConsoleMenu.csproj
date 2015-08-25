@@ -47,7 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommandNew.cs" />
+    <Compile Include="CommandNewItem.cs" />
     <Compile Include="CommandNull.cs" />
     <Compile Include="CommandRemoveItem.cs" />
     <Compile Include="CommandSave.cs" />
@@ -55,6 +55,7 @@
     <Compile Include="CommandQuit.cs" />
     <Compile Include="CommandReturn.cs" />
     <Compile Include="CommandSelect.cs" />
+    <Compile Include="ConsoleScreen.cs" />
     <Compile Include="Data.cs" />
     <Compile Include="DataLeaf.cs" />
     <Compile Include="DataLeafRSS.cs" />
@@ -77,8 +78,8 @@
     <Compile Include="Saver.cs" />
     <Compile Include="UserInterface.cs" />
     <Compile Include="UserInterfaceConsole.cs" />
-    <Compile Include="UserInterfaceConsoleLeaf.cs" />
-    <Compile Include="UserInterfaceConsoleMenu.cs" />
+    <Compile Include="ConsoleScreenLeaf.cs" />
+    <Compile Include="ConsoleScreenMenu.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

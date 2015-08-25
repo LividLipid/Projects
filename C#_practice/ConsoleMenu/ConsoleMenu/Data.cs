@@ -2,6 +2,6 @@
 {
     public class Data
     {
-         
+        public string Title;
     }
 }

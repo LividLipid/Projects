@@ -2,34 +2,31 @@
 
 namespace ConsoleMenu
 {
-    public class UserInterfaceConsoleLeaf
+    public class ConsoleScreenLeaf : ConsoleScreen
     {
-        private string _title ;
-        private Handler _handler;
-        private Command _chosenCommand;
 
-        public UserInterfaceConsoleLeaf(Handler handler, DataLeaf data)
+        public ConsoleScreenLeaf(Handler handler, Data data) : base(handler, data)
         {
-            _title = data.LeafTitle;
-            _handler = handler;
+
         }
 
-        public virtual void DisplayLeaf()
+        public override void Display()
         {
             PrintLeafText();
             ReadKey();
             IssureReturnCommand();
-            _chosenCommand.AddToCommandQueue();
+            ChosenCommand.AddToCommandQueue();
         }
 
         public virtual void PrintLeafText()
         {
 
-            Console.ForegroundColor = ConsoleColor.Red;
+            Console.ForegroundColor = ConsoleColor.Yellow;
             Console.Clear();
-            Console.WriteLine(_title);
+            Console.WriteLine(Title);
             Console.WriteLine();
             Console.WriteLine("Empty leaf.");
+            Console.WriteLine();
             Console.WriteLine("Press any key to return.");
             Console.WriteLine();
             Console.ResetColor();
@@ -42,7 +39,8 @@ namespace ConsoleMenu
 
         private void IssureReturnCommand()
         {
-            _chosenCommand = new CommandReturn(_handler);
+            ChosenCommand = new CommandReturn(Handler);
         }
+
     }
 }

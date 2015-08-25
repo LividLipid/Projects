@@ -4,54 +4,43 @@ using System.Linq;
 
 namespace ConsoleMenu
 {
-    public class UserInterfaceConsoleMenu
+    public class ConsoleScreenMenu : ConsoleScreen
     {
-        private Handler _handler;
-        private string _menuTitle;
-        private List<Command> _menuCommands = new List<Command>();
-        private List<string> _menuText = new List<string>();
-        private List<int> _blankLineNrs = new List<int>();
-        private bool _menuHasItems;
+        private readonly List<Command> _menuCommands = new List<Command>();
+        private readonly List<string> _menuText = new List<string>();
+        private readonly List<int> _blankLineNrs = new List<int>();
+        private readonly bool _menuHasItems;
 
         private int _cursorPosition = 0;
         private int _firstEntryNumber = 1;
 
-        private Command _chosenCommand;
-
-        public UserInterfaceConsoleMenu(Handler handler, DataMenu data)
+        public ConsoleScreenMenu(Handler handler, DataMenu data) : base(handler, data)
         {
-            _handler = handler;
-            _menuTitle = data.MenuTitle;
-
             var titles = data.ChildrenTitles;
             _menuHasItems = titles.Count >= 1;
 
             if (_menuHasItems)
-                BuildMenu(titles);
-            else
-                BuildEmptyMenu(titles);
+                BuildMenuEntriesSection(titles);
+            BuildMenuDefaultSection();
         }
 
-        private void BuildMenu(List<string> titles)
+        private void BuildMenuEntriesSection(List<string> titles)
         {
             for (var i = 0; i < titles.Count; i++)
             {
-                AddSelectLine(new CommandSelect(_handler, i), titles[i]);
+                AddSelectLine(new CommandSelect(Handler, i), titles[i]);
             }
             AddBlankLine();
-            AddDefaultLine(new CommandReturn(_handler));
-            AddDefaultLine(new CommandNew(_handler));
-            AddDefaultLine(new CommandSave(_handler));
-            
-            AddBlankLine();
-            AddDefaultLine(new CommandQuit(_handler));
         }
 
-        private void BuildEmptyMenu(List<string> titles)
+        private void BuildMenuDefaultSection()
         {
-            AddDefaultLine(new CommandReturn(_handler));
+            AddDefaultLine(new CommandReturn(Handler));
+            AddDefaultLine(new CommandNewItem(Handler));
+            AddDefaultLine(new CommandSave(Handler));
+
             AddBlankLine();
-            AddDefaultLine(new CommandQuit(_handler));
+            AddDefaultLine(new CommandQuit(Handler));
         }
 
         private void AddSelectLine(Command cmd, string lineText)
@@ -68,19 +57,19 @@ namespace ConsoleMenu
 
         private void AddBlankLine()
         {
-            _menuCommands.Add(new CommandNull(_handler));
+            _menuCommands.Add(new CommandNull(Handler));
             _menuText.Add("");
             _blankLineNrs.Add(_menuText.Count-1);
         }
 
-        public void DisplayMenu()
+        public override void Display()
         {
             do
             {
                 UpdateMenu();
-            } while (_chosenCommand == null);
+            } while (ChosenCommand == null);
 
-            _chosenCommand.AddToCommandQueue();
+            ChosenCommand.AddToCommandQueue();
         }
 
         public void UpdateMenu()
@@ -159,7 +148,7 @@ namespace ConsoleMenu
         {
             Console.ForegroundColor = color;
             Console.Clear();
-            Console.WriteLine(_menuTitle);
+            Console.WriteLine(Title);
             Console.WriteLine();
             Console.ResetColor();
         }
@@ -219,7 +208,7 @@ namespace ConsoleMenu
         private void ChooseCommand(int entrySelection)
         {
             if (IsSelectionWithinBounds(entrySelection))
-                _chosenCommand = _menuCommands[entrySelection];
+                ChosenCommand = _menuCommands[entrySelection];
         }
 
         private bool IsSelectionWithinBounds(int entrySelection)
@@ -229,22 +218,22 @@ namespace ConsoleMenu
 
         private void IssueReturnCommand()
         {
-            _chosenCommand = new CommandReturn(_handler);
+            ChosenCommand = new CommandReturn(Handler);
         }
 
         private void IssueQuitCommand()
         {
-            _chosenCommand = new CommandQuit(_handler);
+            ChosenCommand = new CommandQuit(Handler);
         }
 
         private void IssueSaveCommand()
         {
-            _chosenCommand = new CommandSave(_handler);
+            ChosenCommand = new CommandSave(Handler);
         }
 
         private void IssueRemoveItemCommand()
         {
-            _chosenCommand = new CommandRemoveItem(_handler);
+            ChosenCommand = new CommandRemoveItem(Handler);
         }
     }
 }

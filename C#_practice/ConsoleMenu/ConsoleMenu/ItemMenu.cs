@@ -73,7 +73,7 @@ namespace ConsoleMenu
         {
             var itemData = new DataMenu()
             {
-                MenuTitle = Title,
+                Title = Title,
                 ChildrenTitles = GetChildrenTitles()
             };
             return itemData;

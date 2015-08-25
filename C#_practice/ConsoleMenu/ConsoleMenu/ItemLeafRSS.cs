@@ -12,7 +12,7 @@
         {
             var itemData = new DataLeafRSS()
             {
-                LeafTitle = Title,
+                Title = Title,
                 Address = Address
             };
             return itemData;

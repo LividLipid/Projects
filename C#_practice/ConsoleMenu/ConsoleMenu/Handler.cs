@@ -40,7 +40,6 @@ namespace ConsoleMenu
         {
             _currentItem = item;
             var data = item.GetDataStructure();
-
             _ui.Show(this, data);
 
             var nextCommand = CommandsToExecute.Dequeue();
