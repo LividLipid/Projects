@@ -1,8 +1,8 @@
 ﻿namespace ConsoleMenu
 {
-    public class CommandAddMenu : Command
+    public class CommandNew : Command
     {
-        public CommandAddMenu(Handler receiver) : base(receiver)
+        public CommandNew(Handler receiver) : base(receiver)
         {
         }
 
@@ -23,7 +23,7 @@
 
         public override string GetDefaultText()
         {
-            return "Add new menu";
+            return "New";
         }
     }
 }

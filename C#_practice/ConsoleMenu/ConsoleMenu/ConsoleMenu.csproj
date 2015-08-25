@@ -47,7 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommandAddMenu.cs" />
+    <Compile Include="CommandNew.cs" />
     <Compile Include="CommandNull.cs" />
     <Compile Include="CommandRemoveItem.cs" />
     <Compile Include="CommandSave.cs" />
@@ -57,16 +57,18 @@
     <Compile Include="CommandSelect.cs" />
     <Compile Include="Data.cs" />
     <Compile Include="DataLeaf.cs" />
+    <Compile Include="DataLeafRSS.cs" />
     <Compile Include="Handler.cs" />
     <Compile Include="IteratorLevelOrderWalk.cs" />
     <Compile Include="IteratorParentWalk.cs" />
     <Compile Include="ItemFactory.cs" />
     <Compile Include="HandlerMenu.cs" />
     <Compile Include="DataMenu.cs" />
+    <Compile Include="ItemLeafRSS.cs" />
     <Compile Include="SaverBinarySerializer.cs" />
-    <Compile Include="Leaf.cs" />
+    <Compile Include="ItemLeaf.cs" />
     <Compile Include="Item.cs" />
-    <Compile Include="Menu.cs" />
+    <Compile Include="ItemMenu.cs" />
     <Compile Include="Iterator.cs" />
     <Compile Include="ItemSentinel.cs" />
     <Compile Include="Program.cs" />
@@ -75,6 +77,7 @@
     <Compile Include="Saver.cs" />
     <Compile Include="UserInterface.cs" />
     <Compile Include="UserInterfaceConsole.cs" />
+    <Compile Include="UserInterfaceConsoleLeaf.cs" />
     <Compile Include="UserInterfaceConsoleMenu.cs" />
   </ItemGroup>
   <ItemGroup>

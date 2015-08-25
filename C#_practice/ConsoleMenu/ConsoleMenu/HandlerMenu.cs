@@ -13,7 +13,7 @@ namespace ConsoleMenu
         public HandlerMenu(string name)
         {
             _treeName = name;
-            SetTreeRoot(new Menu("Main Menu"));
+            SetTreeRoot(new ItemMenu("Main Menu"));
         }
 
         public HandlerMenu(string name, Item tree)

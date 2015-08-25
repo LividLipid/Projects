@@ -44,7 +44,7 @@ namespace ConsoleMenuTests
             var currentItem = arrangedItem;
             while (currentLevel >= FirstLevel)
             {
-                var higherItem = CreateTestItem(currentLevel, typeof(Menu));
+                var higherItem = CreateTestItem(currentLevel, typeof(ItemMenu));
                 higherItem.AddChild(currentItem);
                 currentItem = higherItem;
                 currentLevel--;
@@ -87,50 +87,50 @@ namespace ConsoleMenuTests
         [Test]
         public void CreateEmptyMenu()
         {
-            var menu = (Menu)ArrangeItemAtLevel(FirstLevel, typeof(Menu));
-            Assert.IsInstanceOf(typeof(Menu), menu);
+            var menu = (ItemMenu)ArrangeItemAtLevel(FirstLevel, typeof(ItemMenu));
+            Assert.IsInstanceOf(typeof(ItemMenu), menu);
         }
 
         [Test]
         public void CreateGenericLeaf()
         {
-            var leaf = (Leaf)ArrangeItemAtLevel(2, typeof(Leaf));
-            Assert.IsInstanceOf(typeof(Leaf), leaf);
+            var leaf = (ItemLeaf)ArrangeItemAtLevel(2, typeof(ItemLeaf));
+            Assert.IsInstanceOf(typeof(ItemLeaf), leaf);
         }
 
         [Test]
         public void MenuIsComponentSubtype()
         {
-            var menu = (Menu)ArrangeItemAtLevel(FirstLevel, typeof(Menu));
+            var menu = (ItemMenu)ArrangeItemAtLevel(FirstLevel, typeof(ItemMenu));
             Assert.True(menu.GetType().IsSubclassOf(typeof(Item)));
         }
 
         [Test]
         public void ReadMenuTitle()
         {
-            var menu = (Menu)ArrangeItemAtLevel(FirstLevel, typeof(Menu));
-            Assert.True(menu.Title == CreateTestItemTitle(FirstLevel, typeof(Menu)));
+            var menu = (ItemMenu)ArrangeItemAtLevel(FirstLevel, typeof(ItemMenu));
+            Assert.True(menu.Title == CreateTestItemTitle(FirstLevel, typeof(ItemMenu)));
         }
 
         [Test]
         public void AddSubMenu_ToEmptyMenu_TitleIsCorrect()
         {
             var level = 2;
-            var submenu = (Menu)ArrangeItemAtLevel(level, typeof(Menu));
-            Assert.True(submenu.Title == CreateTestItemTitle(level, typeof(Menu)));
+            var submenu = (ItemMenu)ArrangeItemAtLevel(level, typeof(ItemMenu));
+            Assert.True(submenu.Title == CreateTestItemTitle(level, typeof(ItemMenu)));
         }
 
         [Test]
         public void RemoveSubMenu_FromEmptyMenu_NothingHappens()
         {
-            var menu = (Menu)ArrangeItemAtLevel(FirstLevel, typeof(Menu));
+            var menu = (ItemMenu)ArrangeItemAtLevel(FirstLevel, typeof(ItemMenu));
             menu.RemoveChild(0);
         }
         
         [Test]
         public void RemoveSubMenu_FromNonEmptyMenu_SubMenuIsGone()
         {
-            var mainMenu = (Menu)ArrangeItemAtLevelAndReturnRoot(2, typeof(Menu));
+            var mainMenu = (ItemMenu)ArrangeItemAtLevelAndReturnRoot(2, typeof(ItemMenu));
             mainMenu.RemoveChild(0);
 
             Assert.True(mainMenu.ChildrenCount == 0);
@@ -139,7 +139,7 @@ namespace ConsoleMenuTests
         [Test]
         public void GetChildrenTitles_FromEmptyMenu_ListIsEmpty()
         {
-            var menu = (Menu)ArrangeItemAtLevel(FirstLevel, typeof(Menu));
+            var menu = (ItemMenu)ArrangeItemAtLevel(FirstLevel, typeof(ItemMenu));
             var titles = menu.GetChildrenTitles();
             Assert.IsEmpty(titles);
         }
@@ -147,11 +147,11 @@ namespace ConsoleMenuTests
         [Test]
         public void GetChildrenTitles_FromNonEmptyMenu_ListIsCorrect()
         {
-            var mainMenu = (Menu)ArrangeItemAtLevel(FirstLevel, typeof(Menu));
+            var mainMenu = (ItemMenu)ArrangeItemAtLevel(FirstLevel, typeof(ItemMenu));
             var title1 = "Submenu1";
             var title2 = "Submenu2";
-            mainMenu.AddChild(new Menu(title1));
-            mainMenu.AddChild(new Menu(title2));
+            mainMenu.AddChild(new ItemMenu(title1));
+            mainMenu.AddChild(new ItemMenu(title2));
             var subMenuTitles = new List<string> {title1, title2};
             var readTitles = mainMenu.GetChildrenTitles();
             Assert.True(subMenuTitles.SequenceEqual(readTitles));
@@ -160,7 +160,7 @@ namespace ConsoleMenuTests
         [Test]
         public void ChildHasParent()
         {
-            var subMenu = (Menu)ArrangeItemAtLevel(2, typeof(Menu));
+            var subMenu = (ItemMenu)ArrangeItemAtLevel(2, typeof(ItemMenu));
             var mainMenu = subMenu.GetRoot();
             Assert.True(mainMenu.Equals(subMenu.Parent));
         }
@@ -168,28 +168,28 @@ namespace ConsoleMenuTests
         [Test]
         public void GetParent_OfRoot_IsSentinel()
         {
-            var mainMenu = (Menu)ArrangeItemAtLevel(FirstLevel, typeof(Menu));
+            var mainMenu = (ItemMenu)ArrangeItemAtLevel(FirstLevel, typeof(ItemMenu));
             Assert.True(mainMenu.Parent.IsSentinel());
         }
 
         [Test]
         public void CheckIfRoot_IsNotRoot_ReturnsFalse()
         {
-            var subMenu = (Menu)ArrangeItemAtLevel(2, typeof(Menu));
+            var subMenu = (ItemMenu)ArrangeItemAtLevel(2, typeof(ItemMenu));
             Assert.False(subMenu.IsRoot());
         }
 
         [Test]
         public void CheckIfRoot_IsRoot_ReturnsTrue()
         {
-            var mainMenu = (Menu)ArrangeItemAtLevelAndReturnRoot(2, typeof(Menu));
+            var mainMenu = (ItemMenu)ArrangeItemAtLevelAndReturnRoot(2, typeof(ItemMenu));
             Assert.True(mainMenu.IsRoot());
         }
 
         [Test]
         public void FindRoot_FromRoot_ReturnsSelf()
         {
-            var mainMenu = (Menu)ArrangeItemAtLevelAndReturnRoot(3, typeof(Menu));
+            var mainMenu = (ItemMenu)ArrangeItemAtLevelAndReturnRoot(3, typeof(ItemMenu));
             var root = mainMenu.GetRoot();
             Assert.True(root.Equals(mainMenu));
         }
@@ -197,7 +197,7 @@ namespace ConsoleMenuTests
         [Test]
         public void FindRoot_FromNestedMenu_ReturnsRoot()
         {
-            var grandchild = (Menu) ArrangeItemAtLevel(FirstLevel + 2, typeof (Menu));
+            var grandchild = (ItemMenu) ArrangeItemAtLevel(FirstLevel + 2, typeof (ItemMenu));
             var root = grandchild.GetRoot();
             Assert.True(root.IsRoot());
         }
@@ -205,7 +205,7 @@ namespace ConsoleMenuTests
         [Test]
         public void FindRoot_FromNestedLeaf_ReturnsRoot()
         {
-            var leaf = (Leaf) ArrangeItemAtLevel(FirstLevel + 3, typeof(Leaf));
+            var leaf = (ItemLeaf) ArrangeItemAtLevel(FirstLevel + 3, typeof(ItemLeaf));
             var root = leaf.GetRoot();
             Assert.True(root.IsRoot());
         }
@@ -214,8 +214,8 @@ namespace ConsoleMenuTests
         [ExpectedException]
         public void AddChild_ToLeaf_ThrowsException()
         {
-            var leaf1 = (Leaf)ArrangeItemAtLevel(FirstLevel, typeof(Leaf));
-            var leaf2 = (Leaf)ArrangeItemAtLevel(FirstLevel, typeof(Leaf));
+            var leaf1 = (ItemLeaf)ArrangeItemAtLevel(FirstLevel, typeof(ItemLeaf));
+            var leaf2 = (ItemLeaf)ArrangeItemAtLevel(FirstLevel, typeof(ItemLeaf));
 
             leaf1.AddChild(leaf2);
         }
@@ -262,8 +262,8 @@ namespace ConsoleMenuTests
         [ExpectedException]
         public void AddChild_IsAlreadyInTree_ThrowsException()
         {
-            var mainMenu = CreateTestItem(FirstLevel, typeof (Menu));
-            var subMenu = CreateTestItem(FirstLevel + 1, typeof(Menu));
+            var mainMenu = CreateTestItem(FirstLevel, typeof (ItemMenu));
+            var subMenu = CreateTestItem(FirstLevel + 1, typeof(ItemMenu));
 
             mainMenu.AddChild(subMenu);
             mainMenu.AddChild(subMenu);
@@ -283,7 +283,7 @@ namespace ConsoleMenuTests
         public void CheckIfItemIsInTree_IsNotInTree_ReturnsFalse()
         {
             var testTree = new ExampleTree();
-            var targetNode = CreateTestItem(1, typeof (Menu));
+            var targetNode = CreateTestItem(1, typeof (ItemMenu));
             var originNode = testTree.ListOfNodes.Last();
 
             Assert.False(originNode.HasInTree(targetNode));
@@ -303,8 +303,8 @@ namespace ConsoleMenuTests
         [Test]
         public void GetSubTreeLeaves_FromLeaf_ReturnsSelf()
         {
-            var menu = new Menu("Mainmenu");
-            var leaf = new Leaf("Leaf");
+            var menu = new ItemMenu("Mainmenu");
+            var leaf = new ItemLeaf("Leaf");
             menu.AddChild(leaf);
             var leaves = leaf.GetSubTreeLeaves();
             bool returnedSelf = (leaf == leaves.First()) && (leaf == leaves.Last());

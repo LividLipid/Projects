@@ -39,9 +39,14 @@ namespace ConsoleMenu
             return false;
         }
 
-        public override List<Leaf> GetSubTreeLeaves()
+        public override List<ItemLeaf> GetSubTreeLeaves()
         {
             throw new Exception("A sentinel has no leaves.");
+        }
+
+        public override Data GetDataStructure()
+        {
+            throw new NotImplementedException();
         }
     }
 }

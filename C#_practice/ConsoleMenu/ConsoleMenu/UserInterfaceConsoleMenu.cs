@@ -39,9 +39,10 @@ namespace ConsoleMenu
                 AddSelectLine(new CommandSelect(_handler, i), titles[i]);
             }
             AddBlankLine();
-            AddDefaultLine(new CommandAddMenu(_handler));
-            AddDefaultLine(new CommandSave(_handler));
             AddDefaultLine(new CommandReturn(_handler));
+            AddDefaultLine(new CommandNew(_handler));
+            AddDefaultLine(new CommandSave(_handler));
+            
             AddBlankLine();
             AddDefaultLine(new CommandQuit(_handler));
         }
@@ -72,7 +73,7 @@ namespace ConsoleMenu
             _blankLineNrs.Add(_menuText.Count-1);
         }
 
-        public void Display_Menu()
+        public void DisplayMenu()
         {
             do
             {

@@ -25,7 +25,8 @@ namespace ConsoleMenu
         public abstract bool IsSentinel();
         public abstract bool IsLeaf();
         public abstract bool IsMenu();
-        public abstract List<Leaf> GetSubTreeLeaves();
+        public abstract List<ItemLeaf> GetSubTreeLeaves();
+        public abstract Data GetDataStructure();
 
         public bool IsRoot()
         {
@@ -42,7 +43,7 @@ namespace ConsoleMenu
             if (IsRoot())
                 return this;
             var i = new IteratorParentWalk(this);
-            return (Menu)i.GetFinal();
+            return (ItemMenu)i.GetFinal();
         }
 
         public bool HasInTree(Item item)

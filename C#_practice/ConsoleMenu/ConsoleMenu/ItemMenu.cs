@@ -6,11 +6,11 @@ using System.Runtime.CompilerServices;
 namespace ConsoleMenu
 {
     [Serializable]
-    public class Menu : Item
+    public class ItemMenu : Item
     {
         private readonly List<Item> _children = new List<Item>();
 
-        public Menu(string title) : base(title)
+        public ItemMenu(string title) : base(title)
         {
             Parent = new ItemSentinel("Sentinel");
         }
@@ -56,17 +56,27 @@ namespace ConsoleMenu
             return true;
         }
 
-        public override List<Leaf> GetSubTreeLeaves()
+        public override List<ItemLeaf> GetSubTreeLeaves()
         {
-            var leaves = new List<Leaf>();
+            var leaves = new List<ItemLeaf>();
             var i = new IteratorLevelOrderWalk(this);
             while (!i.IsDone())
             {
                 if (i.CurrentItem().IsLeaf())
-                    leaves.Add((Leaf)i.CurrentItem());
+                    leaves.Add((ItemLeaf)i.CurrentItem());
                 i.Next();
             }
             return leaves;
+        }
+
+        public override Data GetDataStructure()
+        {
+            var itemData = new DataMenu()
+            {
+                MenuTitle = Title,
+                ChildrenTitles = GetChildrenTitles()
+            };
+            return itemData;
         }
 
         public List<string> GetChildrenTitles()

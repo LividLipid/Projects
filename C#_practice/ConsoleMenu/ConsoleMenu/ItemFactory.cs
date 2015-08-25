@@ -8,10 +8,10 @@ namespace ConsoleMenu
         {
             switch (itemType.Name)
             {
-                case "Menu":
-                    return new Menu(title);
-                case "Leaf":
-                    return new Leaf(title);
+                case "ItemMenu":
+                    return new ItemMenu(title);
+                case "ItemLeaf":
+                    return new ItemLeaf(title);
                 case "ItemSentinel":
                     return new ItemSentinel(title);
                 default:

@@ -39,20 +39,12 @@ namespace ConsoleMenu
         public void ShowItem(Item item)
         {
             _currentItem = item;
+            var data = item.GetDataStructure();
 
-            if (item.IsMenu())
-            {
-                var menuItem = (Menu) item;
-                var itemData = new DataMenu()
-                {
-                    MenuTitle = menuItem.Title,
-                    ChildrenTitles = menuItem.GetChildrenTitles()
-                };
-                _ui.Show(this, itemData);
+            _ui.Show(this, data);
 
-                var nextCommand = CommandsToExecute.Dequeue();
-                nextCommand.Execute();
-            }
+            var nextCommand = CommandsToExecute.Dequeue();
+            nextCommand.Execute();
         }
 
         public void ExecuteQuitCommand()

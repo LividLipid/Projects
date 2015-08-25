@@ -5,9 +5,9 @@ using NUnit.Framework;
 namespace ConsoleMenu
 {
     [Serializable]
-    public class Leaf : Item
+    public class ItemLeaf : Item
     {
-        public Leaf(string title) : base(title)
+        public ItemLeaf(string title) : base(title)
         {
             Parent = new ItemSentinel("Sentinel");
         }
@@ -41,9 +41,18 @@ namespace ConsoleMenu
             return false;
         }
 
-        public override List<Leaf> GetSubTreeLeaves()
+        public override List<ItemLeaf> GetSubTreeLeaves()
         {
-            return new List<Leaf>() { this };
+            return new List<ItemLeaf>() { this };
+        }
+
+        public override Data GetDataStructure()
+        {
+            var itemData = new DataLeaf()
+            {
+                LeafTitle = Title,
+            };
+            return itemData;
         }
     }
 }
