@@ -6,6 +6,7 @@ namespace ConsoleMenu
     public abstract class Command
     {
         protected Handler Receiver;
+        public string TextSpcecification;
 
         protected Command(Handler receiver)
         {
@@ -28,5 +29,15 @@ namespace ConsoleMenu
 
         public abstract bool IsUndoable();
         public abstract string GetDefaultText();
+
+        public virtual bool RequiresTextSpecification()
+        {
+            return false;
+        }
+
+        public void SetTextSpecification(string text)
+        {
+            TextSpcecification = text;
+        }
     }
 }

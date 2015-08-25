@@ -1,14 +1,14 @@
 ﻿namespace ConsoleMenu
 {
-    public class CommandNewItem : Command
+    public class CommandRefresh : Command
     {
-        public CommandNewItem(Handler receiver) : base(receiver)
+        public CommandRefresh(Handler receiver) : base(receiver)
         {
         }
 
         public override void Execute()
         {
-            Receiver.ExecuteNewItemCommand();
+            Receiver.ExecuteRefreshCommand();
         }
 
         public override void UnExecute()
@@ -18,12 +18,12 @@
 
         public override bool IsUndoable()
         {
-            return true;
+            return false;
         }
 
         public override string GetDefaultText()
         {
-            return "New item";
+            return "Refresh";
         }
     }
 }

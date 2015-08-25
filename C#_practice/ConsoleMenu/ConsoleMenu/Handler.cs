@@ -43,8 +43,18 @@ namespace ConsoleMenu
             var data = item.GetDataStructure();
             _ui.Show(this, data);
 
+            ExecuteNext();
+        }
+
+        private void ExecuteNext()
+        {
             var nextCommand = CommandsToExecute.Dequeue();
             nextCommand.Execute();
+        }
+
+        public void ExecuteRefreshCommand()
+        {
+            ShowItem(_currentItem);
         }
 
         public void ExecuteQuitCommand()
@@ -62,12 +72,21 @@ namespace ConsoleMenu
                 ExecuteQuitCommand();
         }
 
-        public void ExecuteNewItemCommand()
+        public void ExecuteSelectNewItemCommand()
         {
-
             var creatableTypes = Item.GetCreatableItemTypes();
             var data = new UIDataNewItem("Add new item", creatableTypes);
             _ui.Show(this, data);
+
+            ExecuteNext();
+        }
+
+        public void ExecuteAddNewItemCommand(Type type, string title)
+        {
+            var itemToAdd = ItemFactory.Create(type, title);
+            _currentItem.AddChild(itemToAdd);
+
+            ShowItem(_currentItem);
         }
 
         public void ExecuteSaveCommand()

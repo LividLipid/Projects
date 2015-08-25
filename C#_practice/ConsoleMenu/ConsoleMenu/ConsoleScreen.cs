@@ -2,7 +2,7 @@
 {
     public abstract class ConsoleScreen
     {
-        protected Handler Handler;
+        protected Handler ItemHandler;
         protected UIData ItemData;
         protected string Title;
 
@@ -12,7 +12,7 @@
 
         protected ConsoleScreen(Handler handler, UIData data)
         {
-            Handler = handler;
+            ItemHandler = handler;
             ItemData = data;
             Title = data.Title;
         }

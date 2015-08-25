@@ -42,7 +42,7 @@ namespace ConsoleMenu
 
         private void IssureReturnCommand()
         {
-            ChosenCommand = new CommandReturn(Handler);
+            ChosenCommand = new CommandReturn(ItemHandler);
         }
 
     }

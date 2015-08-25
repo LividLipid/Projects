@@ -12,29 +12,23 @@ namespace ConsoleMenu
 
         protected int CursorPosition = 0;
         protected int FirstEntryNumber = 1;
+        private string LastTextInput;
 
         protected ConsoleScreenMenu(Handler handler, UIData data) : base(handler, data)
         {
         }
 
+        protected abstract void BuildMenuEntriesSection(List<string> entries);
         protected abstract void BuildMenuDefaultSection();
         protected abstract void WriteInstructions(ConsoleColor color);
         protected abstract void ProcessNonDigitInput(ConsoleKey keyPress);
+        protected abstract string RequestTextInput();
 
         protected void BuildMenu(List<string> entries)
         {
             if (MenuHasItems)
                 BuildMenuEntriesSection(entries);
             BuildMenuDefaultSection();
-        }
-
-        protected void BuildMenuEntriesSection(List<string> entries)
-        {
-            for (var i = 0; i < entries.Count; i++)
-            {
-                AddSelectLine(new CommandSelect(Handler, i), entries[i]);
-            }
-            AddBlankLine();
         }
 
         protected void AddSelectLine(Command cmd, string lineText)
@@ -51,7 +45,7 @@ namespace ConsoleMenu
 
         protected void AddBlankLine()
         {
-            MenuCommands.Add(new CommandNull(Handler));
+            MenuCommands.Add(new CommandNull(ItemHandler));
             MenuText.Add("");
             BlankLineNrs.Add(MenuText.Count - 1);
         }
@@ -162,10 +156,16 @@ namespace ConsoleMenu
                 CursorPosition = 0;
         }
 
-        protected void ChooseCommand(int entrySelection)
+        protected virtual void ChooseCommand(int entryNr)
         {
-            if (IsSelectionWithinBounds(entrySelection))
-                ChosenCommand = MenuCommands[entrySelection];
+            if (!IsSelectionWithinBounds(entryNr)) return;
+            ChosenCommand = MenuCommands[entryNr];
+
+            var thisCommandRequiresText = MenuCommands[entryNr].RequiresTextSpecification();
+            if (!thisCommandRequiresText) return;
+
+            var textInput = RequestTextInput();
+            ChosenCommand.SetTextSpecification(textInput);
         }
 
         protected bool IsSelectionWithinBounds(int entrySelection)
@@ -175,22 +175,22 @@ namespace ConsoleMenu
 
         protected void IssueReturnCommand()
         {
-            ChosenCommand = new CommandReturn(Handler);
+            ChosenCommand = new CommandReturn(ItemHandler);
         }
 
         protected void IssueQuitCommand()
         {
-            ChosenCommand = new CommandQuit(Handler);
+            ChosenCommand = new CommandQuit(ItemHandler);
         }
 
         private void IssueSaveCommand()
         {
-            ChosenCommand = new CommandSave(Handler);
+            ChosenCommand = new CommandSave(ItemHandler);
         }
 
         private void IssueRemoveItemCommand()
         {
-            ChosenCommand = new CommandRemoveItem(Handler);
+            ChosenCommand = new CommandRemoveItem(ItemHandler);
         }
 
         protected virtual void ProcessEnterKey()

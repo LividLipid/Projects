@@ -17,12 +17,23 @@ namespace ConsoleMenu
             BuildMenu(entries);
         }
 
+        protected override void BuildMenuEntriesSection(List<string> entries)
+        {
+            {
+                for (var i = 0; i < entries.Count; i++)
+                {
+                    AddSelectLine(new CommandSelect(ItemHandler, i), entries[i]);
+                }
+                AddBlankLine();
+            }
+        }
+
         protected override void BuildMenuDefaultSection()
         {
-            AddDefaultLine(new CommandReturn(Handler));
+            AddDefaultLine(new CommandReturn(ItemHandler));
 
             AddBlankLine();
-            AddDefaultLine(new CommandQuit(Handler));
+            AddDefaultLine(new CommandQuit(ItemHandler));
         }
 
         protected override void WriteInstructions(ConsoleColor color)
@@ -57,13 +68,22 @@ namespace ConsoleMenu
             }
         }
 
+        protected override string RequestTextInput()
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine();
+            Console.WriteLine("Please type the title of the new item and press enter.");
+            Console.WriteLine("Press Escape to cancel");
+            Console.WriteLine();
+            Console.ResetColor();
+            return Console.ReadLine();
+        }
+
         public void PrintNewItemMenu()
         {
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine(Title);
             Console.WriteLine();
-
-
         }
     }
 }

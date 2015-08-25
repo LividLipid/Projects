@@ -14,14 +14,25 @@ namespace ConsoleMenu
             BuildMenu(entries);
         }
 
+        protected override void BuildMenuEntriesSection(List<string> entries)
+        {
+            {
+                for (var i = 0; i < entries.Count; i++)
+                {
+                    AddSelectLine(new CommandSelect(ItemHandler, i), entries[i]);
+                }
+                AddBlankLine();
+            }
+        }
+
         protected override sealed void BuildMenuDefaultSection()
         {
-            AddDefaultLine(new CommandReturn(Handler));
-            AddDefaultLine(new CommandNewItem(Handler));
-            AddDefaultLine(new CommandSave(Handler));
+            AddDefaultLine(new CommandReturn(ItemHandler));
+            AddDefaultLine(new CommandRequestNewItem(ItemHandler));
+            AddDefaultLine(new CommandSave(ItemHandler));
 
             AddBlankLine();
-            AddDefaultLine(new CommandQuit(Handler));
+            AddDefaultLine(new CommandQuit(ItemHandler));
         }
 
         protected override void WriteInstructions(ConsoleColor color)
@@ -61,5 +72,9 @@ namespace ConsoleMenu
             }
         }
 
+        protected override string RequestTextInput()
+        {
+            return "";
+        }
     }
 }
