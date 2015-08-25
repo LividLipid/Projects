@@ -46,17 +46,5 @@ namespace ConsoleMenu
         {
             return saver.LoadHandler(filePath);
         }
-
-        //public virtual void ShowMenuItem()
-        //{
-        //    ExecuteUserInterfaceOperation(this);
-        //}
-
-        //private void ExecuteUserInterfaceOperation(Item item)
-        //{
-        //    if (_ui == null)
-        //        throw new Exception("User interface has not been set.");
-        //    _ui.ShowMenuItem(item);
-        //}
     }
 }

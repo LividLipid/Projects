@@ -1,17 +1,14 @@
-﻿using System;
-
-namespace ConsoleMenu
+﻿namespace ConsoleMenu
 {
-    [Serializable]
-    public class CommandReturn : Command
+    public class CommandNull : Command
     {
-        public CommandReturn(Handler receiver) : base(receiver)
+        public CommandNull(Handler receiver) : base(receiver)
         {
         }
 
         public override void Execute()
         {
-            Receiver.ExecuteReturnCommand();
+            throw new System.NotImplementedException();
         }
 
         public override void UnExecute()
@@ -21,12 +18,12 @@ namespace ConsoleMenu
 
         public override bool IsUndoable()
         {
-            return false;
+            throw new System.NotImplementedException();
         }
 
         public override string GetDefaultText()
         {
-            return "Return";
+            return "";
         }
     }
 }

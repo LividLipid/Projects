@@ -47,6 +47,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommandAddMenu.cs" />
+    <Compile Include="CommandNull.cs" />
+    <Compile Include="CommandRemoveItem.cs" />
     <Compile Include="CommandSave.cs" />
     <Compile Include="Command.cs" />
     <Compile Include="CommandQuit.cs" />

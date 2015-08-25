@@ -7,11 +7,11 @@ namespace ConsoleMenu
     public class UserInterfaceConsoleMenu
     {
         private Handler _handler;
-        private List<string> _entries = new List<string>();
-        private List<Command> _commands = new List<Command>();
-        private int _subItemCount;
         private string _menuTitle;
-        private int _blankLineNr;
+        private List<Command> _menuCommands = new List<Command>();
+        private List<string> _menuText = new List<string>();
+        private List<int> _blankLineNrs = new List<int>();
+        private bool _menuHasItems;
 
         private int _cursorPosition = 0;
         private int _firstEntryNumber = 1;
@@ -24,89 +24,79 @@ namespace ConsoleMenu
             _menuTitle = data.MenuTitle;
 
             var titles = data.ChildrenTitles;
-            
-            BuildEntriesAndCommands(titles);
-            _blankLineNr = titles.Count;
-            _subItemCount = titles.Count;
+            _menuHasItems = titles.Count >= 1;
+
+            if (_menuHasItems)
+                BuildMenu(titles);
+            else
+                BuildEmptyMenu(titles);
         }
 
-        private void BuildEntriesAndCommands(List<string> titles)
+        private void BuildMenu(List<string> titles)
         {
             for (var i = 0; i < titles.Count; i++)
             {
-                _entries.Add(titles[i]);
-                _commands.Add(new CommandSelect(_handler, i));
+                AddSelectLine(new CommandSelect(_handler, i), titles[i]);
             }
+            AddBlankLine();
+            AddDefaultLine(new CommandAddMenu(_handler));
+            AddDefaultLine(new CommandSave(_handler));
+            AddDefaultLine(new CommandReturn(_handler));
+            AddBlankLine();
+            AddDefaultLine(new CommandQuit(_handler));
+        }
 
-            _entries.Add("Save");
-            _commands.Add(new CommandSave(_handler));
-            _entries.Add("Return");
-            _commands.Add(new CommandReturn(_handler));
-            _entries.Add("Quit");
-            _commands.Add(new CommandQuit(_handler));
+        private void BuildEmptyMenu(List<string> titles)
+        {
+            AddDefaultLine(new CommandReturn(_handler));
+            AddBlankLine();
+            AddDefaultLine(new CommandQuit(_handler));
+        }
+
+        private void AddSelectLine(Command cmd, string lineText)
+        {
+            _menuCommands.Add(cmd);
+            _menuText.Add(lineText);
+        }
+
+        private void AddDefaultLine(Command cmd)
+        {
+            _menuCommands.Add(cmd);
+            _menuText.Add(cmd.GetDefaultText());
+        }
+
+        private void AddBlankLine()
+        {
+            _menuCommands.Add(new CommandNull(_handler));
+            _menuText.Add("");
+            _blankLineNrs.Add(_menuText.Count-1);
         }
 
         public void Display_Menu()
         {
             do
             {
-                PrintMenuText();
-
-                ConsoleKeyInfo cki = Console.ReadKey(true);
-                bool keyIsDigit = char.IsDigit(cki.KeyChar);
-                if (keyIsDigit)
-                    ProcessDigitInput(cki.KeyChar);
-                else
-                    ProcessNonDigitInput(cki.Key);
-
-                LoopCursorPosition();
+                UpdateMenu();
             } while (_chosenCommand == null);
 
             _chosenCommand.AddToCommandQueue();
         }
 
-        private void PrintMenuText()
+        public void UpdateMenu()
         {
-            var menuText = BuildMenuText();
-
-            Console.Clear();
-            Console.WriteLine(_menuTitle);
-            Console.WriteLine();
-
-            for (int i = 0; i < menuText.Count; i++)
-            {
-                if (i == _cursorPosition)
-                    WriteSelectedLine(menuText[i]);
-                else
-                    WriteNormalLine(menuText[i]);
-            }
+            PrintMenuText();
+            ReadKey();
+            LoopCursorPosition();
         }
 
-        private List<string> BuildMenuText()
+        private void ReadKey()
         {
-            var menuText = new List<string>();
-            for (int i = 0; i < _entries.Count; i++)
-            {
-                int entryNr = i + _firstEntryNumber;
-                menuText.Add("[" + entryNr + "] " + _entries[i]);
-            }
-
-            menuText.Insert(_blankLineNr, "");
-
-            return menuText;
-        }
-
-        private void WriteNormalLine(string line)
-        {
-            Console.WriteLine(line);
-        }
-
-        private void WriteSelectedLine(string line)
-        {
-            Console.BackgroundColor = ConsoleColor.Gray;
-            Console.ForegroundColor = ConsoleColor.Black;
-            Console.WriteLine(line);
-            Console.ResetColor();
+            ConsoleKeyInfo cki = Console.ReadKey(true);
+            bool keyIsDigit = char.IsDigit(cki.KeyChar);
+            if (keyIsDigit)
+                ProcessDigitInput(cki.KeyChar);
+            else
+                ProcessNonDigitInput(cki.Key);
         }
 
         private void ProcessDigitInput(char keyChar)
@@ -129,6 +119,9 @@ namespace ConsoleMenu
                 case ConsoleKey.Backspace:
                     IssueReturnCommand();
                     break;
+                case ConsoleKey.Delete:
+                    IssueRemoveItemCommand();
+                    break;
                 case ConsoleKey.UpArrow:
                     DecrementtCursorPosition();
                     break;
@@ -141,36 +134,96 @@ namespace ConsoleMenu
         private void DecrementtCursorPosition()
         {
             _cursorPosition--;
-            if (_cursorPosition == _blankLineNr)
+            if (_blankLineNrs.Contains(_cursorPosition))
                 _cursorPosition--;
         }
 
         private void IncrementCursorPosition()
         {
             _cursorPosition++;
-            if (_cursorPosition == _blankLineNr)
+            if (_blankLineNrs.Contains(_cursorPosition))
                 _cursorPosition++;
+        }
+
+        private void PrintMenuText()
+        {
+            WriteTitleSection(ConsoleColor.Red);
+            if (!_menuHasItems)
+                WriteEmptyEntryMessage(ConsoleColor.Yellow);
+            WriteEntrySection();
+            WriteInstructions(ConsoleColor.Red);
+        }
+
+        private void WriteTitleSection(ConsoleColor color)
+        {
+            Console.ForegroundColor = color;
+            Console.Clear();
+            Console.WriteLine(_menuTitle);
+            Console.WriteLine();
+            Console.ResetColor();
+        }
+
+        private void WriteEmptyEntryMessage(ConsoleColor color)
+        {
+            Console.ForegroundColor = color;
+            Console.WriteLine("This menu contains no items.");
+            Console.WriteLine();
+            Console.ResetColor();
+        }
+
+        private void WriteEntrySection()
+        {
+            for (int i = 0; i < _menuText.Count; i++)
+            {
+                if (i == _cursorPosition)
+                    WriteHighlightedLine(_menuText[i]);
+                else
+                    WriteLine(_menuText[i]);
+            }
+        }
+
+        private void WriteInstructions(ConsoleColor color)
+        {
+            Console.ForegroundColor = color;
+            Console.WriteLine();
+            Console.WriteLine("Select item with arrow keys and Enter.");
+            Console.WriteLine("Press Escape or Backspace to return.");
+            if (_menuHasItems)
+                Console.WriteLine("Press Delete to delete item.");
+            Console.WriteLine();
+            Console.ResetColor();
+        }
+
+        private void WriteHighlightedLine(string line)
+        {
+            Console.BackgroundColor = ConsoleColor.Gray;
+            Console.ForegroundColor = ConsoleColor.Black;
+            WriteLine(line);
+            Console.ResetColor();
+        }
+
+        private void WriteLine(string line)
+        {
+            Console.WriteLine(line);
         }
 
         private void LoopCursorPosition()
         {
             if (_cursorPosition < 0)
-                _cursorPosition = _entries.Count;
-            if (_cursorPosition > _entries.Count)
+                _cursorPosition = _menuCommands.Count-1;
+            if (_cursorPosition > _menuCommands.Count-1)
                 _cursorPosition = 0;
         }
 
         private void ChooseCommand(int entrySelection)
         {
-            if (entrySelection >= _blankLineNr)
-                entrySelection--;
             if (IsSelectionWithinBounds(entrySelection))
-                _chosenCommand = _commands[entrySelection];
+                _chosenCommand = _menuCommands[entrySelection];
         }
 
         private bool IsSelectionWithinBounds(int entrySelection)
         {
-            return (entrySelection >= 0) && (entrySelection <= _entries.Count);
+            return (entrySelection >= 0) && (entrySelection <= _menuCommands.Count);
         }
 
         private void IssueReturnCommand()
@@ -186,6 +239,11 @@ namespace ConsoleMenu
         private void IssueSaveCommand()
         {
             _chosenCommand = new CommandSave(_handler);
+        }
+
+        private void IssueRemoveItemCommand()
+        {
+            _chosenCommand = new CommandRemoveItem(_handler);
         }
     }
 }

@@ -58,11 +58,16 @@ namespace ConsoleMenu
         public void ExecuteQuitCommand()
         {
             ForgetPreviousCommands();
+            Environment.Exit(0);
         }
 
         public void ExecuteReturnCommand()
         {
             ForgetPreviousCommands();
+            if (!_currentItem.IsRoot())
+                ShowItem(_currentItem.Parent);
+            else
+                ExecuteQuitCommand();
         }
 
         public void ExecuteSaveCommand()

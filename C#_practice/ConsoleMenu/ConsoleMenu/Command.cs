@@ -27,5 +27,6 @@ namespace ConsoleMenu
         }
 
         public abstract bool IsUndoable();
+        public abstract string GetDefaultText();
     }
 }

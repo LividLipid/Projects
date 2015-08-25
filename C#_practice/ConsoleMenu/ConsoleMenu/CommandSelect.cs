@@ -34,5 +34,10 @@ namespace ConsoleMenu
         {
             return false;
         }
+
+        public override string GetDefaultText()
+        {
+            return "Select item";
+        }
     }
 }
