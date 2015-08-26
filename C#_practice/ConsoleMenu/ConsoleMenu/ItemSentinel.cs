@@ -46,7 +46,7 @@ namespace ConsoleMenu
 
         public override UIData GetDataStructure()
         {
-            throw new NotImplementedException();
+            throw new Exception("A sentinel has no data.");
         }
 
         public override string GetItemTypeName()
