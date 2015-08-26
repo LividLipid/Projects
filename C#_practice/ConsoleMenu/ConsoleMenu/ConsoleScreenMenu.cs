@@ -18,20 +18,20 @@ namespace ConsoleMenu
         {
         }
 
-        protected abstract void BuildMenuEntriesSection(List<string> entries);
+        protected abstract void BuildMenuEntriesSection();
         protected abstract void BuildMenuDefaultSection();
         protected abstract void WriteInstructions(ConsoleColor color);
         protected abstract void ProcessNonDigitInput(ConsoleKey keyPress);
         protected abstract string RequestTextInput();
 
-        protected void BuildMenu(List<string> entries)
+        protected void BuildMenu(UIData data)
         {
             if (MenuHasItems)
-                BuildMenuEntriesSection(entries);
+                BuildMenuEntriesSection();
             BuildMenuDefaultSection();
         }
 
-        protected void AddSelectLine(Command cmd, string lineText)
+        protected void AddEntryLine(Command cmd, string lineText)
         {
             MenuCommands.Add(cmd);
             MenuText.Add(lineText);

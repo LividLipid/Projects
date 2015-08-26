@@ -78,6 +78,7 @@ namespace ConsoleMenu
             {
                 list.Add(subTypes.Current);
             }
+            list.Remove(typeof (ItemSentinel));
             return list;
         }
     }

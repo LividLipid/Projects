@@ -6,20 +6,23 @@ namespace ConsoleMenu
 {
     public class ConsoleScreenMenuMain : ConsoleScreenMenu
     {
+        protected UIDataMenu Data;
+
         public ConsoleScreenMenuMain(Handler handler, UIDataMenu data) : base(handler, data)
         {
-            var entries = data.ChildrenTitles;
-            MenuHasItems = entries.Count >= 1;
+            Data = data;
+            MenuHasItems = data.ChildrenTitles.Count >= 1;
 
-            BuildMenu(entries);
+            BuildMenu(data);
         }
 
-        protected override void BuildMenuEntriesSection(List<string> entries)
+        protected override void BuildMenuEntriesSection()
         {
             {
-                for (var i = 0; i < entries.Count; i++)
+                var titles = Data.ChildrenTitles;
+                for (var i = 0; i < titles.Count; i++)
                 {
-                    AddSelectLine(new CommandSelect(ItemHandler, i), entries[i]);
+                    AddEntryLine(new CommandSelect(ItemHandler, i), titles[i]);
                 }
                 AddBlankLine();
             }

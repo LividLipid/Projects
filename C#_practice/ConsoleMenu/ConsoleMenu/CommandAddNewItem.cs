@@ -17,6 +17,10 @@ namespace ConsoleMenu
 
         public override void Execute()
         {
+            if(TypeOfItem == null)
+                throw new Exception("Type of new item not set.");
+            if (TextSpcecification == null)
+                throw new Exception("Title of new item not set.");
             Receiver.ExecuteAddNewItemCommand(TypeOfItem, TextSpcecification);
         }
 
@@ -37,7 +41,7 @@ namespace ConsoleMenu
 
         public override bool RequiresTextSpecification()
         {
-            return false;
+            return true;
         }
     }
 }

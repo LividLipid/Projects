@@ -6,23 +6,24 @@ namespace ConsoleMenu
 {
     public class ConsoleScreenMenuAddNew : ConsoleScreenMenu
     {
-        private List<Type> _creatableTypes;
-         
+        protected UIDataNewItem Data;
+
         public ConsoleScreenMenuAddNew(Handler handler, UIDataNewItem data) : base(handler, data)
         {
-            _creatableTypes = data.CreatableTypes;
-            var entries = data.Names;
-            MenuHasItems = entries.Count >= 1;
+            Data = data;
+            MenuHasItems = data.Names.Count >= 1;
 
-            BuildMenu(entries);
+            BuildMenu(data);
         }
 
-        protected override void BuildMenuEntriesSection(List<string> entries)
+        protected override void BuildMenuEntriesSection()
         {
             {
-                for (var i = 0; i < entries.Count; i++)
+                var types = Data.CreatableTypes;
+                var names = Data.Names;
+                for (var i = 0; i < Data.Names.Count; i++)
                 {
-                    AddSelectLine(new CommandSelect(ItemHandler, i), entries[i]);
+                    AddEntryLine(new CommandAddNewItem(ItemHandler, types[i]), names[i]);
                 }
                 AddBlankLine();
             }
