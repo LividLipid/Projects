@@ -47,8 +47,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActionType.cs" />
+    <Compile Include="ChangeRepresentation.cs" />
     <Compile Include="CommandHistory.cs" />
     <Compile Include="CommandNewItemAdd.cs" />
+    <Compile Include="CommandUndo.cs" />
     <Compile Include="Confirmable.cs" />
     <Compile Include="CommandNewItemSelect.cs" />
     <Compile Include="CommandNull.cs" />
@@ -62,6 +65,8 @@
     <Compile Include="ConsoleScreen.cs" />
     <Compile Include="ConsoleScreenMenu.cs" />
     <Compile Include="ConsoleScreenMenuAddNew.cs" />
+    <Compile Include="UndoRedo.cs" />
+    <Compile Include="IUndoRedo.cs" />
     <Compile Include="UIData.cs" />
     <Compile Include="UIDataLeaf.cs" />
     <Compile Include="UIDataLeafRSS.cs" />
