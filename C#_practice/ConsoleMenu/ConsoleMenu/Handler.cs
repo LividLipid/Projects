@@ -10,10 +10,13 @@ namespace ConsoleMenu
         public static string DefaultFolderPath = @"C:\Projects\C#_practice\ConsoleMenu\SavedMenus";
         private Item _treeRoot;
         private Item _currentItem;
-        public string TreeName;
-        public UserInterface Ui = new UserInterfaceConsole();
-        public Saver Saver = new SaverBinarySerializer();
-        public string FolderPath = DefaultFolderPath;
+        public string _treeName;
+        public UserInterface _ui = new UserInterfaceConsole();
+        public Saver _saver = new SaverBinarySerializer();
+        public string _folderPath = DefaultFolderPath;
+
+        private Stack<Item> _addedItems = new Stack<Item>();
+        private Stack<Item> _removedItems = new Stack<Item>();
 
         public void SetTreeRoot(Item tree)
         {
@@ -43,7 +46,7 @@ namespace ConsoleMenu
 
         public void ShowData(UIData data)
         {
-            Ui.Show(this, data);
+            _ui.Show(this, data);
         }
 
         public void ExecuteRefreshCommand()

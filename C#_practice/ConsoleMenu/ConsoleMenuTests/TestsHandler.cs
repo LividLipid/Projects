@@ -15,7 +15,7 @@ namespace ConsoleMenuTests
         {
             var tree = new ExampleTree().Root;
             var handler = new HandlerMenu(TestName, tree);
-            handler.FolderPath = TestFolderPath;
+            handler._folderPath = TestFolderPath;
 
             return handler;
         }
@@ -24,7 +24,7 @@ namespace ConsoleMenuTests
         {
             var tree = new ExampleTree().Root;
             var handler = new HandlerMenu(TestName, tree, new StubUserInterface(), new StubSaver());
-            handler.FolderPath = TestFolderPath;
+            handler._folderPath = TestFolderPath;
 
             return handler;
         }
@@ -34,7 +34,7 @@ namespace ConsoleMenuTests
         public void SaveHandler_HasNoSaver_ThrowsException()
         {
             var handler = new HandlerMenu();
-            handler.Saver = null;
+            handler._saver = null;
             handler.SaveHandler();
         }
 
@@ -43,7 +43,7 @@ namespace ConsoleMenuTests
         {
             var handler = new HandlerMenu();
             var stubSaver = new StubSaver();
-            handler.Saver = stubSaver;
+            handler._saver = stubSaver;
             handler.SaveHandler();
 
             Assert.True(stubSaver.HasSaved);

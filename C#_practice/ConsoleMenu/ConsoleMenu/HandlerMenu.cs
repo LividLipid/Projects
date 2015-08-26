@@ -12,34 +12,34 @@ namespace ConsoleMenu
 
         public HandlerMenu(string name)
         {
-            TreeName = name;
+            _treeName = name;
             SetTreeRoot(new ItemMenu("Main Menu"));
         }
 
         public HandlerMenu(string name, Item tree)
         {
-            TreeName = name;
+            _treeName = name;
             SetTreeRoot(tree);
         }
 
         public HandlerMenu(string name, Item tree, UserInterface ui, Saver saver)
         {
-            TreeName = name;
+            _treeName = name;
             SetTreeRoot(tree);
-            Ui = ui;
-            Saver = saver;
+            _ui = ui;
+            _saver = saver;
         }
 
         public override string GetFilePath()
         {
-            return FolderPath + @"\" + TreeName;
+            return _folderPath + @"\" + _treeName;
         }
 
         public override void SaveHandler()
         {
-            if (Saver == null)
+            if (_saver == null)
                 throw new Exception("Saver has not been set.");
-            Saver.SaveHandler(this, GetFilePath());
+            _saver.SaveHandler(this, GetFilePath());
         }
 
         public static HandlerMenu LoadHandler(Saver saver, string filePath)

@@ -10,8 +10,7 @@ namespace ConsoleMenu
         protected string ActionChosen;
 
         protected Command ChosenCommand;
-        protected UndoRedo UndoredoHistory;
-        //protected CommandHistory History = CommandHistory.Instance;
+        protected CommandHistory History = CommandHistory.Instance;
         
 
         public abstract void Display();
@@ -26,11 +25,14 @@ namespace ConsoleMenu
         {
             ChosenCommand = cmd;
             ActionChosen = "Execute";
+            if (ChosenCommand.IsUndoable())
+                History.AddCommand(ChosenCommand);
         }
 
         public void ChooseToUndo()
         {
-            ChosenCommand = new CommandUndo(Handler);
+            if (!History.HasUndoableCommand()) return;
+            ChosenCommand = History.GetCommandToUndo();
             ActionChosen = "Undo";
         }
 
