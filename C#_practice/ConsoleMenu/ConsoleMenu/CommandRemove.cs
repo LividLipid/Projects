@@ -18,21 +18,22 @@ namespace ConsoleMenu
         public override void Execute()
         {
             if (_childSelectedIndex >= 0)
+            {
+                Receiver.AddUndoableState();
                 Receiver.ExecuteRemoveItemCommand(_childSelectedIndex);
+            }
             else
                 throw new Exception("Select Command exception: no child selected.");
         }
 
-        public void Unexecute()
+        public void AddUndoableState()
         {
-            Receiver.UndoRemoveItemCommand();
+            Receiver.AddUndoableState();
         }
 
         public override string GetDefaultText()
         {
             return "Remove item";
         }
-
-        
     }
 }

@@ -2,6 +2,6 @@
 {
     public interface Undoable
     {
-         void Unexecute();
+        void AddUndoableState();
     }
 }

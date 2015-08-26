@@ -22,12 +22,13 @@ namespace ConsoleMenu
                 throw new Exception("Type of new item not set.");
             if (TextSpcecification == null)
                 throw new Exception("Title of new item not set.");
+            Receiver.AddUndoableState();
             Receiver.ExecuteAddNewItemCommand(TypeOfItem, TextSpcecification);
         }
 
-        public void Unexecute()
+        public void AddUndoableState()
         {
-            Receiver.UndoAddNewItemCommand();
+            Receiver.AddUndoableState();
         }
 
         public override string GetDefaultText()
@@ -39,6 +40,5 @@ namespace ConsoleMenu
         {
             return "Please enter title and confirm.";
         }
-
     }
 }

@@ -57,19 +57,7 @@ namespace ConsoleMenu
                 UpdateMenu();
             } while (ChosenCommand == null);
 
-            switch (ActionChosen)
-            {
-                case "Execute":
-                    ChosenCommand.Execute();
-                    break;
-                case "Undo":
-                    var cmd = (Undoable) ChosenCommand;
-                    cmd.Unexecute();
-                    break;
-                default:
-                    throw new Exception("Unknown action.");
-            }
-            
+            ChosenCommand.Execute();
         }
 
         protected void UpdateMenu()

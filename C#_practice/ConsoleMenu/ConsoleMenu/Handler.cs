@@ -15,8 +15,10 @@ namespace ConsoleMenu
         public Saver _saver = new SaverBinarySerializer();
         public string _folderPath = DefaultFolderPath;
 
-        private Stack<Item> _addedItems = new Stack<Item>();
-        private Stack<Item> _removedItems = new Stack<Item>();
+        private Stack<Item> _undoableStates = new Stack<Item>();
+        private Stack<Item> _redoableStates = new Stack<Item>();
+        //private Stack<Item> _addedItems = new Stack<Item>();
+        //private Stack<Item> _removedItems = new Stack<Item>();
 
         public void SetTreeRoot(Item tree)
         {
@@ -86,41 +88,35 @@ namespace ConsoleMenu
         {
             var itemToAdd = ItemFactory.Create(type, title);
             _currentItem.AddChild(itemToAdd);
-
-            _addedItems.Push(itemToAdd);
-            ShowItem(_currentItem);
-        }
-
-        public void UndoAddNewItemCommand()
-        {
-            var lastAddedItem = _addedItems.Pop();
-            _currentItem.RemoveChild(lastAddedItem);
-
-            _removedItems.Push(lastAddedItem);
             ShowItem(_currentItem);
         }
 
         public void ExecuteRemoveItemCommand(int selection)
         {
-            var removedItem = _currentItem.GetChild(selection);
             _currentItem.RemoveChild(selection);
-
-            _removedItems.Push(removedItem);
-            ShowItem(_currentItem);
-        }
-
-        public void UndoRemoveItemCommand()
-        {
-            var lastRemovedItem = _removedItems.Pop();
-            _currentItem.AddChild(lastRemovedItem);
-
-            _addedItems.Push(lastRemovedItem);
             ShowItem(_currentItem);
         }
 
         public void ExecuteSaveCommand()
         {
+            
+        }
 
+        public void AddUndoableState()
+        {
+            var currentState = ObjectCopier.Clone(_currentItem);
+            _undoableStates.Push(currentState);
+        }
+
+        public void ExecuteUndoCommand()
+        {
+            if (_undoableStates.Count > 0)
+            {
+                var previousState = _undoableStates.Pop();
+                _redoableStates.Push(previousState);
+                _currentItem = previousState;
+            }
+            ShowItem(_currentItem);
         }
     }
 }

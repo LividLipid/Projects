@@ -47,6 +47,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommandUndo.cs" />
+    <Compile Include="ObjectCopier.cs" />
     <Compile Include="CommandHistory.cs" />
     <Compile Include="CommandNewItemAdd.cs" />
     <Compile Include="Confirmable.cs" />
