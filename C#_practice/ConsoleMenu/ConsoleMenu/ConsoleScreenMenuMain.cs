@@ -52,9 +52,8 @@ namespace ConsoleMenu
             Console.ResetColor();
         }
 
-        protected override void ProcessNonDigitInput(ConsoleKeyInfo cki)
+        protected override void ProcessNonDigitInput(ConsoleKey keyPress)
         {
-            var keyPress = cki.Key;
             switch (keyPress)
             {
                 case ConsoleKey.Enter:
@@ -68,14 +67,6 @@ namespace ConsoleMenu
                     break;
                 case ConsoleKey.Delete:
                     ProcessDeleteKey();
-                    break;
-                case ConsoleKey.Z:
-                    if (cki.Modifiers == ConsoleModifiers.Control)
-                        ChooseToUndo();
-                    break;
-                case ConsoleKey.Y:
-                    if (cki.Modifiers == ConsoleModifiers.Control)
-                        ChooseToRedo();
                     break;
                 case ConsoleKey.UpArrow:
                     ProcessUpArrowKey();

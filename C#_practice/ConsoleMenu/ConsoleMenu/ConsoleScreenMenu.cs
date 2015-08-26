@@ -22,7 +22,7 @@ namespace ConsoleMenu
         protected abstract void BuildMenuEntriesSection();
         protected abstract void BuildMenuDefaultSection();
         protected abstract void WriteInstructions(ConsoleColor color);
-        protected abstract void ProcessNonDigitInput(ConsoleKeyInfo cki);
+        protected abstract void ProcessNonDigitInput(ConsoleKey keyPress);
 
         protected void BuildMenu(UIData data)
         {
@@ -86,7 +86,7 @@ namespace ConsoleMenu
             if (keyIsDigit)
                 ProcessDigitInput(cki.KeyChar);
             else
-                ProcessNonDigitInput(cki);
+                ProcessNonDigitInput(cki.Key);
         }
 
         protected void ProcessDigitInput(char keyChar)
