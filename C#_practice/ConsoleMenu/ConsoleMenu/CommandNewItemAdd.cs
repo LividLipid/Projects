@@ -5,8 +5,8 @@ namespace ConsoleMenu
     public class CommandNewItemAdd : CommandTextSpecified, Undoable
     {
         public Type TypeOfItem;
-        public Item ItemAdded;
-        
+        public Item AddedItem;
+
         public CommandNewItemAdd(Handler receiver) : base(receiver)
         {
         }
@@ -27,7 +27,7 @@ namespace ConsoleMenu
 
         public void Unexecute()
         {
-            Receiver.UndoAddNewItemCommand(Record);
+            Receiver.UndoAddNewItemCommand();
         }
 
         public override string GetDefaultText()

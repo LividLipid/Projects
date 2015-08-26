@@ -15,11 +15,8 @@ namespace ConsoleMenu
         public Saver _saver = new SaverBinarySerializer();
         public string _folderPath = DefaultFolderPath;
 
-        private Command _currentCommand;
-        public Queue<Command> CommandsToExecute = new Queue<Command>();
-        private List<Command> _undoableCommands = new List<Command>();
-        private int _undoIndex = -1;
-        
+        private Stack<Item> _addedItems = new Stack<Item>();
+        private Stack<Item> _removedItems = new Stack<Item>();
 
         public void SetTreeRoot(Item tree)
         {
@@ -50,19 +47,6 @@ namespace ConsoleMenu
         public void ShowData(UIData data)
         {
             _ui.Show(this, data);
-            ExecuteNext();
-        }
-
-        private void ExecuteNext()
-        {
-            _currentCommand = CommandsToExecute.Dequeue();
-            if (_currentCommand.IsUndoable())
-            {
-                _undoableCommands.Add(_currentCommand);
-                _undoIndex++;
-            }
-
-            _currentCommand.Execute();
         }
 
         public void ExecuteRefreshCommand()
@@ -77,7 +61,6 @@ namespace ConsoleMenu
 
         public void ExecuteReturnCommand()
         {
-            ForgetPreviousCommands();
             if (!_currentItem.IsRoot())
                 ShowItem(_currentItem.Parent);
             else
@@ -94,7 +77,6 @@ namespace ConsoleMenu
 
         public void ExecuteSelectCommand(int selection)
         {
-            ForgetPreviousCommands();
             var selectedItem = _currentItem.GetChild(selection);
 
             ShowItem(selectedItem);
@@ -104,14 +86,18 @@ namespace ConsoleMenu
         {
             var itemToAdd = ItemFactory.Create(type, title);
             _currentItem.AddChild(itemToAdd);
-            _currentCommand.
 
+            _addedItems.Push(itemToAdd);
             ShowItem(_currentItem);
         }
 
-        public void UndoAddNewItemCommand(Handler Add)
+        public void UndoAddNewItemCommand()
         {
-            
+            var lastAddedItem = _addedItems.Pop();
+            _currentItem.RemoveChild(lastAddedItem);
+
+            _removedItems.Push(lastAddedItem);
+            ShowItem(_currentItem);
         }
 
         public void ExecuteRemoveItemCommand(int selection)
@@ -119,26 +105,22 @@ namespace ConsoleMenu
             var removedItem = _currentItem.GetChild(selection);
             _currentItem.RemoveChild(selection);
 
+            _removedItems.Push(removedItem);
+            ShowItem(_currentItem);
+        }
+
+        public void UndoRemoveItemCommand()
+        {
+            var lastRemovedItem = _removedItems.Pop();
+            _currentItem.AddChild(lastRemovedItem);
+
+            _addedItems.Push(lastRemovedItem);
             ShowItem(_currentItem);
         }
 
         public void ExecuteSaveCommand()
         {
 
-        }
-
-        public void Undo()
-        {
-            if (_undoIndex < 0) return;
-            var cmd = (Undoable) _undoableCommands[_undoIndex];
-            _undoIndex--;
-            cmd.Unexecute();
-        }
-
-        private void ForgetPreviousCommands()
-        {
-            _undoableCommands = new List<Command>();
-            _undoIndex = 0;
         }
     }
 }

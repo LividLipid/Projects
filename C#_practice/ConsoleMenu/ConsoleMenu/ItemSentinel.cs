@@ -24,6 +24,10 @@ namespace ConsoleMenu
         {
         }
 
+        public override void RemoveChild(Item item)
+        {
+        }
+
         public override bool IsSentinel()
         {
             return true;

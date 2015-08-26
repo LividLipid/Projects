@@ -14,7 +14,7 @@ namespace ConsoleMenu
 
         public override void AddChild(Item child)
         {
-            throw new Exception("Cannot assign child to leaf.");
+            throw new Exception("A leaf has no children.");
         }
 
         public override Item GetChild(int i)
@@ -24,6 +24,12 @@ namespace ConsoleMenu
 
         public override void RemoveChild(int i)
         {
+            throw new Exception("A leaf has no children.");
+        }
+
+        public override void RemoveChild(Item item)
+        {
+            throw new Exception("A leaf has no children.");
         }
 
         public override bool IsSentinel()

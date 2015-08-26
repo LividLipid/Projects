@@ -11,7 +11,8 @@ namespace ConsoleMenu
         public ConsoleScreenMenuMain(Handler handler, UIDataMenu data) : base(handler, data)
         {
             Data = data;
-            MenuHasItems = data.ChildrenTitles.Count >= 1;
+            MenuHasItems = Data.ChildrenTitles.Count >= 1;
+            
 
             BuildMenu(data);
         }
@@ -23,6 +24,7 @@ namespace ConsoleMenu
                 for (var i = 0; i < titles.Count; i++)
                 {
                     AddEntryLine(new CommandSelect(ItemHandler, i), titles[i]);
+                    DeletableItems.Add(i);
                 }
                 AddBlankLine();
             }
@@ -31,7 +33,7 @@ namespace ConsoleMenu
         protected override sealed void BuildMenuDefaultSection()
         {
             AddDefaultLine(new CommandReturn(ItemHandler));
-            AddDefaultLine(new CommandRequestNewItem(ItemHandler));
+            AddDefaultLine(new CommandNewItemSelect(ItemHandler));
             AddDefaultLine(new CommandSave(ItemHandler));
 
             AddBlankLine();

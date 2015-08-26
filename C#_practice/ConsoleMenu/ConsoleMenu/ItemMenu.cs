@@ -40,6 +40,14 @@ namespace ConsoleMenu
             UpdateSiblingNrs();
         }
 
+        public override void RemoveChild(Item item)
+        {
+            if (!_children.Contains(item)) return;
+            _children.Remove(item);
+            ChildrenCount--;
+            UpdateSiblingNrs();
+        }
+
         public override bool IsSentinel()
         {
             return false;

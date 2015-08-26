@@ -10,10 +10,10 @@ namespace ConsoleMenu
         protected readonly List<string> MenuText = new List<string>();
         protected readonly List<int> BlankLineNrs = new List<int>();
         protected bool MenuHasItems;
+        protected List<int> DeletableItems = new List<int>(); 
 
         protected int CursorPosition = 0;
         protected int FirstEntryNumber = 1;
-        private string LastTextInput;
 
         protected ConsoleScreenMenu(Handler handler, UIData data) : base(handler, data)
         {
@@ -57,7 +57,19 @@ namespace ConsoleMenu
                 UpdateMenu();
             } while (ChosenCommand == null);
 
-            ChosenCommand.AddToCommandQueue();
+            switch (ActionChosen)
+            {
+                case "Execute":
+                    ChosenCommand.Execute();
+                    break;
+                case "Undo":
+                    var cmd = (Undoable) ChosenCommand;
+                    cmd.Unexecute();
+                    break;
+                default:
+                    throw new Exception("Unknown action.");
+            }
+            
         }
 
         protected void UpdateMenu()
@@ -81,7 +93,7 @@ namespace ConsoleMenu
         {
             var digitMenuIndexed = (int)char.GetNumericValue(keyChar);
             var digit = digitMenuIndexed - FirstEntryNumber;
-            ValidateCommand(digit);
+            ProcessSelection(digit);
         }
 
         protected void DecrementtCursorPosition()
@@ -156,20 +168,22 @@ namespace ConsoleMenu
                 CursorPosition = 0;
         }
 
-        protected void ValidateCommand(int entryNr)
+        protected bool SelectionIsValid(int i)
         {
-            if (!IsSelectionWithinBounds(entryNr)) return;
-            var tmpCommand = MenuCommands[entryNr];
+            return IsSelectionWithinBounds(i);
+        }
 
-            if (tmpCommand.RequiresTextSpecification())
-                ChosenCommand = SpecifyCommandText((CommandTextSpecified)tmpCommand);
+        protected void RequestOptionalInputAndExecute(Command cmd)
+        {
+            if (cmd.RequiresTextSpecification())
+                cmd = SpecifyCommandText((CommandTextSpecified)cmd);
 
             var readyToExecute = true;
-            if (tmpCommand.RequiresConfirmation())
+            if (cmd.RequiresConfirmation())
                 readyToExecute = RequestConfirmation();
 
             if (readyToExecute)
-                ChooseCommand(tmpCommand);
+                ChooseToExecute(cmd);
         }
 
         protected bool IsSelectionWithinBounds(int entrySelection)
@@ -195,11 +209,6 @@ namespace ConsoleMenu
             Console.WriteLine();
             Console.ResetColor();
             return Console.ReadLine();
-        }
-
-        protected void ChooseCommand(Command cmd)
-        {
-            ChosenCommand = cmd;
         }
 
         protected bool RequestConfirmation()
@@ -228,27 +237,34 @@ namespace ConsoleMenu
 
         protected void IssueReturnCommand()
         {
-            ChosenCommand = new CommandReturn(ItemHandler);
+            ChooseToExecute(new CommandReturn(ItemHandler));
         }
 
         protected void IssueQuitCommand()
         {
-            ChosenCommand = new CommandQuit(ItemHandler);
+            ChooseToExecute(new CommandQuit(ItemHandler));
         }
 
         private void IssueSaveCommand()
         {
-            ChosenCommand = new CommandSave(ItemHandler);
+            ChooseToExecute(new CommandSave(ItemHandler));
         }
 
-        private void IssueRemoveItemCommand()
+        private void IssueRemoveItemCommand(int i)
         {
-            ChosenCommand = new CommandRemoveItem(ItemHandler);
+            ChooseToExecute(new CommandRemove(ItemHandler, i));
         }
 
         protected virtual void ProcessEnterKey()
         {
-            ValidateCommand(CursorPosition);
+            ProcessSelection(CursorPosition);
+        }
+
+        protected virtual void ProcessSelection(int i)
+        {
+            if (!SelectionIsValid(i)) return;
+            var cmd = MenuCommands[i];
+            RequestOptionalInputAndExecute(cmd);
         }
 
         protected virtual void ProcessEscapeKey()
@@ -261,7 +277,9 @@ namespace ConsoleMenu
         }
         protected virtual void ProcessDeleteKey()
         {
-            IssueRemoveItemCommand();
+            if (!SelectionIsValid(CursorPosition)) return;
+            if (!SelectionIsDeletable(CursorPosition)) return;
+            IssueRemoveItemCommand(CursorPosition);
         }
         protected virtual void ProcessUpArrowKey()
         {
@@ -271,6 +289,11 @@ namespace ConsoleMenu
         protected virtual void ProcessDownArrowKey()
         {
             IncrementCursorPosition();
+        }
+
+        protected bool SelectionIsDeletable(int i)
+        {
+            return DeletableItems.Contains(i);
         }
     }
 }

@@ -23,7 +23,7 @@ namespace ConsoleMenu
                 var names = Data.Names;
                 for (var i = 0; i < Data.Names.Count; i++)
                 {
-                    AddEntryLine(new CommandAddNewItem(ItemHandler, types[i]), names[i]);
+                    AddEntryLine(new CommandNewItemAdd(ItemHandler, types[i]), names[i]);
                 }
                 AddBlankLine();
             }

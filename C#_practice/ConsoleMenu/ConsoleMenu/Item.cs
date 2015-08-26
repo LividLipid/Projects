@@ -22,6 +22,7 @@ namespace ConsoleMenu
         public abstract void AddChild(Item child);
         public abstract Item GetChild(int i);
         public abstract void RemoveChild(int i);
+        public abstract void RemoveChild(Item item);
         public abstract bool IsSentinel();
         public abstract bool IsLeaf();
         public abstract bool IsMenu();

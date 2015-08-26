@@ -47,12 +47,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommandAddNewItem.cs" />
-    <Compile Include="CommandConfirmable.cs" />
-    <Compile Include="CommandRefresh.cs" />
-    <Compile Include="CommandRequestNewItem.cs" />
+    <Compile Include="CommandHistory.cs" />
+    <Compile Include="CommandNewItemAdd.cs" />
+    <Compile Include="Confirmable.cs" />
+    <Compile Include="CommandNewItemSelect.cs" />
     <Compile Include="CommandNull.cs" />
-    <Compile Include="CommandRemoveItem.cs" />
+    <Compile Include="CommandRemove.cs" />
     <Compile Include="CommandSave.cs" />
     <Compile Include="Command.cs" />
     <Compile Include="CommandQuit.cs" />
@@ -83,6 +83,7 @@
     <Compile Include="ExampleTree.cs" />
     <Compile Include="Saver.cs" />
     <Compile Include="UIDataNewItem.cs" />
+    <Compile Include="Undoable.cs" />
     <Compile Include="UserInterface.cs" />
     <Compile Include="UserInterfaceConsole.cs" />
     <Compile Include="ConsoleScreenLeaf.cs" />

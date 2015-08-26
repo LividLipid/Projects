@@ -3,7 +3,7 @@
 namespace ConsoleMenu
 {
     [Serializable]
-    public class CommandReturn : Command, Confirmable
+    public class CommandReturn : Command
     {
         public CommandReturn(Handler receiver) : base(receiver)
         {

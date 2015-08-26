@@ -15,7 +15,6 @@ namespace ConsoleMenu
             PrintLeafText();
             ReadKey();
             IssureReturnCommand();
-            ChosenCommand.AddToCommandQueue();
         }
 
         public virtual void PrintLeafText()
@@ -43,6 +42,7 @@ namespace ConsoleMenu
         private void IssureReturnCommand()
         {
             ChosenCommand = new CommandReturn(ItemHandler);
+            ChosenCommand.Execute();
         }
 
     }
