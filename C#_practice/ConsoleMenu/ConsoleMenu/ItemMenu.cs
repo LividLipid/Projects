@@ -19,12 +19,10 @@ namespace ConsoleMenu
         {
             if (this.HasInTree(child))
                 throw new ArgumentException("Child already exists in Tree.");
-            else
-            {
-                child.Parent = this;
-                _children.Add(child);
-                ChildrenCount++;
-            }
+            child.Parent = this;
+            _children.Add(child);
+            ChildrenCount++;
+            UpdateSiblingNrs();
         }
 
         public override Item GetChild(int i)
@@ -39,6 +37,7 @@ namespace ConsoleMenu
             if (isOutOfRange || hasNoChildren) return;
             _children.RemoveAt(i);
             ChildrenCount--;
+            UpdateSiblingNrs();
         }
 
         public override bool IsSentinel()
@@ -83,6 +82,14 @@ namespace ConsoleMenu
         {
             var titles = _children.Select(child => child.Title).ToList();
             return titles;
+        }
+
+        public void UpdateSiblingNrs()
+        {
+            for (int i = 0; i < ChildrenCount; i++)
+            {
+                _children[i].SiblingNr = i;
+            }
         }
     }
 }

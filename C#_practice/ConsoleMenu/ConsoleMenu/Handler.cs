@@ -15,8 +15,10 @@ namespace ConsoleMenu
         public Saver _saver = new SaverBinarySerializer();
         public string _folderPath = DefaultFolderPath;
 
+        private Command _currentCommand;
         public Queue<Command> CommandsToExecute = new Queue<Command>();
-        public List<Command> ExecutedCommands = new List<Command>();
+        private List<Command> _undoableCommands = new List<Command>();
+        private int _undoIndex = -1;
         
 
         public void SetTreeRoot(Item tree)
@@ -37,19 +39,30 @@ namespace ConsoleMenu
         {
             ShowItem(_treeRoot);
         }
+
         public void ShowItem(Item item)
         {
             _currentItem = item;
             var data = item.GetDataStructure();
-            _ui.Show(this, data);
+            ShowData(data);
+        }
 
+        public void ShowData(UIData data)
+        {
+            _ui.Show(this, data);
             ExecuteNext();
         }
 
         private void ExecuteNext()
         {
-            var nextCommand = CommandsToExecute.Dequeue();
-            nextCommand.Execute();
+            _currentCommand = CommandsToExecute.Dequeue();
+            if (_currentCommand.IsUndoable())
+            {
+                _undoableCommands.Add(_currentCommand);
+                _undoIndex++;
+            }
+
+            _currentCommand.Execute();
         }
 
         public void ExecuteRefreshCommand()
@@ -59,7 +72,6 @@ namespace ConsoleMenu
 
         public void ExecuteQuitCommand()
         {
-            ForgetPreviousCommands();
             Environment.Exit(0);
         }
 
@@ -76,22 +88,8 @@ namespace ConsoleMenu
         {
             var creatableTypes = Item.GetCreatableItemTypes();
             var data = new UIDataNewItem("Add new item", creatableTypes);
-            _ui.Show(this, data);
 
-            ExecuteNext();
-        }
-
-        public void ExecuteAddNewItemCommand(Type type, string title)
-        {
-            var itemToAdd = ItemFactory.Create(type, title);
-            _currentItem.AddChild(itemToAdd);
-
-            ShowItem(_currentItem);
-        }
-
-        public void ExecuteSaveCommand()
-        {
-
+            ShowData(data);
         }
 
         public void ExecuteSelectCommand(int selection)
@@ -102,9 +100,45 @@ namespace ConsoleMenu
             ShowItem(selectedItem);
         }
 
+        public void ExecuteAddNewItemCommand(Type type, string title)
+        {
+            var itemToAdd = ItemFactory.Create(type, title);
+            _currentItem.AddChild(itemToAdd);
+            _currentCommand.
+
+            ShowItem(_currentItem);
+        }
+
+        public void UndoAddNewItemCommand(Handler Add)
+        {
+            
+        }
+
+        public void ExecuteRemoveItemCommand(int selection)
+        {
+            var removedItem = _currentItem.GetChild(selection);
+            _currentItem.RemoveChild(selection);
+
+            ShowItem(_currentItem);
+        }
+
+        public void ExecuteSaveCommand()
+        {
+
+        }
+
+        public void Undo()
+        {
+            if (_undoIndex < 0) return;
+            var cmd = (Undoable) _undoableCommands[_undoIndex];
+            _undoIndex--;
+            cmd.Unexecute();
+        }
+
         private void ForgetPreviousCommands()
         {
-            ExecutedCommands = new List<Command>();
+            _undoableCommands = new List<Command>();
+            _undoIndex = 0;
         }
     }
 }

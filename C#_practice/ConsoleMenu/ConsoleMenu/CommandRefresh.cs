@@ -11,16 +11,6 @@
             Receiver.ExecuteRefreshCommand();
         }
 
-        public override void UnExecute()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override bool IsUndoable()
-        {
-            return false;
-        }
-
         public override string GetDefaultText()
         {
             return "Refresh";

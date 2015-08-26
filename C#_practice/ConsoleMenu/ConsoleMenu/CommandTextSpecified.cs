@@ -8,19 +8,11 @@
         {
         }
 
-        public override bool RequiresTextSpecification()
-        {
-            return true;
-        }
-
         public void SetTextSpecification(string text)
         {
             TextSpcecification = text;
         }
 
-        public string GetTextSpecificationRequest()
-        {
-            return "Please enter title and confirm.";
-        }
+        public abstract string GetTextSpecificationRequest();
     }
 }

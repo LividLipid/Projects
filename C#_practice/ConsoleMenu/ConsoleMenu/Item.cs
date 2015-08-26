@@ -7,12 +7,11 @@ namespace ConsoleMenu
     [Serializable]
     public abstract class Item
     {
-        // The title uniquely identifies an item,
-        // and the same item cannot exist twice in the same tree.
         public Handler TreeHandler;
         public Item Parent;
         public string Title { get; } 
         public int ChildrenCount { get; set; }
+        public int SiblingNr { get; set; }
 
         protected Item(string title)
         {

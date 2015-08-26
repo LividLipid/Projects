@@ -2,15 +2,16 @@
 
 namespace ConsoleMenu
 {
-    public class CommandAddNewItem : CommandTextSpecified
+    public class CommandNewItemAdd : CommandTextSpecified, Undoable
     {
         public Type TypeOfItem;
+        public Item ItemAdded;
         
-        public CommandAddNewItem(Handler receiver) : base(receiver)
+        public CommandNewItemAdd(Handler receiver) : base(receiver)
         {
         }
 
-        public CommandAddNewItem(Handler receiver, Type type) : base(receiver)
+        public CommandNewItemAdd(Handler receiver, Type type) : base(receiver)
         {
             TypeOfItem = type;
         }
@@ -24,19 +25,20 @@ namespace ConsoleMenu
             Receiver.ExecuteAddNewItemCommand(TypeOfItem, TextSpcecification);
         }
 
-        public override void UnExecute()
+        public void Unexecute()
         {
-            throw new System.NotImplementedException();
-        }
-
-        public override bool IsUndoable()
-        {
-            return true;
+            Receiver.UndoAddNewItemCommand(Record);
         }
 
         public override string GetDefaultText()
         {
             return "Add new";
         }
+
+        public override string GetTextSpecificationRequest()
+        {
+            return "Please enter title and confirm.";
+        }
+
     }
 }

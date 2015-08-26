@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace ConsoleMenu
 {
@@ -6,7 +7,6 @@ namespace ConsoleMenu
     public abstract class Command
     {
         protected Handler Receiver;
-        
 
         protected Command(Handler receiver)
         {
@@ -14,7 +14,7 @@ namespace ConsoleMenu
         }
 
         public abstract void Execute();
-        public abstract void UnExecute();
+        
         
         public void AddToCommandQueue()
         {
@@ -24,20 +24,24 @@ namespace ConsoleMenu
         public void RememberCommand()
         {
             if (IsUndoable())
-                Receiver.ExecutedCommands.Add(this);
+                Receiver.UndoableCommands.Add(this);
         }
 
-        public abstract bool IsUndoable();
         public abstract string GetDefaultText();
 
-        public virtual bool RequiresTextSpecification()
+        public bool IsUndoable()
         {
-            return false;
+            return (this is Undoable);
         }
 
-        public virtual bool RequiresConfirmation()
+        public bool RequiresTextSpecification()
         {
-            return false;
+            return (this is CommandTextSpecified);
+        }
+
+        public bool RequiresConfirmation()
+        {
+            return (this is Confirmable);
         }
     }
 }

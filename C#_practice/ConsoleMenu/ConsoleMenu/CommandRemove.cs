@@ -1,8 +1,8 @@
 ﻿namespace ConsoleMenu
 {
-    public class CommandNull : Command
+    public class CommandRemove : Command
     {
-        public CommandNull(Handler receiver) : base(receiver)
+        public CommandRemove(Handler receiver) : base(receiver)
         {
         }
 
@@ -13,7 +13,7 @@
 
         public override string GetDefaultText()
         {
-            return "";
+            return "Remove item";
         }
     }
 }

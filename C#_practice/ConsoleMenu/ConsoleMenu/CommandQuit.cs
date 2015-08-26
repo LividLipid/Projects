@@ -3,7 +3,7 @@
 namespace ConsoleMenu
 {
     [Serializable]
-    public class CommandQuit : CommandConfirmable
+    public class CommandQuit : Command, Confirmable
     {
         public CommandQuit(Handler receiver) : base(receiver)
         {
@@ -12,16 +12,6 @@ namespace ConsoleMenu
         public override void Execute()
         {
             Receiver.ExecuteQuitCommand();
-        }
-
-        public override void UnExecute()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override bool IsUndoable()
-        {
-            return false;
         }
 
         public override string GetDefaultText()

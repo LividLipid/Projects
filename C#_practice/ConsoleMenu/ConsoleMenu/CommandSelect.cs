@@ -25,16 +25,6 @@ namespace ConsoleMenu
                 throw new Exception("Select Command exception: no child selected.");
         }
 
-        public override void UnExecute()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override bool IsUndoable()
-        {
-            return false;
-        }
-
         public override string GetDefaultText()
         {
             return "Select item";
