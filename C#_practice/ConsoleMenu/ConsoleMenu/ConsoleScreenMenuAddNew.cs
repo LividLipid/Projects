@@ -47,8 +47,9 @@ namespace ConsoleMenu
             Console.ResetColor();
         }
 
-        protected override void ProcessNonDigitInput(ConsoleKey keyPress)
+        protected override void ProcessNonDigitInput(ConsoleKeyInfo cki)
         {
+            var keyPress = cki.Key;
             switch (keyPress)
             {
                 case ConsoleKey.Enter:

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ConsoleMenu
 {
@@ -33,6 +34,11 @@ namespace ConsoleMenu
             if (!History.HasUndoableCommand()) return;
             ChosenCommand = History.GetCommandToUndo();
             ActionChosen = "Undo";
+        }
+
+        public void ChooseToRedo()
+        {
+            throw new NotImplementedException();
         }
     }
 }
