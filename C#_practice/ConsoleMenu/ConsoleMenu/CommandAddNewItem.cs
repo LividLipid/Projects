@@ -2,7 +2,7 @@
 
 namespace ConsoleMenu
 {
-    public class CommandAddNewItem : Command
+    public class CommandAddNewItem : CommandTextSpecified
     {
         public Type TypeOfItem;
         
@@ -37,11 +37,6 @@ namespace ConsoleMenu
         public override string GetDefaultText()
         {
             return "Add new";
-        }
-
-        public override bool RequiresTextSpecification()
-        {
-            return true;
         }
     }
 }

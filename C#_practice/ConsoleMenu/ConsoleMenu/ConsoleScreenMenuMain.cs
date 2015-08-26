@@ -74,10 +74,5 @@ namespace ConsoleMenu
                     break;
             }
         }
-
-        protected override string RequestTextInput()
-        {
-            return "";
-        }
     }
 }

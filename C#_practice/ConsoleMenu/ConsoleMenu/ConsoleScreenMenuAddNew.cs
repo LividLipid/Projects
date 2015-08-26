@@ -69,17 +69,6 @@ namespace ConsoleMenu
             }
         }
 
-        protected override string RequestTextInput()
-        {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine();
-            Console.WriteLine("Please type the title of the new item and press enter.");
-            Console.WriteLine("Press Escape to cancel");
-            Console.WriteLine();
-            Console.ResetColor();
-            return Console.ReadLine();
-        }
-
         public void PrintNewItemMenu()
         {
             Console.ForegroundColor = ConsoleColor.Red;

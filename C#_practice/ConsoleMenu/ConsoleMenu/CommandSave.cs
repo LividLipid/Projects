@@ -3,7 +3,7 @@
 namespace ConsoleMenu
 {
     [Serializable]
-    public class CommandSave : Command
+    public class CommandSave : CommandConfirmable
     {
         public CommandSave(Handler receiver) : base(receiver)
         {

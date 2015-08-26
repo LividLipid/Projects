@@ -1,6 +1,6 @@
 ﻿namespace ConsoleMenu
 {
-    public class CommandRemoveItem : Command
+    public class CommandRemoveItem : CommandConfirmable
     {
         public CommandRemoveItem(Handler receiver) : base(receiver)
         {

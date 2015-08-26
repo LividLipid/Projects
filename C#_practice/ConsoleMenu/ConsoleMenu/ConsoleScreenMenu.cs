@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 
 namespace ConsoleMenu
@@ -22,7 +23,6 @@ namespace ConsoleMenu
         protected abstract void BuildMenuDefaultSection();
         protected abstract void WriteInstructions(ConsoleColor color);
         protected abstract void ProcessNonDigitInput(ConsoleKey keyPress);
-        protected abstract string RequestTextInput();
 
         protected void BuildMenu(UIData data)
         {
@@ -81,7 +81,7 @@ namespace ConsoleMenu
         {
             var digitMenuIndexed = (int)char.GetNumericValue(keyChar);
             var digit = digitMenuIndexed - FirstEntryNumber;
-            ChooseCommand(digit);
+            ValidateCommand(digit);
         }
 
         protected void DecrementtCursorPosition()
@@ -156,21 +156,74 @@ namespace ConsoleMenu
                 CursorPosition = 0;
         }
 
-        protected virtual void ChooseCommand(int entryNr)
+        protected void ValidateCommand(int entryNr)
         {
             if (!IsSelectionWithinBounds(entryNr)) return;
-            ChosenCommand = MenuCommands[entryNr];
+            var tmpCommand = MenuCommands[entryNr];
 
-            var thisCommandRequiresText = MenuCommands[entryNr].RequiresTextSpecification();
-            if (!thisCommandRequiresText) return;
+            if (tmpCommand.RequiresTextSpecification())
+                ChosenCommand = SpecifyCommandText((CommandTextSpecified)tmpCommand);
 
-            var textInput = RequestTextInput();
-            ChosenCommand.SetTextSpecification(textInput);
+            var readyToExecute = true;
+            if (tmpCommand.RequiresConfirmation())
+                readyToExecute = RequestConfirmation();
+
+            if (readyToExecute)
+                ChooseCommand(tmpCommand);
         }
 
         protected bool IsSelectionWithinBounds(int entrySelection)
         {
             return (entrySelection >= 0) && (entrySelection <= MenuCommands.Count);
+        }
+
+        protected CommandTextSpecified SpecifyCommandText(CommandTextSpecified cmd)
+        {
+
+            var text = RequestTextInput(cmd);
+            cmd.SetTextSpecification(text);
+            return cmd;
+        }
+
+        protected string RequestTextInput(CommandTextSpecified cmd)
+        {
+            var request = cmd.GetTextSpecificationRequest();
+
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine();
+            Console.WriteLine(request);
+            Console.WriteLine();
+            Console.ResetColor();
+            return Console.ReadLine();
+        }
+
+        protected void ChooseCommand(Command cmd)
+        {
+            ChosenCommand = cmd;
+        }
+
+        protected bool RequestConfirmation()
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine();
+            Console.WriteLine("Press Y to confirm or N to cancel.");
+            Console.WriteLine();
+            Console.ResetColor();
+
+            while (true)
+            {
+                var cki = Console.ReadKey();
+
+                switch (cki.Key)
+                {
+                    case ConsoleKey.Y:
+                        return true;
+                    case ConsoleKey.N:
+                        return false;
+                    case ConsoleKey.Escape:
+                        return false;
+                }
+            }
         }
 
         protected void IssueReturnCommand()
@@ -195,7 +248,7 @@ namespace ConsoleMenu
 
         protected virtual void ProcessEnterKey()
         {
-            ChooseCommand(CursorPosition);
+            ValidateCommand(CursorPosition);
         }
 
         protected virtual void ProcessEscapeKey()

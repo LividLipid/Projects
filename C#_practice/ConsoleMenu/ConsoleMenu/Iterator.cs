@@ -23,11 +23,11 @@ namespace ConsoleMenu
             return CurrentItem();
         }
 
-        public Item SearchForTitle(string targetTitle)
+        public Item SearchForItem(Item searchItem)
         {
             while (!IsDone())
             {
-                if (CurrentItem().Title.Equals(targetTitle))
+                if (CurrentItem() == searchItem)
                     return CurrentItem();
                 Next();
             }

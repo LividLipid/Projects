@@ -59,7 +59,7 @@ namespace ConsoleMenu
         public bool HasInSubTree(Item item)
         {
             var i = new IteratorLevelOrderWalk(this);
-            var foundItem = i.SearchForTitle(item.Title);
+            var foundItem = i.SearchForItem(item);
             var isInSubTree = !foundItem.IsSentinel();
 
             return isInSubTree;

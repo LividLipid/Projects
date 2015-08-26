@@ -3,7 +3,7 @@
 namespace ConsoleMenu
 {
     [Serializable]
-    public class CommandQuit : Command
+    public class CommandQuit : CommandConfirmable
     {
         public CommandQuit(Handler receiver) : base(receiver)
         {

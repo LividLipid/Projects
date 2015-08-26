@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandAddNewItem.cs" />
+    <Compile Include="CommandConfirmable.cs" />
     <Compile Include="CommandRefresh.cs" />
     <Compile Include="CommandRequestNewItem.cs" />
     <Compile Include="CommandNull.cs" />
@@ -57,6 +58,7 @@
     <Compile Include="CommandQuit.cs" />
     <Compile Include="CommandReturn.cs" />
     <Compile Include="CommandSelect.cs" />
+    <Compile Include="CommandTextSpecified.cs" />
     <Compile Include="ConsoleScreen.cs" />
     <Compile Include="ConsoleScreenMenu.cs" />
     <Compile Include="ConsoleScreenMenuAddNew.cs" />

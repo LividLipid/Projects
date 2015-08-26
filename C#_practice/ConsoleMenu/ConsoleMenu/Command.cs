@@ -6,7 +6,7 @@ namespace ConsoleMenu
     public abstract class Command
     {
         protected Handler Receiver;
-        public string TextSpcecification;
+        
 
         protected Command(Handler receiver)
         {
@@ -35,9 +35,9 @@ namespace ConsoleMenu
             return false;
         }
 
-        public void SetTextSpecification(string text)
+        public virtual bool RequiresConfirmation()
         {
-            TextSpcecification = text;
+            return false;
         }
     }
 }
