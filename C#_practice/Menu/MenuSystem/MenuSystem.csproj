@@ -47,27 +47,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Item.cs" />
-    <Compile Include="ItemFactory.cs" />
-    <Compile Include="ItemLeaf.cs" />
-    <Compile Include="ItemLeafRSS.cs" />
-    <Compile Include="ItemMenu.cs" />
-    <Compile Include="ItemSentinel.cs" />
     <Compile Include="ObjectCopier.cs" />
     <Compile Include="Handler.cs" />
-    <Compile Include="IteratorLevelOrderWalk.cs" />
-    <Compile Include="IteratorParentWalk.cs" />
     <Compile Include="SaverBinarySerializer.cs" />
-    <Compile Include="Iterator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ExampleTree.cs" />
     <Compile Include="Saver.cs" />
+    <Compile Include="UIDataFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MenuItems\MenuItems.csproj">
+      <Project>{dfdc3669-f869-42a2-8678-618f5cde346d}</Project>
+      <Name>MenuItems</Name>
+    </ProjectReference>
     <ProjectReference Include="..\UserInterfaceBoundary\UserInterfaceBoundary.csproj">
       <Project>{7967965c-67ff-4d0f-99eb-1babcc6242eb}</Project>
       <Name>UserInterfaceBoundary</Name>

@@ -61,7 +61,7 @@
       <Project>{a9221936-f070-4a77-98bf-090c845eeb48}</Project>
       <Name>MenuControlBoundary</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Menu\MenuSystem.csproj">
+    <ProjectReference Include="..\MenuSystem\MenuSystem.csproj">
       <Project>{44b424fd-4b86-43de-9d9f-518d05c72b06}</Project>
       <Name>MenuSystem</Name>
     </ProjectReference>

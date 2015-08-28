@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MenuSystem", "Menu\MenuSystem.csproj", "{44B424FD-4B86-43DE-9D9F-518D05C72B06}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MenuTests", "MenuTests\MenuTests.csproj", "{083EAC28-2502-48EA-B5C4-CED70778F1AA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserInterfaceBoundary", "UserInterfaceBoundary\UserInterfaceBoundary.csproj", "{7967965C-67FF-4D0F-99EB-1BABCC6242EB}"
@@ -17,16 +15,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Commands", "Commands\Comman
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MenuControlBoundary", "MenuControlBoundary\MenuControlBoundary.csproj", "{A9221936-F070-4A77-98BF-090C845EEB48}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MenuSystem", "MenuSystem\MenuSystem.csproj", "{44B424FD-4B86-43DE-9D9F-518D05C72B06}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MenuItems", "MenuItems\MenuItems.csproj", "{DFDC3669-F869-42A2-8678-618F5CDE346D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{44B424FD-4B86-43DE-9D9F-518D05C72B06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{44B424FD-4B86-43DE-9D9F-518D05C72B06}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{44B424FD-4B86-43DE-9D9F-518D05C72B06}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{44B424FD-4B86-43DE-9D9F-518D05C72B06}.Release|Any CPU.Build.0 = Release|Any CPU
 		{083EAC28-2502-48EA-B5C4-CED70778F1AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{083EAC28-2502-48EA-B5C4-CED70778F1AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{083EAC28-2502-48EA-B5C4-CED70778F1AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -51,6 +49,14 @@ Global
 		{A9221936-F070-4A77-98BF-090C845EEB48}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9221936-F070-4A77-98BF-090C845EEB48}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A9221936-F070-4A77-98BF-090C845EEB48}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44B424FD-4B86-43DE-9D9F-518D05C72B06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44B424FD-4B86-43DE-9D9F-518D05C72B06}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44B424FD-4B86-43DE-9D9F-518D05C72B06}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44B424FD-4B86-43DE-9D9F-518D05C72B06}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFDC3669-F869-42A2-8678-618F5CDE346D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFDC3669-F869-42A2-8678-618F5CDE346D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFDC3669-F869-42A2-8678-618F5CDE346D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFDC3669-F869-42A2-8678-618F5CDE346D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
