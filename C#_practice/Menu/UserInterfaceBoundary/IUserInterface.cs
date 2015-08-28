@@ -1,9 +1,7 @@
-﻿using System;
-
-namespace UserInterfaceBoundary
+﻿namespace UserInterfaceBoundary
 {
     public interface IUserInterface
     {
-         void Show(Handler handler, UIData data);
+         void Show(UIData data);
     }
 }

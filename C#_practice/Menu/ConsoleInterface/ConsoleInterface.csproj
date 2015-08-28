@@ -45,8 +45,8 @@
     <Compile Include="ConsoleScreenMenu.cs" />
     <Compile Include="ConsoleScreenMenuAddNew.cs" />
     <Compile Include="ConsoleScreenMenuMain.cs" />
+    <Compile Include="ConsoleUserInterface.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UserInterfaceConsole.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MenuControlBoundary\MenuControlBoundary.csproj">

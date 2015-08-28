@@ -1,41 +1,53 @@
 ﻿using System;
-using Commands;
-using Menu;
+using System.Collections.Generic;
 using UserInterfaceBoundary;
 
 namespace ConsoleInterface
 {
     public class ConsoleScreenMenuAddNew : ConsoleScreenMenu
     {
-        protected UIDataNewItem Data;
 
-        public ConsoleScreenMenuAddNew(Handler handler, UIDataNewItem data) : base(handler, data)
+        public ConsoleScreenMenuAddNew(UIDataNewItem data, ConsoleUserInterface ui) : base(data, ui)
         {
-            Data = data;
-            MenuHasItems = data.Names.Count >= 1;
-
-            BuildMenu(data);
+            SetupAddNewMenu(data);
         }
 
-        protected override void BuildMenuEntriesSection()
+        public ConsoleScreenMenuAddNew(UIDataNewItem data, ConsoleUserInterface ui, int cursorPosition) : base(data, ui, cursorPosition)
         {
+            SetupAddNewMenu(data);
+        }
+
+        private void SetupAddNewMenu(UIDataNewItem data)
+        {
+            DataEntries = data.Names;
+            DefaultEntries = new List<string>()
             {
-                var types = Data.CreatableTypes;
-                var names = Data.Names;
-                for (var i = 0; i < Data.Names.Count; i++)
-                {
-                    AddEntryLine(new CommandNewItemAdd(ItemHandler, types[i]), names[i]);
-                }
-                AddBlankLine();
+                OperationBlank,
+                OperationReturn,
+                OperationBlank,
+                OperationQuit
+            };
+        }
+
+        protected override void ArrangeDataSection()
+        {
+            foreach (var t in DataEntries)
+            {
+                Entries.Add(t);
+                Operations.Add(OperationAddNew);
+                DeletableEntries.Add(false);
             }
         }
 
-        protected override void BuildMenuDefaultSection()
+        protected override void ArrangeDefaultSection()
         {
-            AddDefaultLine(new CommandReturn(ItemHandler));
-
-            AddBlankLine();
-            AddDefaultLine(new CommandQuit(ItemHandler));
+            if (DefaultEntries.Count == 0) return;
+            foreach (var t in DefaultEntries)
+            {
+                Entries.Add(t);
+                Operations.Add(t);
+                DeletableEntries.Add(false);
+            }
         }
 
         protected override void WriteInstructions(ConsoleColor color)
@@ -69,13 +81,6 @@ namespace ConsoleInterface
                     ProcessDownArrowKey();
                     break;
             }
-        }
-
-        public void PrintNewItemMenu()
-        {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(Title);
-            Console.WriteLine();
         }
     }
 }

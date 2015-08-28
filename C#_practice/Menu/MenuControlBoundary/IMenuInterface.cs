@@ -4,15 +4,14 @@ namespace MenuControlBoundary
 {
     public interface IMenuInterface
     {
-        void ExecuteRefreshCommand();
-        void ExecuteQuitCommand();
-        void ExecuteReturnCommand();
-        void ExecuteSelectNewItemCommand();
-        void ExecuteSelectCommand(int selection);
-        void ExecuteAddNewItemCommand(Type type, string title);
-        void ExecuteRemoveItemCommand(int selection);
-        void ExecuteSaveCommand();
-        void AddUndoableState();
-        void ExecuteUndoCommand();
+        void Quit();
+        void Return();
+        void Save();
+        void Undo();
+        void Redo();
+        void SelectItem(int selection);
+        void ShowPossibleNewItems();
+        void AddNewItem(Type type, string title);
+        void RemoveItem(int selection);
     }
 }

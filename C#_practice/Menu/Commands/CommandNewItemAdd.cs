@@ -3,7 +3,7 @@ using Menu;
 
 namespace Commands
 {
-    public class CommandNewItemAdd : CommandTextSpecified, Undoable
+    public class CommandNewItemAdd : CommandTextSpecified, UndoableDecorator
     {
         public Type TypeOfItem;
         public Item AddedItem;

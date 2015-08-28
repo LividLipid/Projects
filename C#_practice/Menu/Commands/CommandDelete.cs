@@ -3,15 +3,15 @@ using Menu;
 
 namespace Commands
 {
-    public class CommandRemove : Command, Undoable
+    public class CommandDelete : Command
     {
         private readonly int _childSelectedIndex = -1;
 
-        public CommandRemove(Handler receiver) : base(receiver)
+        public CommandDelete(Handler receiver) : base(receiver)
         {
         }
 
-        public CommandRemove(Handler receiver, int childIndex) : base(receiver)
+        public CommandDelete(Handler receiver, int childIndex) : base(receiver)
         {
             _childSelectedIndex = childIndex;
         }

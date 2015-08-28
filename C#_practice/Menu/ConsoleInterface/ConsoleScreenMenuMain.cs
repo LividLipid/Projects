@@ -1,44 +1,55 @@
 ﻿using System;
-using Commands;
-using Menu;
+using System.Collections.Generic;
 using UserInterfaceBoundary;
 
 namespace ConsoleInterface
 {
     public class ConsoleScreenMenuMain : ConsoleScreenMenu
     {
-        protected UIDataMenu Data;
 
-        public ConsoleScreenMenuMain(Handler handler, UIDataMenu data) : base(handler, data)
+        public ConsoleScreenMenuMain(UIDataMenu data, ConsoleUserInterface ui) : base(data, ui)
         {
-            Data = data;
-            MenuHasItems = Data.ChildrenTitles.Count >= 1;
-            
-
-            BuildMenu(data);
+            SetupMainMenu(data);
         }
 
-        protected override void BuildMenuEntriesSection()
+        public ConsoleScreenMenuMain(UIDataMenu data, ConsoleUserInterface ui, int cursorPosition) : base(data, ui, cursorPosition)
         {
+            SetupMainMenu(data);
+        }
+
+        private void SetupMainMenu(UIDataMenu data)
+        {
+            DataEntries = data.ChildrenTitles;
+            DefaultEntries = new List<string>()
             {
-                var titles = Data.ChildrenTitles;
-                for (var i = 0; i < titles.Count; i++)
-                {
-                    AddEntryLine(new CommandSelect(ItemHandler, i), titles[i]);
-                    DeletableItems.Add(i);
-                }
-                AddBlankLine();
+                OperationBlank,
+                OperationReturn,
+                OperationAddNew,
+                OperationSave,
+                OperationBlank,
+                OperationQuit
+            };
+        }
+
+        protected override void ArrangeDataSection()
+        {
+            foreach (var t in DataEntries)
+            {
+                Entries.Add(t);
+                Operations.Add(OperationSelect); 
+                DeletableEntries.Add(true);
             }
         }
 
-        protected override sealed void BuildMenuDefaultSection()
+        protected override void ArrangeDefaultSection()
         {
-            AddDefaultLine(new CommandReturn(ItemHandler));
-            AddDefaultLine(new CommandNewItemSelect(ItemHandler));
-            AddDefaultLine(new CommandSave(ItemHandler));
-
-            AddBlankLine();
-            AddDefaultLine(new CommandQuit(ItemHandler));
+            if (DefaultEntries.Count == 0) return;
+            foreach (var t in DefaultEntries)
+            {
+                Entries.Add(t);
+                Operations.Add(t);
+                DeletableEntries.Add(false);
+            }
         }
 
         protected override void WriteInstructions(ConsoleColor color)
@@ -47,8 +58,10 @@ namespace ConsoleInterface
             Console.WriteLine();
             Console.WriteLine("Select item with arrow keys and Enter.");
             Console.WriteLine("Press Escape or Backspace to return.");
-            if (MenuHasItems)
+            if (DataEntries.Count > 0)
                 Console.WriteLine("Press Delete to delete item.");
+            Console.WriteLine("Press Ctrl+Z to undo.");
+            Console.WriteLine("Press Ctrl+Y to redo.");
             Console.WriteLine();
             Console.ResetColor();
         }
@@ -72,11 +85,11 @@ namespace ConsoleInterface
                     break;
                 case ConsoleKey.Z:
                     if (cki.Modifiers == ConsoleModifiers.Control)
-                        ChooseToUndo();
+                        ProcessUndoKey();
                     break;
                 case ConsoleKey.Y:
                     if (cki.Modifiers == ConsoleModifiers.Control)
-                        ChooseToRedo();
+                        ProcessRedoKey();
                     break;
                 case ConsoleKey.UpArrow:
                     ProcessUpArrowKey();

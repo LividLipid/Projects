@@ -1,5 +1,4 @@
 ﻿using System;
-using Menu;
 using UserInterfaceBoundary;
 
 namespace ConsoleInterface
@@ -7,19 +6,20 @@ namespace ConsoleInterface
     public class ConsoleScreenLeaf : ConsoleScreen
     {
 
-        public ConsoleScreenLeaf(Handler handler, UIData data) : base(handler, data)
+        public ConsoleScreenLeaf(UIData data, ConsoleUserInterface ui) : base(data, ui)
         {
-
         }
 
-        public override void Display()
+        public ConsoleScreenLeaf(UIData data, ConsoleUserInterface ui, int cursorPosition) : base(data, ui, cursorPosition)
         {
-            PrintLeafText();
-            ReadKey();
-            IssureReturnCommand();
         }
 
-        public virtual void PrintLeafText()
+        protected override void ArrangeEntriesAndOperations()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void PrintMenuText()
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Red;
@@ -41,11 +41,9 @@ namespace ConsoleInterface
             Console.ReadKey(true);
         }
 
-        private void IssureReturnCommand()
+        protected override void ProcessNonDigitInput(ConsoleKeyInfo cki)
         {
-            ChosenCommand = new CommandReturn(ItemHandler);
-            ChosenCommand.Execute();
+            throw new NotImplementedException();
         }
-
     }
 }
