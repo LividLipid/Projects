@@ -4,7 +4,7 @@ using Menu;
 namespace Commands
 {
     [Serializable]
-    public class CommandSave : Command, Confirmable
+    public class CommandSave : Command
     {
         public CommandSave(Handler receiver) : base(receiver)
         {
@@ -13,11 +13,6 @@ namespace Commands
         public override void Execute()
         {
             Receiver.ExecuteSaveCommand();
-        }
-
-        public override string GetDefaultText()
-        {
-            return "Save";
         }
     }
 }

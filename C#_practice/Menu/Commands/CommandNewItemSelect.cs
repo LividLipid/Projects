@@ -12,10 +12,5 @@ namespace Commands
         {
             Receiver.ExecuteSelectNewItemCommand();
         }
-
-        public override string GetDefaultText()
-        {
-            return "New item";
-        }
     }
 }

@@ -12,10 +12,5 @@ namespace Commands
         {
             throw new System.NotImplementedException();
         }
-
-        public override string GetDefaultText()
-        {
-            return "";
-        }
     }
 }

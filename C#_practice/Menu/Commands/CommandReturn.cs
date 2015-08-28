@@ -14,10 +14,5 @@ namespace Commands
         {
             Receiver.ExecuteReturnCommand();
         }
-
-        public override string GetDefaultText()
-        {
-            return "Return";
-        }
     }
 }

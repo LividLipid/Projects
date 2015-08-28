@@ -12,10 +12,5 @@ namespace Commands
         {
             Receiver.ExecuteUndoCommand();
         }
-
-        public override string GetDefaultText()
-        {
-            return "Undo";
-        }
     }
 }

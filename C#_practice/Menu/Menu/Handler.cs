@@ -6,7 +6,7 @@ using UserInterfaceBoundary;
 namespace Menu
 {
     [Serializable]
-    public abstract class Handler : MenuInterface
+    public abstract class Handler
     {
         public static string DefaultFolderPath = @"C:\Projects\C#_practice\ConsoleMenu\SavedMenus";
         private Item _treeRoot;
@@ -92,7 +92,7 @@ namespace Menu
             ShowItem(_currentItem);
         }
 
-        public override void ExecuteRemoveItemCommand(int selection)
+        public override void ExecuteDeleteCommand(int selection)
         {
             _currentItem.RemoveChild(selection);
             ShowItem(_currentItem);
@@ -118,6 +118,11 @@ namespace Menu
                 _currentItem = previousState;
             }
             ShowItem(_currentItem);
+        }
+
+        public void ExecuteRedoCommand()
+        {
+            
         }
     }
 }

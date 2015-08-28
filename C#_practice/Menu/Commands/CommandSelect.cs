@@ -7,11 +7,7 @@ namespace Commands
     public class CommandSelect : Command
     {
 
-        private readonly int _childSelectedIndex = -1;
-
-        public CommandSelect(Handler receiver) : base(receiver)
-        {
-        }
+        private readonly int _childSelectedIndex;
 
         public CommandSelect(Handler receiver, int childSelected) : base(receiver)
         {
@@ -23,12 +19,7 @@ namespace Commands
             if (_childSelectedIndex >= 0)
                 Receiver.ExecuteSelectCommand(_childSelectedIndex);
             else
-                throw new Exception("Select Command exception: no child selected.");
-        }
-
-        public override string GetDefaultText()
-        {
-            return "Select item";
+                throw new Exception("No child selected.");
         }
     }
 }

@@ -4,7 +4,7 @@ using Menu;
 namespace Commands
 {
     [Serializable]
-    public class CommandQuit : Command, Confirmable
+    public class CommandQuit : Command
     {
         public CommandQuit(Handler receiver) : base(receiver)
         {
@@ -13,11 +13,6 @@ namespace Commands
         public override void Execute()
         {
             Receiver.ExecuteQuitCommand();
-        }
-
-        public override string GetDefaultText()
-        {
-            return "Quit";
         }
     }
 }
