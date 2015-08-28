@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Menu
+namespace MenuItems
 {
     public class IteratorLevelOrderWalk : Iterator
     {

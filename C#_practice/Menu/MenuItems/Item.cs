@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using UserInterfaceBoundary;
 
-namespace Menu
+namespace MenuItems
 {
     [Serializable]
     public abstract class Item
@@ -27,7 +26,6 @@ namespace Menu
         public abstract bool IsLeaf();
         public abstract bool IsMenu();
         public abstract List<ItemLeaf> GetSubTreeLeaves();
-        public abstract UIData GetDataStructure();
         public abstract string GetItemTypeName();
 
         public bool IsRoot()

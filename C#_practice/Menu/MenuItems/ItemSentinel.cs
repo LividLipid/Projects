@@ -1,45 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
-using NUnit.Framework;
 
-namespace Menu
+namespace MenuItems
 {
     [Serializable]
-    public class ItemLeaf : Item
+    public class ItemSentinel : Item
     {
-        public ItemLeaf(string title) : base(title)
+        public ItemSentinel(string title) : base(title)
         {
-            Parent = new ItemSentinel("Sentinel");
+            Parent = null;
         }
 
         public override void AddChild(Item child)
         {
-            throw new Exception("A leaf has no children.");
         }
 
         public override Item GetChild(int i)
         {
-            return new ItemSentinel("ItemSentinel");
+            return this;
         }
 
         public override void RemoveChild(int i)
         {
-            throw new Exception("A leaf has no children.");
         }
 
         public override void RemoveChild(Item item)
         {
-            throw new Exception("A leaf has no children.");
         }
 
         public override bool IsSentinel()
         {
-            return false;
+            return true;
         }
 
         public override bool IsLeaf()
         {
-            return true;
+            return false;
         }
 
         public override bool IsMenu()
@@ -49,17 +45,12 @@ namespace Menu
 
         public override List<ItemLeaf> GetSubTreeLeaves()
         {
-            return new List<ItemLeaf>() { this };
-        }
-
-        public override UIData GetDataStructure()
-        {
-            return new UIDataLeaf(Title);
+            throw new Exception("A sentinel has no leaves.");
         }
 
         public override string GetItemTypeName()
         {
-            return "Blank leaf";
+            return "Sentinel";
         }
     }
 }

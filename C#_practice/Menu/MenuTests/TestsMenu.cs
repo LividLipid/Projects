@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using NUnit.Framework;
-using Menu;
+using MenuSystem;
 
 namespace MenuTests
 {

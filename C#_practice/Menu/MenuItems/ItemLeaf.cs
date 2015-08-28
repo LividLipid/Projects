@@ -1,42 +1,44 @@
 ﻿using System;
 using System.Collections.Generic;
-using UserInterfaceBoundary;
 
-namespace Menu
+namespace MenuItems
 {
     [Serializable]
-    public class ItemSentinel : Item
+    public class ItemLeaf : Item
     {
-        public ItemSentinel(string title) : base(title)
+        public ItemLeaf(string title) : base(title)
         {
-            Parent = null;
+            Parent = new ItemSentinel("Sentinel");
         }
 
         public override void AddChild(Item child)
         {
+            throw new Exception("A leaf has no children.");
         }
 
         public override Item GetChild(int i)
         {
-            return this;
+            return new ItemSentinel("ItemSentinel");
         }
 
         public override void RemoveChild(int i)
         {
+            throw new Exception("A leaf has no children.");
         }
 
         public override void RemoveChild(Item item)
         {
+            throw new Exception("A leaf has no children.");
         }
 
         public override bool IsSentinel()
         {
-            return true;
+            return false;
         }
 
         public override bool IsLeaf()
         {
-            return false;
+            return true;
         }
 
         public override bool IsMenu()
@@ -46,17 +48,12 @@ namespace Menu
 
         public override List<ItemLeaf> GetSubTreeLeaves()
         {
-            throw new Exception("A sentinel has no leaves.");
-        }
-
-        public override UIData GetDataStructure()
-        {
-            throw new Exception("A sentinel has no data.");
+            return new List<ItemLeaf>() { this };
         }
 
         public override string GetItemTypeName()
         {
-            return "Sentinel";
+            return "Blank leaf";
         }
     }
 }

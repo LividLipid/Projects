@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using Menu;
+using MenuSystem;
 
 namespace MenuTests
 {

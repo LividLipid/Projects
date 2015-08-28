@@ -12,6 +12,6 @@ namespace MenuControlBoundary
         void SelectItem(int selection);
         void ShowPossibleNewItems();
         void AddNewItem(Type type, string title);
-        void RemoveItem(int selection);
+        void DeleteItem(int selection);
     }
 }

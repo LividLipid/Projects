@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Menu
+namespace MenuItems
 {
     public static class ItemFactory
     {

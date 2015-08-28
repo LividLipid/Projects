@@ -63,9 +63,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Menu\Menu.csproj">
+    <ProjectReference Include="..\Menu\MenuSystem.csproj">
       <Project>{44b424fd-4b86-43de-9d9f-518d05c72b06}</Project>
-      <Name>Menu</Name>
+      <Name>MenuSystem</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

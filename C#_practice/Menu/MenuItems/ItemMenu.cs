@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 
-namespace Menu
+namespace MenuItems
 {
     [Serializable]
     public class ItemMenu : Item
@@ -74,11 +73,6 @@ namespace Menu
                 i.Next();
             }
             return leaves;
-        }
-
-        public override UIData GetDataStructure()
-        {
-            return new UIDataMenu(Title, GetChildrenTitles());
         }
 
         public override string GetItemTypeName()

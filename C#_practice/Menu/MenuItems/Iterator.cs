@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Menu
+﻿namespace MenuItems
 {
     public abstract class Iterator
     {

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using MenuItems;
 using UserInterfaceBoundary;
 
-namespace Menu
+namespace MenuSystem
 {
     [Serializable]
     public class Handler

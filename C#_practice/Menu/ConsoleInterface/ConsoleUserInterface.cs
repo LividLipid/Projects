@@ -77,7 +77,7 @@ namespace ConsoleInterface
         public void RemoveItem(int selection)
         {
             _hasUnsavedChanges = true;
-            _menu.RemoveItem(selection);
+            _menu.DeleteItem(selection);
         }
     }
 }
