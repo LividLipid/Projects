@@ -8,7 +8,7 @@ namespace Menu
     [Serializable]
     public class SaverBinarySerializer : Saver
     {
-        public override void SaveHandler(HandlerMenu handler, string filePath)
+        public override void SaveHandler(Handler handler, string filePath)
         {
             IFormatter formatter = new BinaryFormatter();
             Stream stream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None);
@@ -16,7 +16,7 @@ namespace Menu
             stream.Close();
         }
 
-        public override HandlerMenu LoadHandler(string filePath)
+        public override Handler LoadHandler(string filePath)
         {
             if (!File.Exists(filePath))
                 throw new Exception("File does not exist.");
@@ -24,7 +24,7 @@ namespace Menu
             {
                 IFormatter formatter = new BinaryFormatter();
                 Stream stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
-                HandlerMenu loadedHandler = (HandlerMenu) formatter.Deserialize(stream);
+                Handler loadedHandler = (Handler) formatter.Deserialize(stream);
                 stream.Close();
 
                 return loadedHandler;

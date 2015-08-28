@@ -8,7 +8,6 @@ namespace Menu
     [Serializable]
     public abstract class Item
     {
-        public Handler TreeHandler;
         public Item Parent;
         public string Title { get; } 
         public int ChildrenCount { get; set; }
@@ -36,11 +35,6 @@ namespace Menu
             return Parent.IsSentinel();
         }
 
-        public Handler GetHandler()
-        {
-            return IsRoot() ? TreeHandler : GetRoot().GetHandler();
-        }
-
         public Item GetRoot()
         {
             if (IsRoot())
@@ -64,11 +58,6 @@ namespace Menu
             var isInSubTree = !foundItem.IsSentinel();
 
             return isInSubTree;
-        }
-
-        public void SaveTree()
-        {
-            GetHandler().SaveHandler();
         }
 
         public static List<Type> GetCreatableItemTypes()

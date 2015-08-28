@@ -6,63 +6,72 @@ using UserInterfaceBoundary;
 namespace Menu
 {
     [Serializable]
-    public abstract class Handler
+    public class Handler
     {
-        public static string DefaultFolderPath = @"C:\Projects\C#_practice\ConsoleMenu\SavedMenus";
+        private const string DefaultFolderPath = @"C:\Projects\C#_practice\ConsoleMenu\SavedMenus";
         private Item _treeRoot;
         private Item _currentItem;
-        public string _treeName;
-        public UserInterface _ui = new UserInterfaceConsole();
-        public Saver _saver = new SaverBinarySerializer();
-        public string _folderPath = DefaultFolderPath;
+        private string _treeName;
+        private IUserInterface _ui;
+        private Saver _saver = new SaverBinarySerializer();
+        private string _folderPath = DefaultFolderPath;
 
-        private Stack<Item> _undoableStates = new Stack<Item>();
-        private Stack<Item> _redoableStates = new Stack<Item>();
-        //private Stack<Item> _addedItems = new Stack<Item>();
-        //private Stack<Item> _removedItems = new Stack<Item>();
+        private readonly Stack<Item> _undoableStates = new Stack<Item>();
+        private readonly Stack<Item> _redoableStates = new Stack<Item>();
 
-        public void SetTreeRoot(Item tree)
+        public Handler(string name, Item tree, IUserInterface ui, Saver saver)
         {
+            _treeName = name;
             _treeRoot = tree;
-            _treeRoot.TreeHandler = this;
+            _ui = ui;
+            _saver = saver;
         }
-
-        public Item GetTreeRoot()
-        {
-            return _treeRoot;
-        }
-
-        public abstract string GetFilePath();
-        public abstract void SaveHandler();
 
         public void ShowTree()
         {
             ShowItem(_treeRoot);
         }
 
-        public void ShowItem(Item item)
+        private void ShowItem(Item item)
         {
             _currentItem = item;
             var data = item.GetDataStructure();
             ShowData(data);
         }
 
-        public void ShowData(UIData data)
+        private void ShowData(UIData data)
         {
-            _ui.Show(this, data);
+            _ui.Show(data);
         }
 
-        public override void ExecuteRefreshCommand()
+        private string GetFilePath()
+        {
+            return _folderPath + @"\" + _treeName;
+        }
+
+        private void SaveHandler()
+        {
+            if (_saver == null)
+                throw new Exception("Saver has not been set.");
+            _saver.SaveHandler(this, GetFilePath());
+        }
+
+        public static HandlerMenu LoadHandler(Saver saver, string filePath)
+        {
+            return saver.LoadHandler(filePath);
+        }
+
+        public void ExecuteRefreshCommand()
         {
             ShowItem(_currentItem);
         }
 
-        public override void ExecuteQuitCommand()
+        public void ExecuteQuitCommand()
         {
             Environment.Exit(0);
         }
 
-        public override void ExecuteReturnCommand()
+        public void ExecuteReturnCommand()
         {
             if (!_currentItem.IsRoot())
                 ShowItem(_currentItem.Parent);
@@ -70,7 +79,7 @@ namespace Menu
                 ExecuteQuitCommand();
         }
 
-        public override void ExecuteSelectNewItemCommand()
+        public void ExecuteSelectNewItemCommand()
         {
             var creatableTypes = Item.GetCreatableItemTypes();
             var data = new UIDataNewItem("Add new item", creatableTypes);
@@ -78,38 +87,38 @@ namespace Menu
             ShowData(data);
         }
 
-        public override void ExecuteSelectCommand(int selection)
+        public void ExecuteSelectCommand(int selection)
         {
             var selectedItem = _currentItem.GetChild(selection);
 
             ShowItem(selectedItem);
         }
 
-        public override void ExecuteAddNewItemCommand(Type type, string title)
+        public void ExecuteAddNewItemCommand(Type type, string title)
         {
             var itemToAdd = ItemFactory.Create(type, title);
             _currentItem.AddChild(itemToAdd);
             ShowItem(_currentItem);
         }
 
-        public override void ExecuteDeleteCommand(int selection)
+        public void ExecuteDeleteCommand(int selection)
         {
             _currentItem.RemoveChild(selection);
             ShowItem(_currentItem);
         }
 
-        public override void ExecuteSaveCommand()
+        public void ExecuteSaveCommand()
         {
             
         }
 
-        public override void AddUndoableState()
+        public void AddUndoableState()
         {
             var currentState = ObjectCopier.Clone(_currentItem);
             _undoableStates.Push(currentState);
         }
 
-        public override void ExecuteUndoCommand()
+        public void ExecuteUndoCommand()
         {
             if (_undoableStates.Count > 0)
             {
