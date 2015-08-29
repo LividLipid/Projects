@@ -2,16 +2,16 @@
 
 namespace MenuControlBoundary
 {
-    public interface IMenuInterface
+    public interface IMenuControlInterface
     {
         void Quit();
         void Return();
         void Save();
         void Undo();
         void Redo();
-        void SelectItem(int selection);
+        void Select(int selection);
         void ShowPossibleNewItems();
-        void AddNewItem(Type type, string title);
-        void DeleteItem(int selection);
+        void Create(int creatableTypeIndex, string title);
+        void Delete(int selection);
     }
 }

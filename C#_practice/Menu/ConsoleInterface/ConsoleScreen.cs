@@ -1,60 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UserInterfaceBoundary;
 
 namespace ConsoleInterface
 {
     public abstract class ConsoleScreen
     {
-        // Text coded operations.
-        protected const string OperationSelect = "Select item";
-        protected const string OperationAddNew = "Add new item";
-        protected const string OperationDelete = "Delete item";
-        protected const string OperationReturn = "Return";
-        protected const string OperationQuit = "Quit";
-        protected const string OperationSave = "Save";
-        protected const string OperationUndo = "Undo";
-        protected const string OperationRedo = "Redo";
-        protected const string OperationBlank = "";
-
-        protected List<string> ConfirmAlwaysOperations = new List<string>()
-        {
-            OperationQuit,
-        };
-
-        protected List<string> ConfirmIfUnsavedOperations = new List<string>()
-        {
-            OperationSelect,
-            OperationReturn,
-        };
-
-        protected List<string> TextSpecifiedOperations = new List<string>()
-        {
-            OperationAddNew,
-        };
-
         protected ConsoleUserInterface UserInterface;
         protected string Title;
         protected int FirstEntryNumber;
 
+        // Entries and operations, which must be initialied by subclasses.
+        // Lists with element for each selectable console line.
         protected List<string> Entries; // Lines of selectable text.
-        protected List<string> Operations; // Text coded operations corresponding to entries.
+        protected List<string> EntryOperations; // Text coded operations corresponding to entries.
         protected List<bool> DeletableEntries; // True if entry can be deleted.
+        // This list maps entries to indices of selectable data. -1 if entry has no data.
+        protected List<int> EntryDataIndices;
 
         protected int CursorPosition;
         protected string OperationToExecute;
-        protected string TextInput; // Some operations requires additional text (i.e. new item title).
+
+        // Optional inputs. Some operations require:
+        public string OptionalInputText; // Additional text (i.e. new item title).
+        public int OptionalInputIndex; // Index of selected entry among data (i.e. nth child).
         
         protected ConsoleScreen(UIData data, ConsoleUserInterface ui)
         {
+            CursorPosition = -1;
             InitConsoleScreen(data, ui);
-            CursorPosition = 0;
         }
 
         protected ConsoleScreen(UIData data, ConsoleUserInterface ui, int cursorPosition)
         {
-            InitConsoleScreen(data, ui);
             CursorPosition = cursorPosition;
+            InitConsoleScreen(data, ui);
         }
 
         private void InitConsoleScreen(UIData data, ConsoleUserInterface ui)
@@ -62,29 +43,51 @@ namespace ConsoleInterface
             Title = data.Title;
             UserInterface = ui;
             FirstEntryNumber = 1;
+            Entries = new List<string>();
+            EntryOperations = new List<string>();
+            DeletableEntries = new List<bool>();
+            EntryDataIndices = new List<int>();
+            OperationToExecute = Operations.Null;
 
-            
+            ResetOptionalInput();
+            ArrangeEntriesAndOperations(data);
+            SetCursorPosition();
         }
-        
-        public void Display_Screen()
-        {
-            ArrangeEntriesAndOperations();
 
+        private void ResetOptionalInput()
+        {
+            OptionalInputText = "";
+            OptionalInputIndex = -1;
+        }
+
+        private void SetCursorPosition()
+        {
+            // If the cursor position is not already set,
+            // this sets it to the first menu entry that is not blank.
+            if (CursorPosition >= 0) return;
+            var i = 0;
+            while (EntryOperations[i] == Operations.Null)
+                i++;
+            CursorPosition = i;
+        }
+
+        public string DisplayScreenAndReturnCommand()
+        {
             do
             {
                 UpdateMenu();
-            } while (OperationToExecute == null);
 
-            //SelectedAction.Execute();
+            } while (OperationToExecute == Operations.Null);
+
+            return OperationToExecute;
         }
 
-        protected abstract void ArrangeEntriesAndOperations();
+        protected abstract void ArrangeEntriesAndOperations(UIData data);
 
         protected void UpdateMenu()
         {
             PrintMenuText();
             ReadKey();
-            LoopCursorPosition();
         }
 
         protected abstract void PrintMenuText();
@@ -111,57 +114,38 @@ namespace ConsoleInterface
         protected void ProcessSelectedIndex(int i)
         {
             if (!IndexIsValid(i)) return;
-            ProcessSelectedOperation(Operations[i]);
+            ProcessSelectedOperation(EntryOperations[i]);
         }
 
         protected void ProcessSelectedOperation(string operation)
         {
-            var readyToExecute = GetOptionalInputAndConfirm(operation);
-
-            if (readyToExecute)
-                SetOperationToExecute(operation);
-        }
-
-        private void SetOperationToExecute(string operation)
-        {
-            OperationToExecute = operation;
-        }
-
-        private bool GetOptionalInputAndConfirm(string operation)
-        {
-            TextInput = TextInputIsNeeded(operation) ? GetTextInput(operation) : null;
+            GetOptionalInput(operation);
 
             var readyToExecute = true;
             if (ConfirmationIsNeeded(operation))
                 readyToExecute = GetConfirmation(operation);
 
-            return readyToExecute;
+            if (readyToExecute)
+                SetOperationToExecute(operation);
+            else
+                ResetOptionalInput();
         }
 
-        protected bool ConfirmationIsNeeded(string entry)
+        private void GetOptionalInput(string operation)
         {
-            var doConfirm = false;
-            if (UserInterface.UnsavedChangesExist())
-                if (ConfirmIfUnsavedOperations.Contains(entry))
-                    doConfirm = true;
+            var requiresText = Operations.CheckIfTextSpecified(operation);
+            if(requiresText)
+                OptionalInputText = GetTextInput(operation);
 
-            if (ConfirmAlwaysOperations.Contains(entry))
-                doConfirm = true;
-
-            return doConfirm;
+            OptionalInputIndex = EntryDataIndices[CursorPosition];
         }
 
-        protected bool TextInputIsNeeded(string entry)
-        {
-            return TextSpecifiedOperations.Contains(entry);
-        }
-
-        protected string GetTextInput(string entry)
+        protected string GetTextInput(string operation)
         {
             string request;
-            switch (entry)
+            switch (operation)
             {
-                case OperationAddNew:
+                case Operations.Create:
                     request = "Please enter title of new item and confirm.";
                     break;
                 default:
@@ -182,18 +166,31 @@ namespace ConsoleInterface
             return Console.ReadLine();
         }
 
-        protected bool GetConfirmation(string entry)
+        protected bool ConfirmationIsNeeded(string operation)
+        {
+            var doConfirm = false;
+            if (UserInterface.ChangesAreUnsaved())
+                if (Operations.ConfirmableWhenUnsaved(operation))
+                    doConfirm = true;
+
+            if (Operations.ConfirmableAlways(operation))
+                doConfirm = true;
+
+            return doConfirm;
+        }
+
+        protected bool GetConfirmation(string operation)
         {
             string request;
-            switch (entry)
+            switch (operation)
             {
-                case OperationQuit:
+                case Operations.Quit:
                     request = "Really quit? (Unsaved changes will be lost.)";
                     break;
-                case OperationReturn:
+                case Operations.Return:
                     request = "Return to previous item? (Unsaved changes will be lost.)";
                     break;
-                case OperationSelect:
+                case Operations.Select:
                     request = "Go to next item? (Unsaved changes will be lost.)";
                     break;
                 default:
@@ -226,6 +223,11 @@ namespace ConsoleInterface
             }
         }
 
+        private void SetOperationToExecute(string operation)
+        {
+            OperationToExecute = operation;
+        }
+
         protected void WriteHighlightedLine(string line)
         {
             Console.BackgroundColor = ConsoleColor.Gray;
@@ -250,7 +252,8 @@ namespace ConsoleInterface
         protected void DecrementtCursorPosition()
         {
             CursorPosition--;
-            var lineIsBlank = Entries[CursorPosition] == OperationBlank;
+            LoopCursorPosition();
+            var lineIsBlank = EntryOperations[CursorPosition] == Operations.Null;
             if (lineIsBlank)
                 CursorPosition--;
         }
@@ -258,7 +261,8 @@ namespace ConsoleInterface
         protected void IncrementCursorPosition()
         {
             CursorPosition++;
-            var lineIsBlank = Entries[CursorPosition] == OperationBlank;
+            LoopCursorPosition();
+            var lineIsBlank = EntryOperations[CursorPosition] == Operations.Null;
             if (lineIsBlank)
                 CursorPosition++;
         }
@@ -289,11 +293,11 @@ namespace ConsoleInterface
 
         protected virtual void ProcessEscapeKey()
         {
-            ProcessSelectedOperation(OperationQuit);
+            ProcessSelectedOperation(Operations.Quit);
         }
         protected virtual void ProcessBackspaceKey()
         {
-            ProcessSelectedOperation(OperationReturn);
+            ProcessSelectedOperation(Operations.Return);
         }
         
         protected virtual void ProcessDeleteKey()
@@ -301,17 +305,17 @@ namespace ConsoleInterface
             if (!IndexIsValid(CursorPosition)) return;
             var selectionIsDeletable = DeletableEntries[CursorPosition] == false;
             if (!selectionIsDeletable) return;
-            SetOperationToExecute(OperationDelete);
+            ProcessSelectedOperation(Operations.Delete);
         }
 
         protected virtual void ProcessUndoKey()
         {
-            SetOperationToExecute(OperationUndo);
+            ProcessSelectedOperation(Operations.Undo);
         }
 
         protected virtual void ProcessRedoKey()
         {
-            SetOperationToExecute(OperationRedo);
+            ProcessSelectedOperation(Operations.Redo);
         }
     }
 }

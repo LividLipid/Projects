@@ -4,15 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{DFC604CE-58B7-4118-9A78-6E006C2AC638}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{A511E38A-E65A-4EAF-B9D7-B2CF326E22A1}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Main</RootNamespace>
-    <AssemblyName>Main</AssemblyName>
+    <RootNamespace>MainPartition</RootNamespace>
+    <AssemblyName>MainPartition</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,6 +24,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -40,13 +43,37 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExampleTree.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Commands\Commands.csproj">
+      <Project>{1389B32C-363A-4DB7-92BC-8E6B64C6A6D6}</Project>
+      <Name>Commands</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ConsoleInterface\ConsoleInterface.csproj">
-      <Project>{9a0b2afe-6dee-41ad-9055-dae294ef9df5}</Project>
+      <Project>{9A0B2AFE-6DEE-41AD-9055-DAE294EF9DF5}</Project>
       <Name>ConsoleInterface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MenuControlBoundary\MenuControlBoundary.csproj">
+      <Project>{A9221936-F070-4A77-98BF-090C845EEB48}</Project>
+      <Name>MenuControlBoundary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MenuItems\MenuItems.csproj">
+      <Project>{DFDC3669-F869-42A2-8678-618F5CDE346D}</Project>
+      <Name>MenuItems</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MenuSystem\MenuSystem.csproj">
+      <Project>{44B424FD-4B86-43DE-9D9F-518D05C72B06}</Project>
+      <Name>MenuSystem</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UserInterfaceBoundary\UserInterfaceBoundary.csproj">
+      <Project>{7967965C-67FF-4D0F-99EB-1BABCC6242EB}</Project>
+      <Name>UserInterfaceBoundary</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -44,7 +44,7 @@
     <Compile Include="CommandRedo.cs" />
     <Compile Include="Decorator.cs" />
     <Compile Include="MenuController.cs" />
-    <Compile Include="CommandNewItemAdd.cs" />
+    <Compile Include="CommandCreate.cs" />
     <Compile Include="CommandNewItemSelect.cs" />
     <Compile Include="CommandNull.cs" />
     <Compile Include="CommandQuit.cs" />

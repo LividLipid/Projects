@@ -4,7 +4,7 @@ namespace Commands
 {
     public class CommandNull : Command
     {
-        public CommandNull(Handler receiver) : base(receiver)
+        public CommandNull(MenuHandler receiver) : base(receiver)
         {
         }
 

@@ -7,49 +7,32 @@ namespace ConsoleInterface
     public class ConsoleScreenMenuMain : ConsoleScreenMenu
     {
 
-        public ConsoleScreenMenuMain(UIDataMenu data, ConsoleUserInterface ui) : base(data, ui)
+        public ConsoleScreenMenuMain(UIData data, ConsoleUserInterface ui) : base(data, ui)
         {
-            SetupMainMenu(data);
         }
 
-        public ConsoleScreenMenuMain(UIDataMenu data, ConsoleUserInterface ui, int cursorPosition) : base(data, ui, cursorPosition)
+        public ConsoleScreenMenuMain(UIData data, ConsoleUserInterface ui, int cursorPosition) : base(data, ui, cursorPosition)
         {
-            SetupMainMenu(data);
         }
 
-        private void SetupMainMenu(UIDataMenu data)
+        protected override void SetMenuEntries(UIData data)
         {
-            DataEntries = data.ChildrenTitles;
+            var menudata = (UIDataMenu) data;
+            DataEntries = menudata.ChildrenTitles;
             DefaultEntries = new List<string>()
             {
-                OperationBlank,
-                OperationReturn,
-                OperationAddNew,
-                OperationSave,
-                OperationBlank,
-                OperationQuit
+                Operations.Null,
+                Operations.Return,
+                Operations.New,
+                Operations.Save,
+                Operations.Null,
+                Operations.Quit,
             };
         }
 
-        protected override void ArrangeDataSection()
+        protected override void AddDataEntry()
         {
-            foreach (var t in DataEntries)
-            {
-                Entries.Add(t);
-                Operations.Add(OperationSelect); 
-                DeletableEntries.Add(true);
-            }
-        }
-
-        protected override void ArrangeDefaultSection()
-        {
-            if (DefaultEntries.Count == 0) return;
-            foreach (var t in DefaultEntries)
-            {
-                Entries.Add(t);
-                Operations.Add(t);
-                DeletableEntries.Add(false);
-            }
+            EntryOperations.Add(Operations.Select);
         }
 
         protected override void WriteInstructions(ConsoleColor color)

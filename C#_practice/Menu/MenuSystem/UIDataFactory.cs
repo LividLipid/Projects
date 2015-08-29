@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using MenuItems;
 using UserInterfaceBoundary;
 
 namespace MenuSystem
 {
-    public class UIDataFactory
+    public static class UIDataFactory
     {
         public static UIData CreateUIData(Item item)
         {
@@ -19,6 +21,15 @@ namespace MenuSystem
                 throw new Exception("A sentinel has no data.");
             else
                 throw new Exception("Unrecognized item type.");
+        }
+
+        public static UIDataNewTypes CreateNewTypesData()
+        {
+            var title = "Create new item Menu";
+            var creatableTypes = Item.GetCreatableItemTypes();
+            var typeNames = creatableTypes.Select(Item.GetNameOfItemType).ToList();
+            
+            return new UIDataNewTypes(title, creatableTypes, typeNames);
         }
 
         private static UIDataLeaf CreateLeafData(ItemLeaf item)

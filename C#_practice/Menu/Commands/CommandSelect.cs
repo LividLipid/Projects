@@ -9,7 +9,7 @@ namespace Commands
 
         private readonly int _childSelectedIndex;
 
-        public CommandSelect(Handler receiver, int childSelected) : base(receiver)
+        public CommandSelect(MenuHandler receiver, int childSelected) : base(receiver)
         {
             _childSelectedIndex = childSelected;
         }

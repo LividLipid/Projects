@@ -2,7 +2,7 @@
 using System.Linq;
 using MenuItems;
 
-namespace MenuSystem
+namespace MainPartition
 {
     public class ExampleTree
     {
@@ -47,9 +47,9 @@ namespace MenuSystem
             ListOfNodes.Add(i);
 
             //ListOfLeaves.Add((ItemLeaf) a);
-            ListOfLeaves.Add((ItemLeaf) c);
-            ListOfLeaves.Add((ItemLeaf) e);
-            ListOfLeaves.Add((ItemLeaf) h);
+            ListOfLeaves.Add((ItemLeaf)c);
+            ListOfLeaves.Add((ItemLeaf)e);
+            ListOfLeaves.Add((ItemLeaf)h);
 
             d.AddChild(c);
             d.AddChild(e);
@@ -63,16 +63,16 @@ namespace MenuSystem
             f.AddChild(b);
             f.AddChild(g);
 
-            Root = (ItemMenu) f;
+            Root = (ItemMenu)f;
             CorrectPreOrder = new List<string> { "F", "B", "A", "D", "C", "E", "G", "I", "H" };
-            CorrectInOrder = new List<string> {"A", "B", "C", "D", "E", "F", "G", "H", "I"};
-            CorrectPostOrder = new List<string> {"A", "C", "E", "D", "B", "H", "I", "G", "F"};
-            CorrectLevelOrder = new List<string> {"F", "B", "G", "A", "D", "I", "C", "E", "H"};
+            CorrectInOrder = new List<string> { "A", "B", "C", "D", "E", "F", "G", "H", "I" };
+            CorrectPostOrder = new List<string> { "A", "C", "E", "D", "B", "H", "I", "G", "F" };
+            CorrectLevelOrder = new List<string> { "F", "B", "G", "A", "D", "I", "C", "E", "H" };
         }
 
         public ItemLeaf GetLeaf()
         {
-            return (ItemLeaf) ListOfLeaves.First();
+            return (ItemLeaf)ListOfLeaves.First();
         }
     }
 }

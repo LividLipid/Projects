@@ -75,11 +75,6 @@ namespace MenuItems
             return leaves;
         }
 
-        public override string GetItemTypeName()
-        {
-            return "Menu";
-        }
-
         public List<string> GetChildrenTitles()
         {
             var titles = _children.Select(child => child.Title).ToList();

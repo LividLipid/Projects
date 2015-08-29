@@ -7,10 +7,5 @@
         public ItemLeafRSS(string title) : base(title)
         {
         }
-
-        public override string GetItemTypeName()
-        {
-            return "RSS Feed";
-        }
     }
 }

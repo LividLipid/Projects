@@ -14,7 +14,7 @@ namespace ConsoleInterface
         {
         }
 
-        protected override void ArrangeEntriesAndOperations()
+        protected override void ArrangeEntriesAndOperations(UIData data)
         {
             throw new NotImplementedException();
         }
@@ -34,11 +34,6 @@ namespace ConsoleInterface
             Console.WriteLine("Press any key to return.");
             Console.WriteLine();
             Console.ResetColor();
-        }
-
-        public virtual void ReadKey()
-        {
-            Console.ReadKey(true);
         }
 
         protected override void ProcessNonDigitInput(ConsoleKeyInfo cki)

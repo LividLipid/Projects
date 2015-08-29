@@ -6,78 +6,91 @@ namespace ConsoleInterface
 {
     public class ConsoleUserInterface : IUserInterface
     {
-        private readonly IMenuInterface _menu;
+        private readonly IMenuControlInterface _menu;
         private bool _hasUnsavedChanges;
 
-        public ConsoleUserInterface(IMenuInterface menu)
+        public ConsoleUserInterface(IMenuControlInterface menu)
         {
             _menu = menu;
             _hasUnsavedChanges = false;
         }
 
-        public void Show(UIData data)
+        public void DisplayUserInterface(UIData data)
         {
             var type = data.GetType();
+            string operation;
+            ConsoleScreen screen;
 
             // Choose the type of console screen to display based on the type of the data object.
-            if(type == typeof(UIDataMenu))
-                new ConsoleScreenMenuMain((UIDataMenu) data, this).Display_Screen();
-            else if (type == typeof(UIDataNewItem))
-                new ConsoleScreenMenuAddNew((UIDataNewItem)data, this).Display_Screen();
-            else if (type == typeof(UIDataLeaf))
-                new ConsoleScreenLeaf((UIDataLeaf)data, this).Display_Screen();
+            if (type == typeof (UIDataMenu))
+            {
+                screen = new ConsoleScreenMenuMain((UIDataMenu)data, this);
+                operation = screen.DisplayScreenAndReturnCommand();
+            }
+            
+            else if (type == typeof (UIDataNewTypes))
+            {
+                screen = new ConsoleScreenMenuAddNew((UIDataNewTypes) data, this);
+                operation = screen.DisplayScreenAndReturnCommand();
+            }
+                
+
+            else if (type == typeof (UIDataLeaf))
+            {
+                screen = new ConsoleScreenLeaf((UIDataLeaf) data, this);
+                operation = screen.DisplayScreenAndReturnCommand();
+            }
+                
             else
                 throw new ArgumentException("Unknown data object type.");
+
+            var optionalIndex = screen.OptionalInputIndex;
+            var optionalText = screen.OptionalInputText;
+            switch (operation)
+            {
+                case Operations.Select:
+                    _hasUnsavedChanges = false;
+                    _menu.Select(optionalIndex);
+                    break;
+                case Operations.Create:
+                    _hasUnsavedChanges = true;
+                    _menu.Create(optionalIndex, optionalText);
+                    break;
+                case Operations.Delete:
+                    _hasUnsavedChanges = true;
+                    _menu.Delete(optionalIndex);
+                    break;
+                case Operations.Return:
+                    _hasUnsavedChanges = false;
+                    _menu.Return();
+                    break;
+                case Operations.Quit:
+                    _hasUnsavedChanges = false;
+                    _menu.Quit();
+                    break;
+                case Operations.Save:
+                    _hasUnsavedChanges = false;
+                    _menu.Save();
+                    break;
+                case Operations.Undo:
+                    _hasUnsavedChanges = true;
+                    _menu.Undo();
+                    break;
+                case Operations.Redo:
+                    _hasUnsavedChanges = true;
+                    _menu.Redo();
+                    break;
+                case Operations.New:
+                    _menu.ShowPossibleNewItems();
+                    break;
+                default:
+                    throw new Exception("No operation selected.");
+            }
         }
 
-        public bool UnsavedChangesExist()
+        public bool ChangesAreUnsaved()
         {
             return _hasUnsavedChanges;
-        }
-
-        public void Quit()
-        {
-            _hasUnsavedChanges = false;
-            _menu.Quit();
-        }
-        public void Return()
-        {
-            _hasUnsavedChanges = false;
-            _menu.Return();
-        }
-        public void Save()
-        {
-            _hasUnsavedChanges = false;
-            _menu.Save();
-        }
-        public void Undo()
-        {
-            _hasUnsavedChanges = true;
-            _menu.Undo();
-        }
-        public void Redo()
-        {
-            _hasUnsavedChanges = true;
-            _menu.Redo();
-        }
-        public void SelectItem(int selection)
-        {
-            _hasUnsavedChanges = false;
-            _menu.SelectItem(selection);
-        }
-        public void ShowPossibleNewItems()
-        {
-            _menu.ShowPossibleNewItems();
-        }
-        public void AddNewItem(Type type, string title)
-        {
-            _hasUnsavedChanges = true;
-            _menu.AddNewItem(type, title);
-        }
-        public void RemoveItem(int selection)
-        {
-            _hasUnsavedChanges = true;
-            _menu.DeleteItem(selection);
         }
     }
 }

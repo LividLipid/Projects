@@ -8,9 +8,9 @@ namespace MenuItems
     public abstract class Item
     {
         public Item Parent;
-        public string Title { get; } 
-        public int ChildrenCount { get; set; }
-        public int SiblingNr { get; set; }
+        public string Title;
+        public int ChildrenCount;
+        public int SiblingNr;
 
         protected Item(string title)
         {
@@ -26,7 +26,6 @@ namespace MenuItems
         public abstract bool IsLeaf();
         public abstract bool IsMenu();
         public abstract List<ItemLeaf> GetSubTreeLeaves();
-        public abstract string GetItemTypeName();
 
         public bool IsRoot()
         {
@@ -68,6 +67,19 @@ namespace MenuItems
             }
             list.Remove(typeof (ItemSentinel));
             return list;
+        }
+
+        public static string GetNameOfItemType(Type type)
+        {
+            if (type == typeof (ItemLeaf))
+                return "Blank leaf";
+            if (type == typeof(ItemLeafRSS))
+                return "RSS Feed";
+            if (type == typeof(ItemMenu))
+                return "Menu";
+            if (type == typeof(ItemSentinel))
+                return "Sentinel";
+            throw new Exception("Unknown item type.");
         }
     }
 }

@@ -4,7 +4,7 @@ namespace Commands
 {
     public class CommandUndo : Command
     {
-        public CommandUndo(Handler receiver) : base(receiver)
+        public CommandUndo(MenuHandler receiver) : base(receiver)
         {
         }
 

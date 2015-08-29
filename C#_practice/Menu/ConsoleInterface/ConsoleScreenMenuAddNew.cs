@@ -7,47 +7,31 @@ namespace ConsoleInterface
     public class ConsoleScreenMenuAddNew : ConsoleScreenMenu
     {
 
-        public ConsoleScreenMenuAddNew(UIDataNewItem data, ConsoleUserInterface ui) : base(data, ui)
+        public ConsoleScreenMenuAddNew(UIData data, ConsoleUserInterface ui) : base(data, ui)
         {
-            SetupAddNewMenu(data);
         }
 
-        public ConsoleScreenMenuAddNew(UIDataNewItem data, ConsoleUserInterface ui, int cursorPosition) : base(data, ui, cursorPosition)
+        public ConsoleScreenMenuAddNew(UIData data, ConsoleUserInterface ui, int cursorPosition) : base(data, ui, cursorPosition)
         {
-            SetupAddNewMenu(data);
         }
 
-        private void SetupAddNewMenu(UIDataNewItem data)
+        protected override void SetMenuEntries(UIData data)
         {
-            DataEntries = data.Names;
+
+            var menudata = (UIDataNewTypes) data;
+            DataEntries = menudata.Names;
             DefaultEntries = new List<string>()
             {
-                OperationBlank,
-                OperationReturn,
-                OperationBlank,
-                OperationQuit
+                Operations.Null,
+                Operations.Return,
+                Operations.Null,
+                Operations.Quit,
             };
         }
 
-        protected override void ArrangeDataSection()
+        protected override void AddDataEntry()
         {
-            foreach (var t in DataEntries)
-            {
-                Entries.Add(t);
-                Operations.Add(OperationAddNew);
-                DeletableEntries.Add(false);
-            }
-        }
-
-        protected override void ArrangeDefaultSection()
-        {
-            if (DefaultEntries.Count == 0) return;
-            foreach (var t in DefaultEntries)
-            {
-                Entries.Add(t);
-                Operations.Add(t);
-                DeletableEntries.Add(false);
-            }
+            EntryOperations.Add(Operations.Create);
         }
 
         protected override void WriteInstructions(ConsoleColor color)

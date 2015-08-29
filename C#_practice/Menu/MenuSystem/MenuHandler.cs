@@ -6,20 +6,26 @@ using UserInterfaceBoundary;
 namespace MenuSystem
 {
     [Serializable]
-    public class Handler
+    public class MenuHandler
     {
         private const string DefaultFolderPath = @"C:\Projects\C#_practice\ConsoleMenu\SavedMenus";
         private Item _treeRoot;
         private Item _currentItem;
         private string _treeName;
         private IUserInterface _ui;
-        private Saver _saver = new SaverBinarySerializer();
+        private Saver _saver;
         private string _folderPath = DefaultFolderPath;
 
         private readonly Stack<Item> _undoableStates = new Stack<Item>();
         private readonly Stack<Item> _redoableStates = new Stack<Item>();
 
-        public Handler(string name, Item tree, IUserInterface ui, Saver saver)
+        public MenuHandler(string name, Item tree)
+        {
+            _treeName = name;
+            _treeRoot = tree;
+        }
+
+        public MenuHandler(string name, Item tree, IUserInterface ui, Saver saver)
         {
             _treeName = name;
             _treeRoot = tree;
@@ -27,21 +33,31 @@ namespace MenuSystem
             _saver = saver;
         }
 
-        public void ShowTree()
+        public void SetUserInterface(IUserInterface ui)
         {
-            ShowItem(_treeRoot);
+            _ui = ui;
         }
 
-        private void ShowItem(Item item)
+        public void SetSaver(Saver saver)
+        {
+            _saver = saver;
+        }
+
+        public void DisplayMenu()
+        {
+            DisplayItem(_treeRoot);
+        }
+
+        private void DisplayItem(Item item)
         {
             _currentItem = item;
-            var data = item.GetDataStructure();
-            ShowData(data);
+            var data = UIDataFactory.CreateUIData(item);
+            DisplayDataObject(data);
         }
 
-        private void ShowData(UIData data)
+        private void DisplayDataObject(UIData data)
         {
-            _ui.Show(data);
+            _ui.DisplayUserInterface(data);
         }
 
         private string GetFilePath()
@@ -56,14 +72,14 @@ namespace MenuSystem
             _saver.SaveHandler(this, GetFilePath());
         }
 
-        public static HandlerMenu LoadHandler(Saver saver, string filePath)
+        public static MenuHandler LoadHandler(Saver saver, string filePath)
         {
             return saver.LoadHandler(filePath);
         }
 
         public void ExecuteRefreshCommand()
         {
-            ShowItem(_currentItem);
+            DisplayItem(_currentItem);
         }
 
         public void ExecuteQuitCommand()
@@ -74,37 +90,38 @@ namespace MenuSystem
         public void ExecuteReturnCommand()
         {
             if (!_currentItem.IsRoot())
-                ShowItem(_currentItem.Parent);
+                DisplayItem(_currentItem.Parent);
             else
                 ExecuteQuitCommand();
         }
 
         public void ExecuteSelectNewItemCommand()
         {
-            var creatableTypes = Item.GetCreatableItemTypes();
-            var data = new UIDataNewItem("Add new item", creatableTypes);
+            var data = UIDataFactory.CreateNewTypesData();
 
-            ShowData(data);
+            DisplayDataObject(data);
         }
 
         public void ExecuteSelectCommand(int selection)
         {
             var selectedItem = _currentItem.GetChild(selection);
 
-            ShowItem(selectedItem);
+            DisplayItem(selectedItem);
         }
 
-        public void ExecuteAddNewItemCommand(Type type, string title)
+        public void ExecuteCreateCommand(int creatableTypeIndex, string title)
         {
+            var creatableTypes = Item.GetCreatableItemTypes();
+            var type = creatableTypes[creatableTypeIndex];
             var itemToAdd = ItemFactory.Create(type, title);
             _currentItem.AddChild(itemToAdd);
-            ShowItem(_currentItem);
+            DisplayItem(_currentItem);
         }
 
         public void ExecuteDeleteCommand(int selection)
         {
             _currentItem.RemoveChild(selection);
-            ShowItem(_currentItem);
+            DisplayItem(_currentItem);
         }
 
         public void ExecuteSaveCommand()
@@ -126,7 +143,7 @@ namespace MenuSystem
                 _redoableStates.Push(previousState);
                 _currentItem = previousState;
             }
-            ShowItem(_currentItem);
+            DisplayItem(_currentItem);
         }
 
         public void ExecuteRedoCommand()

@@ -17,14 +17,40 @@ namespace ConsoleInterface
         {
         }
 
-        protected abstract void ArrangeDataSection();
-        protected abstract void ArrangeDefaultSection();
-        protected abstract void WriteInstructions(ConsoleColor color);
-
-        protected override void ArrangeEntriesAndOperations()
+        protected override void ArrangeEntriesAndOperations(UIData data)
         {
+            SetMenuEntries(data);
             ArrangeDataSection();
             ArrangeDefaultSection();
+        }
+
+        protected abstract void SetMenuEntries(UIData data);
+
+        protected void ArrangeDataSection()
+        {
+            var i = 0;
+            foreach (var t in DataEntries)
+            {
+                Entries.Add(t);
+                AddDataEntry();
+                DeletableEntries.Add(false);
+                EntryDataIndices.Add(i);
+                i++;
+            }
+        }
+
+        protected abstract void AddDataEntry();
+
+        protected void ArrangeDefaultSection()
+        {
+            if (DefaultEntries.Count == 0) return;
+            foreach (var t in DefaultEntries)
+            {
+                Entries.Add(t);
+                EntryOperations.Add(t);
+                DeletableEntries.Add(false);
+                EntryDataIndices.Add(-1);
+            }
         }
 
         protected override void PrintMenuText()
@@ -35,6 +61,8 @@ namespace ConsoleInterface
             WriteEntrySection();
             WriteInstructions(ConsoleColor.Red);
         }
+
+        protected abstract void WriteInstructions(ConsoleColor color);
 
         protected void WriteTitleSection(ConsoleColor color)
         {

@@ -5,11 +5,21 @@ using MenuControlBoundary;
 
 namespace Commands
 {
-    public class MenuController : IMenuInterface
+    public class MenuController : IMenuControlInterface
     {
-        private readonly Handler _receiver;
+        private MenuHandler _receiver;
 
-        public MenuController(Handler receiver)
+        public MenuController()
+        {
+            
+        }
+
+        public MenuController(MenuHandler receiver)
+        {
+            SetReceiver(receiver);
+        }
+
+        public void SetReceiver(MenuHandler receiver)
         {
             _receiver = receiver;
         }
@@ -39,7 +49,7 @@ namespace Commands
             new CommandRedo(_receiver).Execute();
         }
 
-        public void SelectItem(int selection)
+        public void Select(int selection)
         {
             new CommandSelect(_receiver, selection).Execute();
         }
@@ -49,13 +59,13 @@ namespace Commands
             new CommandNewItemSelect(_receiver).Execute();
         }
 
-        public void AddNewItem(Type type, string title)
+        public void Create(int creatableTypeIndex, string title)
         {
-            var cmd = new CommandNewItemAdd(_receiver, type, title);
+            var cmd = new CommandCreate(_receiver, creatableTypeIndex, title);
             new UndoableDecorator(_receiver, cmd).Execute();
         }
 
-        public void DeleteItem(int selection)
+        public void Delete(int selection)
         {
             var cmd = new CommandDelete(_receiver, selection);
             new UndoableDecorator(_receiver, cmd).Execute();

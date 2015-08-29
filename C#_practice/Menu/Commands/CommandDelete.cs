@@ -7,7 +7,7 @@ namespace Commands
     {
         private readonly int _childSelectedIndex;
 
-        public CommandDelete(Handler receiver, int childSelected) : base(receiver)
+        public CommandDelete(MenuHandler receiver, int childSelected) : base(receiver)
         {
             _childSelectedIndex = childSelected;
         }

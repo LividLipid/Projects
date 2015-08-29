@@ -8,15 +8,15 @@ namespace MenuSystem
     [Serializable]
     public class SaverBinarySerializer : Saver
     {
-        public override void SaveHandler(Handler handler, string filePath)
+        public override void SaveHandler(MenuHandler menuHandler, string filePath)
         {
             IFormatter formatter = new BinaryFormatter();
             Stream stream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None);
-            formatter.Serialize(stream, handler);
+            formatter.Serialize(stream, menuHandler);
             stream.Close();
         }
 
-        public override Handler LoadHandler(string filePath)
+        public override MenuHandler LoadHandler(string filePath)
         {
             if (!File.Exists(filePath))
                 throw new Exception("File does not exist.");
@@ -24,10 +24,10 @@ namespace MenuSystem
             {
                 IFormatter formatter = new BinaryFormatter();
                 Stream stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
-                Handler loadedHandler = (Handler) formatter.Deserialize(stream);
+                MenuHandler loadedMenuHandler = (MenuHandler) formatter.Deserialize(stream);
                 stream.Close();
 
-                return loadedHandler;
+                return loadedMenuHandler;
             }
 
         }

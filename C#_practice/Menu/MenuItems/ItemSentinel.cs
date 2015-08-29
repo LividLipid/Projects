@@ -47,10 +47,5 @@ namespace MenuItems
         {
             throw new Exception("A sentinel has no leaves.");
         }
-
-        public override string GetItemTypeName()
-        {
-            return "Sentinel";
-        }
     }
 }

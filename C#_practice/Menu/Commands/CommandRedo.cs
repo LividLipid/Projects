@@ -4,7 +4,7 @@ namespace Commands
 {
     public class CommandRedo : Command
     {
-        public CommandRedo(Handler receiver) : base(receiver)
+        public CommandRedo(MenuHandler receiver) : base(receiver)
         {
         }
 

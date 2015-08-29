@@ -6,7 +6,7 @@ namespace MenuSystem
     [Serializable]
     public abstract class Saver
     {
-        public abstract void SaveHandler(Handler handler, string filePath);
-        public abstract Handler LoadHandler(string filePath);
+        public abstract void SaveHandler(MenuHandler menuHandler, string filePath);
+        public abstract MenuHandler LoadHandler(string filePath);
     }
 }

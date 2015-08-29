@@ -6,7 +6,7 @@ namespace Commands
     [Serializable]
     public class CommandSave : Command
     {
-        public CommandSave(Handler receiver) : base(receiver)
+        public CommandSave(MenuHandler receiver) : base(receiver)
         {
         }
 

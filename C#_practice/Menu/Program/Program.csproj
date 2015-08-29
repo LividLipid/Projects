@@ -4,15 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{9A0B2AFE-6DEE-41AD-9055-DAE294EF9DF5}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{DBEB464D-B676-43B5-917D-FA1F7A4C7234}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ConsoleInterface</RootNamespace>
-    <AssemblyName>ConsoleInterface</AssemblyName>
+    <RootNamespace>Program</RootNamespace>
+    <AssemblyName>Program</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,6 +24,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -40,19 +43,33 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConsoleScreen.cs" />
-    <Compile Include="ConsoleScreenLeaf.cs" />
-    <Compile Include="ConsoleScreenMenu.cs" />
-    <Compile Include="ConsoleScreenMenuAddNew.cs" />
-    <Compile Include="ConsoleScreenMenuMain.cs" />
-    <Compile Include="ConsoleUserInterface.cs" />
-    <Compile Include="Operations.cs" />
+    <Compile Include="ExampleTree.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Commands\Commands.csproj">
+      <Project>{1389b32c-363a-4db7-92bc-8e6b64c6a6d6}</Project>
+      <Name>Commands</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ConsoleInterface\ConsoleInterface.csproj">
+      <Project>{9a0b2afe-6dee-41ad-9055-dae294ef9df5}</Project>
+      <Name>ConsoleInterface</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MenuControlBoundary\MenuControlBoundary.csproj">
       <Project>{a9221936-f070-4a77-98bf-090c845eeb48}</Project>
       <Name>MenuControlBoundary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MenuItems\MenuItems.csproj">
+      <Project>{dfdc3669-f869-42a2-8678-618f5cde346d}</Project>
+      <Name>MenuItems</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MenuSystem\MenuSystem.csproj">
+      <Project>{44b424fd-4b86-43de-9d9f-518d05c72b06}</Project>
+      <Name>MenuSystem</Name>
     </ProjectReference>
     <ProjectReference Include="..\UserInterfaceBoundary\UserInterfaceBoundary.csproj">
       <Project>{7967965c-67ff-4d0f-99eb-1babcc6242eb}</Project>

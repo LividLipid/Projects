@@ -6,7 +6,7 @@ namespace Commands
     {
         protected Command Command;
 
-        protected Decorator(Handler receiver, Command cmd) : base(receiver)
+        protected Decorator(MenuHandler receiver, Command cmd) : base(receiver)
         {
             Command = cmd;
         }

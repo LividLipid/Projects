@@ -5,10 +5,10 @@ namespace Commands
 {
     public abstract class Command
     {
-        protected Handler Receiver;
+        protected MenuHandler Receiver;
         public bool IsUndoable = false;
 
-        protected Command(Handler receiver)
+        protected Command(MenuHandler receiver)
         {
             Receiver = receiver;
         }

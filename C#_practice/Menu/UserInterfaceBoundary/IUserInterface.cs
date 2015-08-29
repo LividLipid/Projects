@@ -2,6 +2,6 @@
 {
     public interface IUserInterface
     {
-         void Show(UIData data);
+         void DisplayUserInterface(UIData data);
     }
 }

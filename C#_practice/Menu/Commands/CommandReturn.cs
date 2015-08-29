@@ -6,7 +6,7 @@ namespace Commands
     [Serializable]
     public class CommandReturn : Command
     {
-        public CommandReturn(Handler receiver) : base(receiver)
+        public CommandReturn(MenuHandler receiver) : base(receiver)
         {
         }
 

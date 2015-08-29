@@ -50,10 +50,5 @@ namespace MenuItems
         {
             return new List<ItemLeaf>() { this };
         }
-
-        public override string GetItemTypeName()
-        {
-            return "Blank leaf";
-        }
     }
 }
