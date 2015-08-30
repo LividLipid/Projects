@@ -35,6 +35,11 @@ namespace ConsoleInterface
             EntryOperations.Add(Operations.Select);
         }
 
+        protected override void AddDeletableEntry()
+        {
+            DeletableEntries.Add(true);
+        }
+
         protected override void WriteInstructions(ConsoleColor color)
         {
             Console.ForegroundColor = color;

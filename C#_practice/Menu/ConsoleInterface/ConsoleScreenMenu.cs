@@ -29,17 +29,19 @@ namespace ConsoleInterface
         protected void ArrangeDataSection()
         {
             var i = 0;
-            foreach (var t in DataEntries)
+            foreach (var entry in DataEntries)
             {
-                Entries.Add(t);
+                Entries.Add(entry);
                 AddDataEntry();
-                DeletableEntries.Add(false);
+                AddDeletableEntry();
                 EntryDataIndices.Add(i);
                 i++;
             }
         }
 
         protected abstract void AddDataEntry();
+
+        protected abstract void AddDeletableEntry();
 
         protected void ArrangeDefaultSection()
         {

@@ -16,14 +16,16 @@ namespace MenuSystem
         private Saver _saver;
         private string _folderPath = DefaultFolderPath;
 
-        private readonly Stack<Item> _undoableStates = new Stack<Item>();
-        private readonly Stack<Item> _redoableStates = new Stack<Item>();
+        private readonly Stack<Item> _undoableStates;
+        private readonly Stack<Item> _redoableStates;
 
         public MenuHandler(string name, Item tree)
         {
             _treeName = name;
             _treeRoot = tree;
-        }
+            _undoableStates = new Stack<Item>();
+            _redoableStates = new Stack<Item>();
+    }
 
         public MenuHandler(string name, Item tree, IUserInterface ui, Saver saver)
         {
@@ -31,6 +33,8 @@ namespace MenuSystem
             _treeRoot = tree;
             _ui = ui;
             _saver = saver;
+            _undoableStates = new Stack<Item>();
+            _redoableStates = new Stack<Item>();
         }
 
         public void SetUserInterface(IUserInterface ui)
@@ -131,24 +135,30 @@ namespace MenuSystem
 
         public void AddUndoableState()
         {
-            var currentState = ObjectCopier.Clone(_currentItem);
-            _undoableStates.Push(currentState);
+            _undoableStates.Push(ObjectCopier.Clone(_currentItem));
+
+            if (_redoableStates.Count > 0)
+                _redoableStates.Clear();
         }
 
         public void ExecuteUndoCommand()
         {
             if (_undoableStates.Count > 0)
             {
-                var previousState = _undoableStates.Pop();
-                _redoableStates.Push(previousState);
-                _currentItem = previousState;
+                _redoableStates.Push(ObjectCopier.Clone(_currentItem));
+                _currentItem = _undoableStates.Pop();
             }
             DisplayItem(_currentItem);
         }
 
         public void ExecuteRedoCommand()
         {
-            
+            if (_redoableStates.Count > 0)
+            {
+                _undoableStates.Push(ObjectCopier.Clone(_currentItem));
+                _currentItem = _redoableStates.Pop();
+            }
+            DisplayItem(_currentItem);
         }
     }
 }

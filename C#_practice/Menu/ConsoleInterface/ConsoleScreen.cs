@@ -303,7 +303,7 @@ namespace ConsoleInterface
         protected virtual void ProcessDeleteKey()
         {
             if (!IndexIsValid(CursorPosition)) return;
-            var selectionIsDeletable = DeletableEntries[CursorPosition] == false;
+            var selectionIsDeletable = DeletableEntries[CursorPosition];
             if (!selectionIsDeletable) return;
             ProcessSelectedOperation(Operations.Delete);
         }
