@@ -9,30 +9,32 @@ namespace MenuSystem
     public class MenuHandler
     {
         private const string DefaultFolderPath = @"C:\Projects\C#_practice\ConsoleMenu\SavedMenus";
-        private Item _treeRoot;
-        private Item _currentItem;
-        private string _treeName;
+        private Item _currentItem; 
+        private string _name;
         private IUserInterface _ui;
         private Saver _saver;
         private string _folderPath = DefaultFolderPath;
 
-        private readonly Stack<Item> _undoableStates;
-        private readonly Stack<Item> _redoableStates;
+        private Item _savedState; // Clone of Item before unsaved changes.
+        private Stack<Item> _undoableStates;
+        private Stack<Item> _redoableStates;
 
-        public MenuHandler(string name, Item tree)
+        public MenuHandler(string name)
         {
-            _treeName = name;
-            _treeRoot = tree;
-            _undoableStates = new Stack<Item>();
-            _redoableStates = new Stack<Item>();
-    }
+            _name = name;
+            ResetMemory();
+        }
 
-        public MenuHandler(string name, Item tree, IUserInterface ui, Saver saver)
+        public MenuHandler(string name, IUserInterface ui, Saver saver)
         {
-            _treeName = name;
-            _treeRoot = tree;
+            _name = name;
             _ui = ui;
             _saver = saver;
+            ResetMemory();
+        }
+
+        public void ResetMemory()
+        {
             _undoableStates = new Stack<Item>();
             _redoableStates = new Stack<Item>();
         }
@@ -47,15 +49,22 @@ namespace MenuSystem
             _saver = saver;
         }
 
-        public void DisplayMenu()
+        public void DisplayMenu(Item item)
         {
-            DisplayItem(_treeRoot);
+            DisplayNewItem(item.GetRoot());
         }
 
-        private void DisplayItem(Item item)
+        private void DisplayNewItem(Item item)
         {
             _currentItem = item;
-            var data = UIDataFactory.CreateUIData(item);
+            _savedState = CopyCurrentState();
+            var data = UIDataFactory.CreateUIData(_currentItem);
+            DisplayDataObject(data);
+        }
+
+        private void RefreshDisplay()
+        {
+            var data = UIDataFactory.CreateUIData(_currentItem);
             DisplayDataObject(data);
         }
 
@@ -66,7 +75,7 @@ namespace MenuSystem
 
         private string GetFilePath()
         {
-            return _folderPath + @"\" + _treeName;
+            return _folderPath + @"\" + _name;
         }
 
         private void SaveHandler()
@@ -81,11 +90,6 @@ namespace MenuSystem
             return saver.LoadHandler(filePath);
         }
 
-        public void ExecuteRefreshCommand()
-        {
-            DisplayItem(_currentItem);
-        }
-
         public void ExecuteQuitCommand()
         {
             Environment.Exit(0);
@@ -94,7 +98,7 @@ namespace MenuSystem
         public void ExecuteReturnCommand()
         {
             if (!_currentItem.IsRoot())
-                DisplayItem(_currentItem.Parent);
+                DisplayNewItem(_currentItem.Parent);
             else
                 ExecuteQuitCommand();
         }
@@ -110,7 +114,7 @@ namespace MenuSystem
         {
             var selectedItem = _currentItem.GetChild(selection);
 
-            DisplayItem(selectedItem);
+            DisplayNewItem(selectedItem);
         }
 
         public void ExecuteCreateCommand(int creatableTypeIndex, string title)
@@ -119,23 +123,24 @@ namespace MenuSystem
             var type = creatableTypes[creatableTypeIndex];
             var itemToAdd = ItemFactory.Create(type, title);
             _currentItem.AddChild(itemToAdd);
-            DisplayItem(_currentItem);
+            RefreshDisplay();
         }
 
         public void ExecuteDeleteCommand(int selection)
         {
             _currentItem.RemoveChild(selection);
-            DisplayItem(_currentItem);
+            RefreshDisplay();
         }
 
         public void ExecuteSaveCommand()
         {
-            
+            _savedState = _currentItem;
+            RefreshDisplay();
         }
 
         public void AddUndoableState()
         {
-            _undoableStates.Push(ObjectCopier.Clone(_currentItem));
+            _undoableStates.Push(CopyCurrentState());
 
             if (_redoableStates.Count > 0)
                 _redoableStates.Clear();
@@ -145,20 +150,25 @@ namespace MenuSystem
         {
             if (_undoableStates.Count > 0)
             {
-                _redoableStates.Push(ObjectCopier.Clone(_currentItem));
+                _redoableStates.Push(CopyCurrentState());
                 _currentItem = _undoableStates.Pop();
             }
-            DisplayItem(_currentItem);
+            RefreshDisplay();
         }
 
         public void ExecuteRedoCommand()
         {
             if (_redoableStates.Count > 0)
             {
-                _undoableStates.Push(ObjectCopier.Clone(_currentItem));
+                _undoableStates.Push(CopyCurrentState());
                 _currentItem = _redoableStates.Pop();
             }
-            DisplayItem(_currentItem);
+            RefreshDisplay();
+        }
+
+        private Item CopyCurrentState()
+        {
+            return ObjectCopier.Clone(_currentItem);
         }
     }
 }

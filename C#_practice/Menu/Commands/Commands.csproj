@@ -43,6 +43,7 @@
     <Compile Include="Command.cs" />
     <Compile Include="CommandRedo.cs" />
     <Compile Include="Decorator.cs" />
+    <Compile Include="MemoryResetDecorator.cs" />
     <Compile Include="MenuController.cs" />
     <Compile Include="CommandCreate.cs" />
     <Compile Include="CommandNewItemSelect.cs" />

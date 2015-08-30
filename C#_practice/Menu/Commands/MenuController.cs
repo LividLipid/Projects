@@ -26,49 +26,70 @@ namespace Commands
 
         public void Quit()
         {
-            new CommandQuit(_receiver).Execute();
+            Command cmd = new CommandQuit(_receiver);
+            cmd.Execute();
         }
 
         public void Return()
         {
-            new CommandReturn(_receiver).Execute();
+            Command cmd = new CommandReturn(_receiver);
+            cmd = MakeMemoryResetting(cmd);
+            cmd.Execute();
         }
 
         public void Save()
         {
-            new CommandSave(_receiver).Execute();
+            Command cmd = new CommandSave(_receiver);
+            cmd.Execute();
         }
 
         public void Undo()
         {
-            new CommandUndo(_receiver).Execute();
+            Command cmd = new CommandUndo(_receiver);
+            cmd.Execute();
         }
 
         public void Redo()
         {
-            new CommandRedo(_receiver).Execute();
+            Command cmd = new CommandRedo(_receiver);
+            cmd.Execute();
         }
 
         public void Select(int selection)
         {
-            new CommandSelect(_receiver, selection).Execute();
+            Command cmd = new CommandSelect(_receiver, selection);
+            cmd = MakeMemoryResetting(cmd);
+            cmd.Execute();
         }
 
         public void ShowPossibleNewItems()
         {
-            new CommandNewItemSelect(_receiver).Execute();
+            Command cmd = new CommandNewItemSelect(_receiver);
+            cmd.Execute();
         }
 
         public void Create(int creatableTypeIndex, string title)
         {
-            var cmd = new CommandCreate(_receiver, creatableTypeIndex, title);
-            new UndoableDecorator(_receiver, cmd).Execute();
+            Command cmd = new CommandCreate(_receiver, creatableTypeIndex, title);
+            cmd = MakeUndoable(cmd);
+            cmd.Execute();
         }
 
         public void Delete(int selection)
         {
-            var cmd = new CommandDelete(_receiver, selection);
-            new UndoableDecorator(_receiver, cmd).Execute();
+            Command cmd = new CommandDelete(_receiver, selection);
+            cmd = MakeUndoable(cmd);
+            cmd.Execute();
+        }
+
+        private Command MakeUndoable(Command cmd)
+        {
+            return new UndoableDecorator(_receiver, cmd);
+        }
+
+        private Command MakeMemoryResetting(Command cmd)
+        {
+            return new MemoryResetDecorator(_receiver, cmd);
         }
     }
 }

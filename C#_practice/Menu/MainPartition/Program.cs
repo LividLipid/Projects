@@ -14,15 +14,15 @@ namespace MainPartition
         public static void Main(string[] args)
         {
             var handler = CreateExampleHandler();
-            handler.DisplayMenu();
+            var tree = new ExampleTree().Root;
+            handler.DisplayMenu(tree);
 
         }
 
         static MenuHandler CreateExampleHandler()
         {
             var name = "Default Menu System";
-            var tree = new ExampleTree().Root;
-            var handler = new MenuHandler(name, tree);
+            var handler = new MenuHandler(name);
 
             var menuController = new MenuController(handler);
             var ui = new ConsoleUserInterface(menuController);

@@ -50,6 +50,7 @@ namespace ConsoleInterface
             {
                 case Operations.Select:
                     _hasUnsavedChanges = false;
+                    _menu.Save();
                     _menu.Select(optionalIndex);
                     break;
                 case Operations.Create:
@@ -62,10 +63,10 @@ namespace ConsoleInterface
                     break;
                 case Operations.Return:
                     _hasUnsavedChanges = false;
+                    _menu.Save();
                     _menu.Return();
                     break;
                 case Operations.Quit:
-                    _hasUnsavedChanges = false;
                     _menu.Quit();
                     break;
                 case Operations.Save:
