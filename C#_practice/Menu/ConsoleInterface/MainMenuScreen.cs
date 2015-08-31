@@ -1,25 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using Commands;
 using UserInterfaceBoundary;
 
 namespace ConsoleInterface
 {
-    public class ConsoleScreenMenuMain : ConsoleScreenMenu
+    public class MainMenuScreen : MenuScreen
     {
-
-        public ConsoleScreenMenuMain(UIData data, ConsoleUserInterface ui) : base(data, ui)
+        public MainMenuScreen(UIData data, CommandFactory cmdFactory) : base(data, cmdFactory)
         {
         }
 
-        public ConsoleScreenMenuMain(UIData data, ConsoleUserInterface ui, int cursorPosition) : base(data, ui, cursorPosition)
+        protected override List<string> GetDataTitles(UIDataMenu dataObject)
         {
+            return dataObject.ChildrenTitles;
         }
 
-        protected override void SetMenuEntries(UIData data)
+        protected override List<string> GetDefaultOperations()
         {
-            var menudata = (UIDataMenu) data;
-            DataEntries = menudata.ChildrenTitles;
-            DefaultEntries = new List<string>()
+            var defaultOperations = new List<string>()
             {
                 Operations.Null,
                 Operations.Return,
@@ -28,16 +27,17 @@ namespace ConsoleInterface
                 Operations.Null,
                 Operations.Quit,
             };
+
+            return defaultOperations;
         }
 
-        protected override void AddDataEntry()
+        protected override void AddDataEntry(string data, int dataIndex)
         {
-            EntryOperations.Add(Operations.Select);
-        }
-
-        protected override void AddDeletableEntry()
-        {
-            DeletableEntries.Add(true);
+            string text = data;
+            string operation = Operations.Select;
+            bool isDeletable = true;
+            var newEntry = new MenuEntry(text, data, operation, isDeletable, dataIndex);
+            Entries.Add(newEntry);
         }
 
         protected override void WriteInstructions(ConsoleColor color)
@@ -46,7 +46,7 @@ namespace ConsoleInterface
             Console.WriteLine();
             Console.WriteLine("Select item with arrow keys and Enter.");
             Console.WriteLine("Press Escape or Backspace to return.");
-            if (DataEntries.Count > 0)
+            if (CountDataEntries() > 0)
                 Console.WriteLine("Press Delete to delete item.");
             Console.WriteLine("Press Ctrl+Z to undo.");
             Console.WriteLine("Press Ctrl+Y to redo.");

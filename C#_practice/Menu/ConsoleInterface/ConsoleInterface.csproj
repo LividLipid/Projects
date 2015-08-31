@@ -41,15 +41,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConsoleScreen.cs" />
-    <Compile Include="ConsoleScreenLeaf.cs" />
-    <Compile Include="ConsoleScreenMenu.cs" />
-    <Compile Include="ConsoleScreenMenuAddNew.cs" />
-    <Compile Include="ConsoleScreenMenuMain.cs" />
+    <Compile Include="LeafScreen.cs" />
+    <Compile Include="MenuEntry.cs" />
+    <Compile Include="MenuScreen.cs" />
+    <Compile Include="CreateNewMenuScreen.cs" />
+    <Compile Include="MainMenuScreen.cs" />
     <Compile Include="ConsoleUserInterface.cs" />
+    <Compile Include="MenuState.cs" />
+    <Compile Include="ObjectCopier.cs" />
     <Compile Include="Operations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Commands\Commands.csproj">
+      <Project>{1389b32c-363a-4db7-92bc-8e6b64c6a6d6}</Project>
+      <Name>Commands</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MenuControlBoundary\MenuControlBoundary.csproj">
       <Project>{a9221936-f070-4a77-98bf-090c845eeb48}</Project>
       <Name>MenuControlBoundary</Name>

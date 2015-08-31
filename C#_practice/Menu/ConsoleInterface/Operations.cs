@@ -16,36 +16,47 @@ namespace ConsoleInterface
         public const string New = "Create new item";
         public const string Null = ""; // No operation selected.
 
-        private static readonly List<string> ConfirmAlwaysCommands = new List<string>()
-        {
-            Quit,
-        };
+        //private static readonly List<string> ConfirmAlwaysOperations = new List<string>()
+        //{
+        //    Quit,
+        //};
 
-        private static readonly List<string> ConfirmIfUnsavedCommands = new List<string>()
-        {
-            Select,
-            Return,
-        };
+        //private static readonly List<string> ConfirmIfUnsavedOperations = new List<string>()
+        //{
+        //    Select,
+        //    Return,
+        //};
 
-        private static readonly List<string> TextSpecifiedCommands = new List<string>()
-        {
-            Create,
-        };
+        //private static readonly List<string> TextSpecifiedOperations = new List<string>()
+        //{
+        //    Create,
+        //};
+
+        //private static readonly List<string> UndoableOperations = new List<string>()
+        //{
+        //    Create,
+        //    Delete
+        //};
 
 
-        public static bool ConfirmableAlways(string cmd)
-        {
-            return ConfirmAlwaysCommands.Contains(cmd);
-        }
+        //public static bool ConfirmableAlways(string op)
+        //{
+        //    return ConfirmAlwaysOperations.Contains(op);
+        //}
 
-        public static bool ConfirmableWhenUnsaved(string cmd)
-        {
-            return ConfirmIfUnsavedCommands.Contains(cmd);
-        }
+        //public static bool ConfirmableWhenUnsaved(string op)
+        //{
+        //    return ConfirmIfUnsavedOperations.Contains(op);
+        //}
 
-        public static bool CheckIfTextSpecified(string cmd)
-        {
-            return TextSpecifiedCommands.Contains(cmd); 
-        }
+        //public static bool CheckIfTextSpecified(string op)
+        //{
+        //    return TextSpecifiedOperations.Contains(op); 
+        //}
+
+        //public static bool CheckIfUndoable(string op)
+        //{
+        //    return UndoableOperations.Contains(op);
+        //}
     }
 }

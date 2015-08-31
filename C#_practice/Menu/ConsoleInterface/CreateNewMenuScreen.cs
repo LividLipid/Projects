@@ -1,42 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
+using Commands;
 using UserInterfaceBoundary;
 
 namespace ConsoleInterface
 {
-    public class ConsoleScreenMenuAddNew : ConsoleScreenMenu
+    public class CreateNewMenuScreen : MenuScreen
     {
-
-        public ConsoleScreenMenuAddNew(UIData data, ConsoleUserInterface ui) : base(data, ui)
+        public CreateNewMenuScreen(UIData data, CommandFactory cmdFactory) : base(data, cmdFactory)
         {
         }
 
-        public ConsoleScreenMenuAddNew(UIData data, ConsoleUserInterface ui, int cursorPosition) : base(data, ui, cursorPosition)
+        protected override List<string> GetDataTitles(UIDataMenu dataObject)
         {
+            return dataObject.CreatableTypeNames;
         }
 
-        protected override void SetMenuEntries(UIData data)
+        protected override List<string> GetDefaultOperations()
         {
-
-            var menudata = (UIDataNewTypes) data;
-            DataEntries = menudata.Names;
-            DefaultEntries = new List<string>()
+            var defaultEntries = new List<string>()
             {
                 Operations.Null,
                 Operations.Return,
                 Operations.Null,
                 Operations.Quit,
             };
+
+            return defaultEntries;
         }
 
-        protected override void AddDataEntry()
+        protected override void AddDataEntry(string data, int dataIndex)
         {
-            EntryOperations.Add(Operations.Create);
-        }
-
-        protected override void AddDeletableEntry()
-        {
-            DeletableEntries.Add(false);
+            string text = data;
+            string operation = Operations.Create;
+            bool isDeletable = false;
+            var newEntry = new MenuEntry(text, data, operation, isDeletable, dataIndex);
+            Entries.Add(newEntry);
         }
 
         protected override void WriteInstructions(ConsoleColor color)

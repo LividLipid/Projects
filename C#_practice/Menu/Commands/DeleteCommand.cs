@@ -1,15 +1,13 @@
 ﻿using System;
-using MenuSystem;
+using MenuControlBoundary;
 
 namespace Commands
 {
-    [Serializable]
-    public class CommandSelect : Command
+    public class DeleteCommand : Command
     {
-
         private readonly int _childSelectedIndex;
 
-        public CommandSelect(MenuHandler receiver, int childSelected) : base(receiver)
+        public DeleteCommand(IMenuControlInterface receiver, int childSelected) : base(receiver)
         {
             _childSelectedIndex = childSelected;
         }
@@ -17,7 +15,7 @@ namespace Commands
         public override void Execute()
         {
             if (_childSelectedIndex >= 0)
-                Receiver.ExecuteSelectCommand(_childSelectedIndex);
+                Receiver.Delete(_childSelectedIndex);
             else
                 throw new Exception("No child selected.");
         }

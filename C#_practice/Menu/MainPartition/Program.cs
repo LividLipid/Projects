@@ -24,8 +24,8 @@ namespace MainPartition
             var name = "Default Menu System";
             var handler = new MenuHandler(name);
 
-            var menuController = new MenuController(handler);
-            var ui = new ConsoleUserInterface(menuController);
+            var commandFactory = new CommandFactory(handler);
+            var ui = new ConsoleUserInterface(commandFactory);
             handler.SetUserInterface(ui);
 
             var saver = new SaverBinarySerializer();

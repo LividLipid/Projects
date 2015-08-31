@@ -1,10 +1,10 @@
-﻿using MenuSystem;
+﻿using MenuControlBoundary;
 
 namespace Commands
 {
-    public class CommandNull : Command
+    public class NullCommand : Command
     {
-        public CommandNull(MenuHandler receiver) : base(receiver)
+        public NullCommand(IMenuControlInterface receiver) : base(receiver)
         {
         }
 

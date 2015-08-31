@@ -1,14 +1,14 @@
 ﻿using System;
-using MenuSystem;
+using MenuControlBoundary;
 
 namespace Commands
 {
     public abstract class Command
     {
-        protected MenuHandler Receiver;
+        protected IMenuControlInterface Receiver;
         public bool IsUndoable = false;
 
-        protected Command(MenuHandler receiver)
+        protected Command(IMenuControlInterface receiver)
         {
             Receiver = receiver;
         }

@@ -50,7 +50,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ObjectCopier.cs" />
     <Compile Include="MenuHandler.cs" />
     <Compile Include="SaverBinarySerializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -62,6 +61,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MenuControlBoundary\MenuControlBoundary.csproj">
+      <Project>{a9221936-f070-4a77-98bf-090c845eeb48}</Project>
+      <Name>MenuControlBoundary</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MenuItems\MenuItems.csproj">
       <Project>{dfdc3669-f869-42a2-8678-618f5cde346d}</Project>
       <Name>MenuItems</Name>

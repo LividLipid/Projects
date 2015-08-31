@@ -41,19 +41,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Command.cs" />
-    <Compile Include="CommandRedo.cs" />
     <Compile Include="Decorator.cs" />
-    <Compile Include="MemoryResetDecorator.cs" />
-    <Compile Include="MenuController.cs" />
-    <Compile Include="CommandCreate.cs" />
-    <Compile Include="CommandNewItemSelect.cs" />
-    <Compile Include="CommandNull.cs" />
-    <Compile Include="CommandQuit.cs" />
-    <Compile Include="CommandDelete.cs" />
-    <Compile Include="CommandReturn.cs" />
-    <Compile Include="CommandSave.cs" />
-    <Compile Include="CommandSelect.cs" />
-    <Compile Include="CommandUndo.cs" />
+    <Compile Include="CommandFactory.cs" />
+    <Compile Include="CreateCommand.cs" />
+    <Compile Include="NullCommand.cs" />
+    <Compile Include="QuitCommand.cs" />
+    <Compile Include="DeleteCommand.cs" />
+    <Compile Include="ReturnCommand.cs" />
+    <Compile Include="SaveCommand.cs" />
+    <Compile Include="SelectCommand.cs" />
     <Compile Include="UndoableDecorator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -61,10 +57,6 @@
     <ProjectReference Include="..\MenuControlBoundary\MenuControlBoundary.csproj">
       <Project>{a9221936-f070-4a77-98bf-090c845eeb48}</Project>
       <Name>MenuControlBoundary</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MenuSystem\MenuSystem.csproj">
-      <Project>{44b424fd-4b86-43de-9d9f-518d05c72b06}</Project>
-      <Name>MenuSystem</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

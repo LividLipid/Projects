@@ -1,4 +1,4 @@
-﻿using MenuSystem;
+﻿using MenuControlBoundary;
 
 namespace Commands
 {
@@ -6,7 +6,7 @@ namespace Commands
     {
         protected Command Command;
 
-        protected Decorator(MenuHandler receiver, Command cmd) : base(receiver)
+        protected Decorator(IMenuControlInterface receiver, Command cmd) : base(receiver)
         {
             Command = cmd;
         }

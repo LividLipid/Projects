@@ -1,20 +1,16 @@
 ﻿using System;
+using Commands;
 using UserInterfaceBoundary;
 
 namespace ConsoleInterface
 {
-    public class ConsoleScreenLeaf : ConsoleScreen
+    public class LeafScreen : ConsoleScreen
     {
-
-        public ConsoleScreenLeaf(UIData data, ConsoleUserInterface ui) : base(data, ui)
+        public LeafScreen(UIData data, CommandFactory cmdFactory) : base(data, cmdFactory)
         {
         }
 
-        public ConsoleScreenLeaf(UIData data, ConsoleUserInterface ui, int cursorPosition) : base(data, ui, cursorPosition)
-        {
-        }
-
-        protected override void ArrangeEntriesAndOperations(UIData data)
+        protected override void ArrangeEntries(UIData data)
         {
             throw new NotImplementedException();
         }
@@ -40,5 +36,7 @@ namespace ConsoleInterface
         {
             throw new NotImplementedException();
         }
+
+        
     }
 }

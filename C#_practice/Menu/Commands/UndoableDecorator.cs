@@ -1,19 +1,21 @@
-﻿using MenuSystem;
+﻿
 
-namespace Commands
-{
-    public class UndoableDecorator : Decorator
-    {
+//using MenuControlBoundary;
 
-        public UndoableDecorator(MenuHandler receiver, Command cmd) : base(receiver, cmd)
-        {
-            cmd.IsUndoable = true;
-        }
+//namespace Commands
+//{
+//    public class UndoableDecorator : Decorator
+//    {
 
-        public override void Execute()
-        {
-            Receiver.AddUndoableState();
-            Command.Execute();
-        }
-    }
-}
+//        public UndoableDecorator(IMenuControlInterface receiver, Command cmd) : base(receiver, cmd)
+//        {
+//            cmd.IsUndoable = true;
+//        }
+
+//        public override void Execute()
+//        {
+//            Receiver.AddUndoableState();
+//            Command.Execute();
+//        }
+//    }
+//}

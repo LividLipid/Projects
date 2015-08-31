@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using MenuItems;
 using UserInterfaceBoundary;
 
@@ -10,41 +11,41 @@ namespace MenuSystem
     {
         public static UIData CreateUIData(Item item)
         {
-            var itemType = item.GetType();
-            if (itemType == typeof (ItemLeaf))
+            var type = item.GetType();
+            if (type == typeof (ItemLeaf))
                 return CreateLeafData((ItemLeaf) item);
-            else if (itemType == typeof(ItemLeafRSS))
+            if (type == typeof(ItemLeafRSS))
                 return CreateLeafRSSData((ItemLeafRSS) item);
-            else if (itemType == typeof(ItemMenu))
+            if (type == typeof(ItemMenu))
                 return CreateMenuData((ItemMenu) item);
-            else if (itemType == typeof(ItemSentinel))
+            if (type == typeof(ItemSentinel))
                 throw new Exception("A sentinel has no data.");
-            else
-                throw new Exception("Unrecognized item type.");
-        }
-
-        public static UIDataNewTypes CreateNewTypesData()
-        {
-            var title = "Create new item Menu";
-            var creatableTypes = Item.GetCreatableItemTypes();
-            var typeNames = creatableTypes.Select(Item.GetNameOfItemType).ToList();
-            
-            return new UIDataNewTypes(title, creatableTypes, typeNames);
+            throw new Exception("Unrecognized item type.");
         }
 
         private static UIDataLeaf CreateLeafData(ItemLeaf item)
         {
-            return new UIDataLeaf(item.Title);
+            var title = item.Title;
+
+            return new UIDataLeaf(title);
         }
 
         private static UIDataLeaf CreateLeafRSSData(ItemLeafRSS item)
         {
-            return new UIDataLeafRSS(item.Title, item.Address);
+            var title = item.Title;
+            var address = item.Address;
+
+            return new UIDataLeafRSS(title, address);
         }
 
         private static UIDataMenu CreateMenuData(ItemMenu item)
         {
-            return new UIDataMenu(item.Title, item.GetChildrenTitles());
+            var title = item.Title;
+            var childrenTitles = item.GetChildrenTitles();
+            var creatableTypes = Item.GetCreatableItemTypes();
+            var typeNames = creatableTypes.Select(Item.GetNameOfItemType).ToList();
+
+            return new UIDataMenu(title, childrenTitles, creatableTypes, typeNames);
         }
     }
 }

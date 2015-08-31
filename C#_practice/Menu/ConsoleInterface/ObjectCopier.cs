@@ -3,7 +3,7 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace MenuSystem
+namespace ConsoleInterface
 {
     /// <summary>
     /// Reference Article http://www.codeproject.com/KB/tips/SerializedObjectCloner.aspx

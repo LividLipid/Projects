@@ -1,14 +1,14 @@
 ﻿using System;
-using MenuSystem;
+using MenuControlBoundary;
 
 namespace Commands
 {
-    public class CommandCreate : Command
+    public class CreateCommand : Command
     {
         public string ItemTitle;
         public int CreatableTypeIndex;
 
-        public CommandCreate(MenuHandler receiver, int creatableTypeIndex, string title) : base(receiver)
+        public CreateCommand(IMenuControlInterface receiver, int creatableTypeIndex, string title) : base(receiver)
         {
             ItemTitle = title;
             CreatableTypeIndex = creatableTypeIndex;
@@ -20,7 +20,7 @@ namespace Commands
                 throw new Exception("Type of new item not selected.");
             if (string.IsNullOrEmpty(ItemTitle))
                 throw new Exception("Title of new item not selected.");
-            Receiver.ExecuteCreateCommand(CreatableTypeIndex, ItemTitle);
+            Receiver.Create(CreatableTypeIndex, ItemTitle);
         }
     }
 }
