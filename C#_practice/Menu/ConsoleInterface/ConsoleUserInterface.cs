@@ -17,7 +17,7 @@ namespace ConsoleInterface
         public void DisplayUserInterface(UIData data)
         {
             var type = data.GetType();
-            Queue<Command> commands;
+            Stack<Command> commands;
             ConsoleScreen screen;
 
             // Choose the type of console screen to display based on the type of the data object.
@@ -35,9 +35,10 @@ namespace ConsoleInterface
             else
                 throw new ArgumentException("Unknown data object type.");
 
+            int i = 1;
             while (commands.Count > 0)
             {
-                commands.Dequeue().Execute();
+                commands.Pop().Execute();
             }
         }
     }

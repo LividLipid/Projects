@@ -26,26 +26,29 @@ namespace MenuSystem
         private static UIDataLeaf CreateLeafData(ItemLeaf item)
         {
             var title = item.Title;
+            var isRoot = item.IsRoot();
 
-            return new UIDataLeaf(title);
+            return new UIDataLeaf(title, isRoot);
         }
 
         private static UIDataLeaf CreateLeafRSSData(ItemLeafRSS item)
         {
             var title = item.Title;
+            var isRoot = item.IsRoot();
             var address = item.Address;
 
-            return new UIDataLeafRSS(title, address);
+            return new UIDataLeafRSS(title, isRoot, address);
         }
 
         private static UIDataMenu CreateMenuData(ItemMenu item)
         {
             var title = item.Title;
+            var isRoot = item.IsRoot();
             var childrenTitles = item.GetChildrenTitles();
             var creatableTypes = Item.GetCreatableItemTypes();
             var typeNames = creatableTypes.Select(Item.GetNameOfItemType).ToList();
 
-            return new UIDataMenu(title, childrenTitles, creatableTypes, typeNames);
+            return new UIDataMenu(title, isRoot, childrenTitles, creatableTypes, typeNames);
         }
     }
 }

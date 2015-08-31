@@ -18,6 +18,7 @@ namespace ConsoleInterface
 
         protected override List<string> GetDefaultOperations()
         {
+            
             var defaultOperations = new List<string>()
             {
                 Operations.Null,
@@ -27,6 +28,8 @@ namespace ConsoleInterface
                 Operations.Null,
                 Operations.Quit,
             };
+            if (InputData.IsRoot)
+                defaultOperations.Remove(Operations.Return);
 
             return defaultOperations;
         }
@@ -45,7 +48,7 @@ namespace ConsoleInterface
             Console.ForegroundColor = color;
             Console.WriteLine();
             Console.WriteLine("Select item with arrow keys and Enter.");
-            Console.WriteLine("Press Escape or Backspace to return.");
+            Console.WriteLine("Press Escape to quit or Backspace to return.");
             if (CountDataEntries() > 0)
                 Console.WriteLine("Press Delete to delete item.");
             Console.WriteLine("Press Ctrl+Z to undo.");

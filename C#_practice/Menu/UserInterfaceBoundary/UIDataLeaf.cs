@@ -2,7 +2,7 @@
 {
     public class UIDataLeaf : UIData
     {
-        public UIDataLeaf(string title) : base(title)
+        public UIDataLeaf(string title, bool isRoot) : base(title, isRoot)
         {
         }
     }

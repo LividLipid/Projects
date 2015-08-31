@@ -4,7 +4,7 @@
     {
         public string Address;
 
-        public UIDataLeafRSS(string title, string address) : base(title)
+        public UIDataLeafRSS(string title, bool isRoot, string address) : base(title, isRoot)
         {
             Address = address;
         }

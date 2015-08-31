@@ -41,7 +41,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Command.cs" />
-    <Compile Include="Decorator.cs" />
     <Compile Include="CommandFactory.cs" />
     <Compile Include="CreateCommand.cs" />
     <Compile Include="NullCommand.cs" />
@@ -50,7 +49,6 @@
     <Compile Include="ReturnCommand.cs" />
     <Compile Include="SaveCommand.cs" />
     <Compile Include="SelectCommand.cs" />
-    <Compile Include="UndoableDecorator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

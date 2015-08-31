@@ -10,7 +10,7 @@ namespace UserInterfaceBoundary
         public List<Type> CreatableTypes;
         public List<string> CreatableTypeNames;
 
-        public UIDataMenu(string title, List<string> childrenTitles, List<Type> creatableTypes, List<string> creatableTypeNames) : base(title)
+        public UIDataMenu(string title, bool isRoot, List<string> childrenTitles, List<Type> creatableTypes, List<string> creatableTypeNames) : base(title, isRoot)
         {
             ChildrenTitles = childrenTitles;
             CreatableTypes = creatableTypes;

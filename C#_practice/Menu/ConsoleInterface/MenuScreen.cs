@@ -71,12 +71,18 @@ namespace ConsoleInterface
 
         protected void WriteEntrySection()
         {
-            for (int i = 0; i < Entries.Count; i++)
+            for (var i = 0; i < Entries.Count; i++)
             {
                 if (i == CursorPosition)
-                    WriteHighlightedLine(Entries[i].Text);
+                    if (LineActivation[i] == true)
+                        WriteHighlightedLine(Entries[i].Text);
+                    else
+                        WriteDisabledHighlightedLine(Entries[i].Text);
                 else
-                    WriteLine(Entries[i].Text);
+                    if (LineActivation[i] == true)
+                        WriteLine(Entries[i].Text);
+                    else
+                        WriteDisabledLine(Entries[i].Text);
             }
         }
     }

@@ -15,14 +15,15 @@ namespace ConsoleInterface
 
         protected List<MenuEntry> Entries; // Entries which must be initialied by subclasses.
         protected int CursorPosition;
+        protected List<bool> LineActivation;
 
         private Stack<Command> _undoableCommands;
         private Stack<Command> _redoableCommands;
         private Stack<MenuState> _previousStates;
         private Stack<MenuState> _subsequentStates;
-        private Command _finalCommand;
+        private Queue<Command> _finalCommands;
 
-        private UIData _inputData;
+        protected UIData InputData;
 
         protected ConsoleScreen(UIData data, CommandFactory cmdFactory)
         {
@@ -35,11 +36,13 @@ namespace ConsoleInterface
             CmdFactory = cmdFactory;
             FirstEntryNumber = 1;
             Entries = new List<MenuEntry>();
+            LineActivation = new List<bool>();
             _undoableCommands = new Stack<Command>();
             _redoableCommands = new Stack<Command>();
             _previousStates = new Stack<MenuState>();
             _subsequentStates = new Stack<MenuState>();
-            _inputData = data;
+            _finalCommands = new Queue<Command>();
+            InputData = data;
             CursorPosition = 0;
 
             ArrangeEntries(data);
@@ -47,17 +50,18 @@ namespace ConsoleInterface
 
         protected abstract void ArrangeEntries(UIData data);
 
-        public Queue<Command> DisplayScreenAndReturnCommands()
+        public Stack<Command> DisplayScreenAndReturnCommands()
         {
             do
             {
                 UpdateCursorPosition();
+                UpdateLineActivation();
                 PrintMenuText();
                 ReadKeyAndProcess();
 
-            } while (_finalCommand == null);
+            } while (_finalCommands.Count == 0);
 
-            return BuildCommandQueue();
+            return BuildCommandStack();
         }
 
         private void UpdateCursorPosition()
@@ -70,15 +74,33 @@ namespace ConsoleInterface
                 DecrementtCursorPosition();
         }
 
-        private Queue<Command> BuildCommandQueue()
+        private void UpdateLineActivation()
         {
-            // Convert the stack of undoable commands to a queue of commands to be executed by the system.
-            var commandQueue = new Queue<Command>();
-            while (_undoableCommands.Count > 0)
-                commandQueue.Enqueue(_undoableCommands.Pop());
-            commandQueue.Enqueue(_finalCommand);
+            // Deactivate save line when there are no unsaved changes.
+            LineActivation = new List<bool>();
+            foreach (var t in Entries)
+            {
+                if ((t.Operation == Operations.Save) && (!UnsavedChangesExist()))
+                    LineActivation.Add(false);
+                else
+                    LineActivation.Add(true);
+            }
+        }
 
-            return commandQueue;
+        private Stack<Command> BuildCommandStack()
+        {
+            // The commands should be carried out in opposite order
+            // of their position in the stack of undoable commands.
+
+            var tmpStack = _undoableCommands;
+            while (_finalCommands.Count > 0)
+                tmpStack.Push(_finalCommands.Dequeue());
+
+            var commandStack = new Stack<Command>();
+            while (tmpStack.Count > 0)
+                commandStack.Push(tmpStack.Pop());
+
+            return commandStack;
         }
 
         protected abstract void PrintMenuText();
@@ -87,6 +109,21 @@ namespace ConsoleInterface
         {
             Console.BackgroundColor = ConsoleColor.Gray;
             Console.ForegroundColor = ConsoleColor.Black;
+            WriteLine(line);
+            Console.ResetColor();
+        }
+
+        protected void WriteDisabledLine(string line)
+        {
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+            WriteLine(line);
+            Console.ResetColor();
+        }
+
+        protected void WriteDisabledHighlightedLine(string line)
+        {
+            Console.BackgroundColor = ConsoleColor.Gray;
+            Console.ForegroundColor = ConsoleColor.DarkGray;
             WriteLine(line);
             Console.ResetColor();
         }
@@ -114,6 +151,7 @@ namespace ConsoleInterface
             var digit = digitMenuIndexed - FirstEntryNumber;
 
             if (CheckIfOutOfBounds(digit)) return;
+            if (LineActivation[digit] == false) return;
 
             ProcessSelectedEntry(Entries[digit]);
         }
@@ -148,7 +186,7 @@ namespace ConsoleInterface
                     Quit();
                     break;
                 case Operations.Save:
-                    Save();
+                    SaveWithConfirmation();
                     break;
                 case Operations.Undo:
                     Undo();
@@ -199,6 +237,7 @@ namespace ConsoleInterface
 
         protected void ProcessEnterKey()
         {
+            if (LineActivation[CursorPosition] == false) return;
             ProcessSelectedEntry(Entries[CursorPosition]);
         }
 
@@ -231,20 +270,20 @@ namespace ConsoleInterface
         {
             bool doProceed;
             bool doSave;
-            const string request = "Save changes and proceed to selected item?";
+            const string request = "Save changes befpre proceeding to selected item?";
             GetUnsavedChangesConfirmation(request, out doProceed, out doSave);
             
             if (doSave)
                 Save();
             if (!doProceed) return;
-            _finalCommand = CmdFactory.GetSelectCommand(entry.DataIndex);
+            _finalCommands.Enqueue(CmdFactory.GetSelectCommand(entry.DataIndex));
         }
 
         protected void Create(MenuEntry entry)
         {
             const string request = "Please enter title of new item and confirm.";
             var name = GetTextInput(request);
-            _finalCommand = CmdFactory.GetCreateCommand(entry.DataIndex, name);
+            _finalCommands.Enqueue(CmdFactory.GetCreateCommand(entry.DataIndex, name));
         }
 
         protected void Delete(int index)
@@ -263,31 +302,50 @@ namespace ConsoleInterface
         {
             bool doProceed;
             bool doSave;
-            const string request = "Save changes and return to previous menu?";
+            const string request = "Save changes before returning to previous menu?";
             GetUnsavedChangesConfirmation(request, out doProceed, out doSave);
 
             if (doSave)
                 Save();
             if (!doProceed) return;
-            _finalCommand = CmdFactory.GetReturnCommand();
+            _finalCommands.Enqueue(CmdFactory.GetReturnCommand());
         }
 
         protected void Quit()
         {
             bool doProceed;
             bool doSave;
-            const string request = "Save changes and quit?";
-            GetUnsavedChangesConfirmation(request, out doProceed, out doSave);
+            if (UnsavedChangesExist())
+            {
+                const string request = "Save changes before quitting?";
+                GetUnsavedChangesConfirmation(request, out doProceed, out doSave);
+            }
+            else
+            {
+                const string request = "Really quit?";
+                doProceed = GetYesNoConfirmation(request);
+                doSave = false;
+            }
+                
 
             if (doSave)
                 Save();
             if (!doProceed) return;
-            _finalCommand = CmdFactory.GetQuitCommand();
+            _finalCommands.Enqueue(CmdFactory.GetQuitCommand());
+        }
+
+        protected void SaveWithConfirmation()
+        {
+            const string request = "Save changes?";
+            var doSave = GetYesNoConfirmation(request);
+
+            if (doSave)
+                Save();
         }
 
         protected void Save()
         {
-            _finalCommand = CmdFactory.GetSaveCommand();
+            _finalCommands.Enqueue(CmdFactory.GetSaveCommand());
         }
 
         protected void Undo()
@@ -311,9 +369,9 @@ namespace ConsoleInterface
         protected void OpenNewItemMenu()
         {
             // Get a create command from a new item menu screen:
-            var newScreen = new CreateNewMenuScreen(_inputData, CmdFactory);
+            var newScreen = new CreateNewMenuScreen(InputData, CmdFactory);
             var cmds = newScreen.DisplayScreenAndReturnCommands();
-            var returnedCmd = cmds.Dequeue();
+            var returnedCmd = cmds.Pop();
 
             if (returnedCmd.GetType() != typeof (CreateCommand)) return;
             AddUndoableState();
@@ -386,6 +444,34 @@ namespace ConsoleInterface
                         break;
                 }
             }
+        }
+
+        private bool GetYesNoConfirmation(string request)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine();
+            Console.WriteLine(request);
+            Console.WriteLine("Press Y to confirm, N to decline.");
+            Console.WriteLine();
+            Console.ResetColor();
+
+            bool doProceed = false;
+            var recognizedInput = false;
+            while (recognizedInput == false)
+            {
+                var key = Console.ReadKey().Key;
+                switch (key)
+                {
+                    case ConsoleKey.Y:
+                        doProceed = true;
+                        recognizedInput = true;
+                        break;
+                    case ConsoleKey.N:
+                        recognizedInput = true;
+                        break;
+                }
+            }
+            return doProceed;
         }
 
         protected string GetTextInput(string request)

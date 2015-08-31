@@ -30,7 +30,6 @@ namespace Commands
         public Command GetReturnCommand()
         {
             Command cmd = new ReturnCommand(_receiver);
-            //cmd = MakeMemoryResetting(cmd);
             return cmd;
         }
 
@@ -43,21 +42,18 @@ namespace Commands
         public Command GetSelectCommand(int selection)
         {
             Command cmd = new SelectCommand(_receiver, selection);
-            //cmd = MakeMemoryResetting(cmd);
             return cmd;
         }
 
         public Command GetCreateCommand(int creatableTypeIndex, string title)
         {
             Command cmd = new CreateCommand(_receiver, creatableTypeIndex, title);
-            //cmd = MakeUndoable(cmd);
             return cmd;
         }
 
         public Command GetDeleteCommand(int selection)
         {
             Command cmd = new DeleteCommand(_receiver, selection);
-            //cmd = MakeUndoable(cmd);
             return cmd;
         }
 
