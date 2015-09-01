@@ -26,15 +26,15 @@ namespace MainPartition
         public ExampleTree()
         {
             //var a = ItemFactory.Create(typeof(ItemLeaf), "A");
-            var a = ItemFactory.Create(typeof(ItemMenu), "A");
-            var b = ItemFactory.Create(typeof(ItemMenu), "B");
-            var c = ItemFactory.Create(typeof(ItemLeaf), "C");
-            var d = ItemFactory.Create(typeof(ItemMenu), "D");
-            var e = ItemFactory.Create(typeof(ItemLeaf), "E");
-            var f = ItemFactory.Create(typeof(ItemMenu), "F");
-            var g = ItemFactory.Create(typeof(ItemMenu), "G");
-            var h = ItemFactory.Create(typeof(ItemLeaf), "H");
-            var i = ItemFactory.Create(typeof(ItemMenu), "I");
+            var a = ItemFactory.Create(typeof(ItemMenu), "A", null);
+            var b = ItemFactory.Create(typeof(ItemMenu), "B", null);
+            var c = ItemFactory.Create(typeof(ItemLeaf), "C", null);
+            var d = ItemFactory.Create(typeof(ItemMenu), "D", null);
+            var e = ItemFactory.Create(typeof(ItemLeaf), "E", null);
+            var f = ItemFactory.Create(typeof(ItemMenu), "F", null);
+            var g = ItemFactory.Create(typeof(ItemMenu), "G", null);
+            var h = ItemFactory.Create(typeof(ItemLeaf), "H", null);
+            var i = ItemFactory.Create(typeof(ItemMenu), "I", null);
 
             ListOfNodes.Add(a);
             ListOfNodes.Add(b);

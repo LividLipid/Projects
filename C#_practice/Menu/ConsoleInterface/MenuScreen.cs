@@ -15,10 +15,11 @@ namespace ConsoleInterface
         protected override void ArrangeEntries(UIData dataObject)
         {
             var dataTitles = GetDataTitles((UIDataMenu) dataObject);
-            int index = 0;
+            int i = 0;
             foreach (var title in dataTitles)
             {
-                AddDataEntry(title, index);
+                AddDataEntry(title, i);
+                i++;
             }
                 
 

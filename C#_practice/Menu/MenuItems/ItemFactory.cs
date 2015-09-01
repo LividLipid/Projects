@@ -4,7 +4,7 @@ namespace MenuItems
 {
     public static class ItemFactory
     {
-        public static Item Create(Type itemType, string title)
+        public static Item Create(Type itemType, string title, string textData)
         {
             switch (itemType.Name)
             {
@@ -13,7 +13,7 @@ namespace MenuItems
                 case "ItemLeaf":
                     return new ItemLeaf(title);
                 case "ItemLeafRSS":
-                    return new ItemLeafRSS(title);
+                    return new ItemLeafRSS(title, textData);
                 case "ItemSentinel":
                     return new ItemSentinel(title);
                 default:

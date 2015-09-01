@@ -67,6 +67,7 @@ namespace ConsoleInterface
         private void UpdateCursorPosition()
         {
             LoopCursorPosition();
+            if (Entries.Count == 0) return;
             if (Entries[CursorPosition].Operation != Operations.Null) return;
             if (CursorPosition == 0)
                 IncrementCursorPosition();
@@ -281,9 +282,15 @@ namespace ConsoleInterface
 
         protected void Create(MenuEntry entry)
         {
-            const string request = "Please enter title of new item and confirm.";
-            var name = GetTextInput(request);
-            _finalCommands.Enqueue(CmdFactory.GetCreateCommand(entry.DataIndex, name));
+            const string titleRequest = "Please enter title of new item and confirm.";
+            var name = GetTextInput(titleRequest);
+
+            // Check if this creatable type requires extra text data input (i.e. an URL).
+            var typeData = (UIDataMenu) InputData;
+            var textRequest = typeData.TextRequests[entry.DataIndex];
+            string textData;
+            textData = string.IsNullOrEmpty(textRequest) ? null : GetTextInput(textRequest);
+            _finalCommands.Enqueue(CmdFactory.GetCreateCommand(entry.DataIndex, name, textData));
         }
 
         protected void Delete(int index)

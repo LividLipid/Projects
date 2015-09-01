@@ -8,7 +8,7 @@ namespace MenuControlBoundary
         void Return();
         void Save();
         void Select(int selection);
-        void Create(int creatableTypeIndex, string title);
+        void Create(int creatableTypeIndex, string title, string textData);
         void Delete(int selection);
     }
 }

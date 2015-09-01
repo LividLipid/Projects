@@ -7,5 +7,9 @@
         public ItemLeafRSS(string title) : base(title)
         {
         }
+
+        public ItemLeafRSS(string title, string textData) : base(title)
+        {
+        }
     }
 }

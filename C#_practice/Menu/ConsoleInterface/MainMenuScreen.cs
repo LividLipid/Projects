@@ -48,7 +48,9 @@ namespace ConsoleInterface
             Console.ForegroundColor = color;
             Console.WriteLine();
             Console.WriteLine("Select item with arrow keys and Enter.");
-            Console.WriteLine("Press Escape to quit or Backspace to return.");
+            Console.WriteLine(InputData.IsRoot
+                ? "Press Escape to quit."
+                : "Press Escape to quit or Backspace to return.");
             if (CountDataEntries() > 0)
                 Console.WriteLine("Press Delete to delete item.");
             Console.WriteLine("Press Ctrl+Z to undo.");
@@ -69,7 +71,8 @@ namespace ConsoleInterface
                     ProcessEscapeKey();
                     break;
                 case ConsoleKey.Backspace:
-                    ProcessBackspaceKey();
+                    if (!InputData.IsRoot)
+                        ProcessBackspaceKey();
                     break;
                 case ConsoleKey.Delete:
                     ProcessDeleteKey();

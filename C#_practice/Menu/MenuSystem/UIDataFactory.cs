@@ -48,7 +48,13 @@ namespace MenuSystem
             var creatableTypes = Item.GetCreatableItemTypes();
             var typeNames = creatableTypes.Select(Item.GetNameOfItemType).ToList();
 
-            return new UIDataMenu(title, isRoot, childrenTitles, creatableTypes, typeNames);
+            var textRequests = new List<string>();
+            foreach (var type in creatableTypes)
+            {
+                textRequests.Add(type == typeof (ItemLeafRSS) ? "Please enter RSS URL:" : null);
+            }
+
+            return new UIDataMenu(title, isRoot, childrenTitles, creatableTypes, typeNames, textRequests);
         }
     }
 }

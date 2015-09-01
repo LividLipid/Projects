@@ -92,11 +92,11 @@ namespace MenuSystem
             DisplayNewItem(selectedItem);
         }
 
-        public void Create(int creatableTypeIndex, string title)
+        public void Create(int creatableTypeIndex, string title, string textData)
         {
             var creatableTypes = Item.GetCreatableItemTypes();
             var type = creatableTypes[creatableTypeIndex];
-            var itemToAdd = ItemFactory.Create(type, title);
+            var itemToAdd = ItemFactory.Create(type, title, textData);
             _currentItem.AddChild(itemToAdd);
         }
 

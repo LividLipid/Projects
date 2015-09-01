@@ -35,7 +35,6 @@ namespace ConsoleInterface
             else
                 throw new ArgumentException("Unknown data object type.");
 
-            int i = 1;
             while (commands.Count > 0)
             {
                 commands.Pop().Execute();

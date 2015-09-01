@@ -29,7 +29,7 @@
                     return CurrentItem();
                 Next();
             }
-            return ItemFactory.Create(typeof (ItemSentinel), "ItemSentinel");
+            return ItemFactory.Create(typeof (ItemSentinel), "ItemSentinel", null);
         }
     }
 }

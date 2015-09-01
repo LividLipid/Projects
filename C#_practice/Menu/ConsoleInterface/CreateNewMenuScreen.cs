@@ -13,7 +13,7 @@ namespace ConsoleInterface
 
         protected override List<string> GetDataTitles(UIDataMenu dataObject)
         {
-            return dataObject.CreatableTypeNames;
+            return dataObject.TypeNames;
         }
 
         protected override List<string> GetDefaultOperations()

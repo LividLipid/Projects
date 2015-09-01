@@ -12,7 +12,6 @@ namespace ConsoleInterface
 
         protected override void ArrangeEntries(UIData data)
         {
-            throw new NotImplementedException();
         }
 
         protected override void PrintMenuText()
@@ -34,7 +33,16 @@ namespace ConsoleInterface
 
         protected override void ProcessNonDigitInput(ConsoleKeyInfo cki)
         {
-            throw new NotImplementedException();
+            var keyPress = cki.Key;
+            switch (keyPress)
+            {
+                case ConsoleKey.Escape:
+                    ProcessEscapeKey();
+                    break;
+                default:
+                    Return();
+                    break;
+            }
         }
 
         

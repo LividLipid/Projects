@@ -45,9 +45,9 @@ namespace Commands
             return cmd;
         }
 
-        public Command GetCreateCommand(int creatableTypeIndex, string title)
+        public Command GetCreateCommand(int creatableTypeIndex, string title, string textData)
         {
-            Command cmd = new CreateCommand(_receiver, creatableTypeIndex, title);
+            Command cmd = new CreateCommand(_receiver, creatableTypeIndex, title, textData);
             return cmd;
         }
 
